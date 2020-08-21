@@ -4,12 +4,14 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
+
 /**
- *权限
+ * 权限
  */
 @Data
-@TableName(value = "permission ")
+@TableName("permission")
 public class Permission {
+
     @TableId("permission_id")
     private String permissionId;
 
@@ -19,9 +21,9 @@ public class Permission {
     @TableField("request_url")
     private String requestUrl;
 
-    @TableField("icon")
+    @TableField
     private String icon;
 
-    @TableField("permission_id")
+    @TableField("parent_id")
     private String parentId;
 }

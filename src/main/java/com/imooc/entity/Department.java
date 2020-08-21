@@ -4,14 +4,17 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
+
 /**
- *部门
+ * 部门
  */
 @Data
-@TableName(value = "department ")
-public class DeparTment {
+@TableName("department")
+public class Department {
+
     @TableId("department_id ")
-    private String  departmentId;
-    @TableField("department_name ")
-    private String  positionName;
+    private String departmentId;
+
+    @TableField("position_name")
+    private String positionName;
 }
