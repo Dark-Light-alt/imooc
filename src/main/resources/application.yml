@@ -1,0 +1,39 @@
+server:
+  port: 8081
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: 数据库名称
+    username: root
+    password: admin
+
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+
+# 支付宝支付配置信息
+alipay:
+  # 应用 id
+  appId: 2016101300679431
+  # 私钥
+  privateKey: MIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQCNnwEZmeNULS4E98zirwfD5BPEFlf0vsfJHX74V0pzGpoziCi45VnycZYiBwfMeC0qX+ofNdEKbooAmhyg7qTEeF+w92Ft6V0GVkl5b7zUPwdULNoppd4oANOW5pEmYMZRDMx6FKEJ08pT4VHx41i/Sv+mcZhTp8hZQjUcrF9k1bME5C5/Nzw/la+Kyb0BBgevAKg6z8FhKKRs8mdf/lV1up36XPlP26obmnHGsDfP5dGNYSl6LMxHshwYicZpaWr2CymLWLpCV3HVCMAGL4F7ouazdd+54uQgQLU0xSxL5cSH2Sdqb9v14XOvb/Q8oT2jeE7b9XJXFADF814926iLAgMBAAECggEAfaxlQH+0IOW62cPAeESUYnxKIg8l3FVUWx8mpmBn+77WqfYhFPrKGAA+F1If1I2sntbgnvOV3mj7Y89eql07r/GWESdluTCGUXJO30mNytdnvIXUz3KWsu8Q1O8kTWdBdXkjFw6pXVwpRshDfKCgB5kZRm21nD7e5n5/PUOln4c4MYZebnpF90EHHyEVoioOJg+qzSDyZDxykMZUCiuC2HEjUZ5T9t7GUBVbiNzYA8/8sGdlKGa8yw/y3W+8FgpXqZANqcWcpyfAmFW1jZLUxZowe8l9fARBMX3gUwijy7/1KMYPID0SM1xmkTeUAnv+7YYD+fIWPUzR4V7aUPrbeQKBgQD8v3n2NR1zl6pGbAAdG2P3++x2x5shk+EB888C4n+OnT7sao0o+LCrHG4mo5FRE3wy9CBXD1ZO1NGF4zEPNbC0/vTGvXiA8AcfxuU0BQq1zXYU8diJYTcrP2JQIl/fkUDTwTIhW7ghPNpALmhO4FwdqUPkwDZB58xogL8gIkInHwKBgQCPcX0K4V9fA1DXaJsuckG+EhJ8YBJbk4zGnJQHUoEKC38h7Ne1TsUzrLbPH0NTz8bD9KYmk+Ymq8bv9OH/xJpg9yDZJSIR2dZEMF3UB/lIE1W1QRa0ZQhMEcp34+l65O4Iu3CczGlNuLjE0ywz2VPMiHgimr2gLvasno8YJrItFQKBgQDGgVw4kt7eum9xf8FXGvwY+DNv1rVwWcSO0/3yNhIY4EdbRxQ26ZtXyKx6jFzFYJhbLIF53wHaSCuHDDiryW9PuC5nKMhL/DicLIo3oP4Ya5YiPQ/kVgYOYWnFpjnGTT6tET9eE7s536FKZyhlSrEOWrKIJq52dKeGLBfwFPf/4QKBgBe16bZvtIUPFkDVELmnt0hE0ntuofozNJTr8ugW8i+H4PbpoGpe3+f/x6QLBeUHtlJT0VcVIXkI8fReJTFS/TXEA9EA+1W6DVnuKMRQoRsR3xv761XcUXfJhQ82RDTFPLeCzEWO4GUxgJFAWtEjPl/Tuw/1Rh0BRlMYTozucItVAoGBAMd0ohLjHR0/VdtjTSZOv7V474SLpKuu31wmQL2/mSYOMFBM8av7+4yckvFhmBVdM14qbLvZGciL1stVCjfOpIqV3ZylLuRajVt9o87dVPPXYzRJgzYU+LLXOBoW0Y765j8uNfwasL3id6Dm47sVp1vbivjU0rggff6+hdm/3xY3
+  # 公钥
+  publicKey: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA1/3kHXRyNCKK+uvPfBbocJAZrQws/RymAZC+NzSv0twWKDeiRQWMsQfjdndgpGAhfpL8R3hjCV2qEW3QbqMa2kt7JUNOLtAvb9mHMVoudgHS2T0olamdK1cekBrGQWEU69BEtg6fagPenITgo0Fvm3W2C21r4osnyFNr5nn2COkAlGiT+5NelBPXi2Ql3oqgYny90vkxCFGd2LHYV8fVkRjWwZppoBI6USkugp0DNviDCn7+1B8ycXbI7K3ZRpPxlosfJjf2YK9rCEw7sp2vM4Yl6WTVn2d4mb3hrYxoz0l+ROt4lGWt5cz7o7x2yrKuvO02r+ZY5GL2wz1+2s+tVwIDAQAB
+  # 服务器异步通知地址
+  notifyUrl: 地址
+  # 服务器同步通知地址
+  returnUrl: 地址
+  # 签名方式
+  signType: RSA2
+  # 字符集编码
+  charset: UTF-8
+  # 支付宝网关
+  gatewayUrl: https://openapi.alipaydev.com/gateway.do
+
+# jwt 配置信息
+jwt:
+  # 私钥
+  secret: XX#$%()(#*!()!KL<><MQLMNQNQJQK sdfkjsdrow32234545fdf>?N<:{LWPW
+  # token 有效期，单位秒
+  expiration: 1800
+
