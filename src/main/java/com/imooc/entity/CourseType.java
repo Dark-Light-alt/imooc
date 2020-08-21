@@ -1,4 +1,4 @@
-package com.imooc.entitys;
+package com.imooc.entity;
 
 
 import com.baomidou.mybatisplus.annotation.TableField;
