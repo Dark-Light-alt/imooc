@@ -13,8 +13,8 @@ import java.util.Date;
 @Data
 @TableName(value = "account_number ")
 public class AccountNumber {
-   @TableField("account_number_id ")
-   @TableId
+
+   @TableId("account_number_id ")
    private String accountNumberId;
    @TableField("username ")
    private String  userName;

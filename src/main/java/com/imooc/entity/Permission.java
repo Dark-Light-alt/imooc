@@ -10,8 +10,7 @@ import lombok.Data;
 @Data
 @TableName(value = "permission ")
 public class Permission {
-    @TableId
-    @TableField("permission_id")
+    @TableId("permission_id")
     private String permissionId;
 
     @TableField("permission_name")

@@ -11,8 +11,7 @@ import lombok.Data;
 @Data
 @TableName(value = "course_direction ")
 public class CourseDirection {
-    @TableId
-    @TableField("course_direction_id ")
+    @TableId("course_direction_id ")
     private String courseDirectionDd ;
     @TableField("course_direction_name ")
     private String courseDirectionName;

@@ -10,8 +10,7 @@ import lombok.Data;
 @Data
 @TableName(value = "position ")
 public class Position {
-    @TableId
-    @TableField("position_id")
+    @TableId("position_id")
     private String positionId;
     @TableField("position_name")
     private String positionName;
