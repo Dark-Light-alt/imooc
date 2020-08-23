@@ -13,7 +13,7 @@ import lombok.Data;
 public class Department {
 
     // 部门 id
-    @TableId("department_id ")
+    @TableId("department_id")
     private String departmentId;
 
     // 部门名称
