@@ -9,23 +9,29 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 登陆信息表
+ * 登陆信息
  */
 @Data
 @TableName("login_info")
 public class LoginInfo implements Serializable {
 
+    // 登录信息 id
     @TableId("login_info_id")
-    private String loginInfoId;//主键	登录信息id
+    private String loginInfoId;
 
+    // 用户 id
     @TableField("customer_id")
-    private String customerId;//外键连接用户表	用户id
+    private String customerId;
 
+    // 登录时间
     @TableField("login_time")
-    private Date loginTime;//登录时间
+    private Date loginTime;
 
-    private String city	;//登录城市
+    // 登录城市
+    @TableField
+    private String city;
 
-    private String ip;//ip
-
+    // ip
+    @TableField
+    private String ip;
 }

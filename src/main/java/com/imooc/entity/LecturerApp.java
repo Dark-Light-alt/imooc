@@ -9,39 +9,53 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 讲师申请表
+ * 讲师申请
  */
 @Data
-@TableName(value = "lecturer_app")
+@TableName("lecturer_app")
 public class LecturerApp implements Serializable {
 
-    @TableId(value = "lecturer_app_id")
-    private String lecturerAppId;     //id
+    // 申请 id
+    @TableId("lecturer_app_id")
+    private String lecturerAppId;
 
+    // 用户id
     @TableField("customer_id")
-    private String customerId;         //外键关联用户表	用户id
+    private String customerId;
 
-    private String name;               //姓名
+    // 姓名
+    @TableField
+    private String name;
 
-    private String phone;               //联系方式
+    // 联系方式
+    @TableField
+    private String phone;
 
-    private String about;               //简介
+    // 简介
+    @TableField
+    private String about;
 
+    // 试讲视频
     @TableField("trial_video")
-    private String trialVideo;	        //试讲视频
+    private String trialVideo;
 
+    // 申请日期
     @TableField("apply_date")
-    private Date applyDate	;	        //申请日期
+    private Date applyDate;
 
-    private String reviewer;	        //外键关联员工表	审核人
+    // 审核人
+    @TableField
+    private String reviewer;
 
+    // 审核状态：0未审核 1已审核
     @TableField("review_status")
-    private Integer reviewStatus;      //审核状态：0未审核 1已审核
+    private Integer reviewStatus;
 
+    // 审核结果
     @TableField("review_result")
-    private String reviewResult;		//审核结果
+    private String reviewResult;
 
+    // 审核日期
     @TableField("review_date")
-    private Date reviewDate;	        //审核日期
-
+    private Date reviewDate;
 }

@@ -9,25 +9,33 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 系统通知表
+ * 系统通知
  */
 @Data
 @TableName("sys_notice")
 public class SysNotice implements Serializable {
 
+    // 通知 id
     @TableId("sys_notice_id")
-    private String sysNoticeId;	//主键	通知id
+    private String sysNoticeId;
 
-    private String title;//标题
+    // 标题
+    @TableField
+    private String title;
 
-    private String content;//通知内容
+    // 通知内容
+    @TableField
+    private String content;
 
+    // 被通知人
     @TableField("customer_id")
-    private String customerId;//外键关联用户表	被通知人
+    private String customerId;
 
+    // 创建时间
     @TableField("create_time")
-    private Date createTime;	//创建时间
+    private Date createTime;
 
-    private Integer isreading;	//是否已读：0未读 1已读
-
+    // 是否已读：0未读 1已读
+    @TableField
+    private Integer isreading;
 }

@@ -6,35 +6,47 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.util.Date;
 
 /**
- * 用户实名表
+ * 用户实名
  */
 @Data
 @TableName("customer_real")
 public class CustomerReal implements Serializable {
 
+    // 实名id
     @TableId("customer_real_id")
-    private String customerRealId;    //主键	实名id
+    private String customerRealId;
 
+    // 真实姓名
     @TableField("actual_name")
-    private String actualName;	//真实姓名
+    private String actualName;
 
-    private Integer sex;		//性别
+    // 性别
+    @TableField
+    private Integer sex;
 
-    private String nation;//民族
+    // 民族
+    @TableField
+    private String nation;
 
-    private String address;//住址
+    // 住址
+    @TableField
+    private String address;
 
+    // 出生日期
     @TableField("date_of_birth")
-    private String dateOfBirth;	//出生日期
+    private String dateOfBirth;
 
-    private String idcard;//身份证号
+    // 身份证号
+    @TableField
+    private String idcard;
 
-    private String url;//存储路径《身份证图片大小不能超过3M》
+    // 存储路径《身份证图片大小不能超过3M》
+    @TableField
+    private String url;
 
+    // 用户id
     @TableField("customer_id")
-    private String customerId;//外键关联用户表	用户id
-
+    private String customerId;
 }

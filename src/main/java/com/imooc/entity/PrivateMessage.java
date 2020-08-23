@@ -1,7 +1,6 @@
 package com.imooc.entity;
 
 import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
@@ -9,23 +8,29 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 私信表
+ * 私信
  */
 @Data
 @TableName("private_message")
 public class PrivateMessage implements Serializable {
 
-    private String sender;//外键关联用户表	发送者
+    // 发送者
+    @TableField
+    private String sender;
 
-    private String recipient;//外键关联用户表	接收者
+    // 接收者
+    @TableField
+    private String recipient;
 
-    private String content;	//信息内容
+    // 信息内容
+    @TableField
+    private String content;
 
+    // 创建时间
     @TableField("create_time")
-    private Date createTime;//创建时间
+    private Date createTime;
 
-    private Integer isreading;	//是否已读：0未读 1已读
-
-
-
+    // 是否已读：0未读 1已读
+    @TableField
+    private Integer isreading;
 }

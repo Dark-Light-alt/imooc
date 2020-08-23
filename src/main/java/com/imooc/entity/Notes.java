@@ -10,29 +10,37 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 笔记表
+ * 笔记
  */
 @Data
 @TableName("notes")
 public class Notes implements Serializable {
 
+    // 课程笔记 id
     @TableId(value = "notes_id")
-    private String notesId; //主键	课程笔记id
+    private String notesId;
 
+    // 笔记路径
     @TableField("notes_url")
-    private String notesUrl;//笔记路径
+    private String notesUrl;
 
-    private String author;//外键关联用户表	作者
+    // 作者
+    @TableField
+    private String author;
 
-    private Integer likes;//点赞量
+    // 点赞量
+    @TableField
+    private Integer likes;
 
+    // 课程 id
     @TableField("course_id")
-    private String courseId;//外键关联课程表	课程id
+    private String courseId;
 
+    // 课程视频 id
     @TableField("video_id")
-    private String videoId	;//外键关联课程视频表	课程视频id
+    private String videoId;
 
+    // 发布时间
     @TableField("create_time")
-    private Date createTime;	//发布时间
-
+    private Date createTime;
 }

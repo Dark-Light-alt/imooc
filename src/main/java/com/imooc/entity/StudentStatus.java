@@ -9,29 +9,37 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 学籍表
+ * 学籍
  */
 @Data
 @TableName("student_status")
 public class StudentStatus implements Serializable {
 
+    // 学籍 id
     @TableId("student_status_id")
-    private String studentStatusId;	//主键	学籍id
+    private String studentStatusId;
 
-    private String name;                //姓名
+    // 姓名
+    @TableField
+    private String name;
 
-    private String idcard;              //身份证号
+    // 身份证号
+    @TableField
+    private String idcard;
 
+    // 学号
     @TableField("student_id")
-    private String studentId;          //学号
+    private String studentId;
 
-    private String colleges;		    //院校名
+    // 院校名
+    @TableField
+    private String colleges;
 
+    // 入学日期
     @TableField("enrollment_date")
-    private Date enrollmentDate;       //入学日期
+    private Date enrollmentDate;
 
+    // 毕业日期
     @TableField("graduation_date")
-    private Date graduationDate;       //毕业日期
-
-
+    private Date graduationDate;
 }

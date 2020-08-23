@@ -9,19 +9,25 @@ import lombok.Data;
 import java.io.Serializable;
 
 /**
- * 轮播表
+ * 轮播
  */
 @Data
 @TableName("carousel")
 public class Carousel implements Serializable {
 
+    // 轮播 id
     @TableId(value = "carousel_id")
-    private String carouselId;  //轮播id
+    private String carouselId;
 
+    // 课程 id
     @TableField(value = "course_id")
-    private String courseId;    //课程id
+    private String courseId;
 
-    private String cover;       //封面
+    // 封面
+    @TableField
+    private String cover;
 
-    private Integer sort;       //排序
+    // 排序
+    @TableField
+    private Integer sort;
 }

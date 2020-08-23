@@ -5,7 +5,6 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
-
 import java.io.Serializable;
 import java.util.Date;
 
@@ -16,16 +15,19 @@ import java.util.Date;
 @TableName("shopping_cart")
 public class ShoppingCart implements Serializable {
 
+    // 购物车 id
     @TableId("shopping_cart_id")
-    private String shoppingCartId	;//主键	购物车id
+    private String shoppingCartId;
 
+    // 用户 id
     @TableField("customer_id")
-    private String customerId;//外键关联用户表	用户id
+    private String customerId;
 
+    // 课程 id
     @TableField("course_id")
-    private String courseId;//默认关联课程表	课程id
+    private String courseId;
 
+    // 创建时间
     @TableField("create_time")
-    private Date createTime;//创建时间
-
+    private Date createTime;
 }

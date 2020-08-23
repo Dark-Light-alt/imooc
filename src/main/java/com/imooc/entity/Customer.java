@@ -6,48 +6,56 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.Date;
 
 /**
- * 用户表
+ * 用户
  */
 @Data
 @TableName("customer")
 public class Customer implements Serializable {
 
+    // 用户 id
     @TableId("customer_id")
-    private String customerId;//主键	用户id
+    private String customerId;
 
+    // 用户昵称
     @TableField("customer_nickname")
-    private String customerNickname;//用户昵称
+    private String customerNickname;
 
+    // 用户头像
     @TableField("customer_photo")
-    private String customerPhoto;//用户头像
+    private String customerPhoto;
 
+    // 用户邮箱
     @TableField("customer_email")
-    private String customerEmail;//用户邮箱，当用户绑定邮箱时，判断是否被使用了
+    private String customerEmail;
 
+    // 用户手机号
     @TableField("customer_phone")
-    private String customerPhone;//用户手机号
+    private String customerPhone;
 
+    // 用户密码
     @TableField("customer_password")
-    private String customerPassword;//用户密码
+    private String customerPassword;
 
+    // 用户职位 id
     @TableField("position_id")
-    private String positionId;//外键关联用户职位表	用户职位
+    private String positionId;
 
+    // 用户所在城市：河南,郑州,二七
     @TableField("customer_address")
-    private String customerAddress	;//用户所在城市：河南,郑州,二七
+    private String customerAddress;
 
+    //性别：0保密 1男 2女
     @TableField("custome_sex")
-    private Integer customerSex	;//性别：0保密 1男 2女
+    private Integer customerSex;
 
+    //个人简介
     @TableField("personal_about")
-    private String personalAbout;//个人简介
+    private String personalAbout;
 
+    //注册日期
     @TableField("create_time")
-    private Date createTime;//注册日期
-
-
+    private Date createTime;
 }

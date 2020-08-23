@@ -9,19 +9,21 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 我的课程表
+ * 我的课程
  */
 @Data
 @TableName("my_course")
 public class MyCourse implements Serializable {
 
+    // 我的课程 id
     @TableId("my_course_id")
-    private String myCourseId;//主键	我的课程id
+    private String myCourseId;
 
+    // 课程 id
     @TableField("course_id")
-    private String courseId;//外键连接课程表	课程id
+    private String courseId;
 
+    // 创建时间
     @TableField("create_time")
-    private Date createTime;//创建时间
-
+    private Date createTime;
 }

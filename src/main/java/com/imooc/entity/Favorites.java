@@ -9,23 +9,25 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 收藏表
+ * 收藏
  */
 @Data
 @TableName("favorites")
 public class Favorites implements Serializable {
 
+    // 收藏 id
     @TableId("favorites_id")
-    private String favoritesId	;//主键	收藏id
+    private String favoritesId;
 
+    // 用户 id
     @TableField("customer_id")
-    private String customerId;//外键连接用户表	用户id
+    private String customerId;
 
+    // 课程 id
     @TableField("course_id")
-    private String courseId;//外键连接课程表	收藏课程id
+    private String courseId;
 
+    // 创建时间
     @TableField("create_time")
-    private Date createTime; //创建时间
-
-
+    private Date createTime;
 }

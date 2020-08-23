@@ -9,22 +9,25 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 我的专刊表
+ * 我的专刊
  */
 @Data
 @TableName("my_monograph")
 public class MyMonograph implements Serializable {
 
+    // 我的专刊 id
     @TableId("my_monograph_id")
-    private String myMonographId;//主键	我的专刊id
+    private String myMonographId;
 
+    // 用户 id
     @TableField("customer_id")
-    private String customerId;//外键关联用户表	用户id
+    private String customerId;
 
+    // 专刊 id
     @TableField("monograph_id")
-    private String monographId	;//外键关联专刊表	专刊id
+    private String monographId;
 
+    // 创建时间
     @TableField("create_time")
-    private Date createTime;//创建时间
-
+    private Date createTime;
 }
