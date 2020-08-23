@@ -9,27 +9,34 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 评论表
+ * 评论
  */
 @Data
-@TableName(value = "comments")
+@TableName("comments")
 public class Comments implements Serializable {
 
-    @TableId(value = "comment_id")
-    private String commentId; //评论id
+    // 评论 id
+    @TableId("comment_id")
+    private String commentId;
 
-    private String content; //评论内容
+    // 评论内容
+    private String content;
 
-    private Integer likes; //点赞量
+    // 点赞量
+    private Integer likes;
 
-    private String author; //发布人
+    // 发布人
+    private String author;
 
+    // 评论源
     @TableField("comment_be_resource")
-    private String commentBeResource; //评论源
+    private String commentBeResource;
 
+    // 发布时间
     @TableField("create_time")
-    private Date createTime; //发布时间
+    private Date createTime;
 
+    // 状态：0启用 1禁用
     @TableField("comment_status")
-    private Integer commentStatus; //状态：0启用 1禁用
+    private Integer commentStatus;
 }

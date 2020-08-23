@@ -9,7 +9,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 购物车表
+ * 购物车
  */
 @Data
 @TableName("shopping_cart")

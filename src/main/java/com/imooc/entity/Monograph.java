@@ -10,40 +10,57 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 /**
- * monograph专刊表
+ * 专刊
  */
 @Data
-@TableName(value = "monograph")
+@TableName("monograph")
 public class Monograph implements Serializable {
 
-    @TableId(value = "monograph_id")
-    private String monographId; //专刊id
+    // 专刊 id
+    @TableId("monograph_id")
+    private String monographId;
 
-    private String cover; //封面
+    // 封面
+    @TableField
+    private String cover;
 
+    // 专刊名
     @TableField("monograph_name")
-    private String monographName; //专刊名
+    private String monographName;
 
-    private String highlights; //亮点
+    // 亮点
+    @TableField
+    private String highlights;
 
+    // 简介
     @TableField("monograph_about")
-    private String monographAbout; //简介
+    private String monographAbout;
 
-    private String author; //作者
+    // 作者
+    @TableField
+    private String author;
 
-    private BigDecimal price; //价格
+    // 价格
+    @TableField
+    private BigDecimal price;
 
-    private BigDecimal discounts; //优惠
+    // 优惠
+    @TableField
+    private BigDecimal discounts;
 
+    // 优惠截止日期
     @TableField("offer_end_time")
-    private Date offerEndTime; //优惠截止日期
+    private Date offerEndTime;
 
+    // 购买人数
     @TableField("number_of_purchasers")
-    private Integer numberOfPurchasers; //购买人数
+    private Integer numberOfPurchasers;
 
+    // 是否下架 0未下架 1已下架
     @TableField("off_shelf")
-    private Integer offShelf; //是否下架 0未下架 1已下架
+    private Integer offShelf;
 
+    // 创建时间
     @TableField("create_time")
-    private Date createTime; //创建时间
+    private Date createTime;
 }

@@ -9,29 +9,41 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 回答表
+ * 回答
  */
 @Data
-@TableName(value = "answer")
+@TableName("answer")
 public class Answer implements Serializable {
 
+    // 回答 id
     @TableId(value = "answer_id")
-    private String answerId; //回答id
+    private String answerId;
 
-    private String content; //内容
+    // 内容
+    @TableField
+    private String content;
 
-    private String publisher; //发布人
+    // 发布人
+    @TableField
+    private String publisher;
 
+    // 问题id
     @TableField("question_id")
-    private String questionId; //问题id
+    private String questionId;
 
+    // 回答时间
     @TableField("create_time")
-    private Date createTime; //回答时间
+    private Date createTime;
 
-    private Integer likes; //点赞量
+    // 点赞量
+    @TableField
+    private Integer likes;
 
+    // 是否禁用：0启用 1禁用
     @TableField("answer_isenable")
-    private Integer answerIsenable; //是否禁用：0启用 1禁用
+    private Integer answerIsenable;
 
-    private Integer isbest; //是否是最佳回答：0否 1是
+    // 是否是最佳回答：0否 1是
+    @TableField
+    private Integer isbest;
 }

@@ -8,17 +8,21 @@ import lombok.Data;
 import java.io.Serializable;
 
 /**
- * report_reason举报原因表
+ * 举报原因
  */
 @Data
-@TableName(value = "report_reason")
+@TableName("report_reason")
 public class ReportReason implements Serializable {
 
-    @TableId(value = "report_reason_id")
-    private String reportReasonId; //举报原因id
+    // 举报原因 id
+    @TableId("report_reason_id")
+    private String reportReasonId;
 
+    // 举报原因名：色情、涉政或违法、暴恐
     @TableField("report_reason_name")
-    private String reportReasonName; //举报原因名：色情、涉政或违法、暴恐
+    private String reportReasonName;
 
-    private String dimension; //检测维度：
+    // 检测维度
+    @TableField
+    private String dimension;
 }

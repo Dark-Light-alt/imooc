@@ -9,27 +9,33 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 章节表
+ * 章节
  */
 @Data
-@TableName(value = "chapter")
+@TableName("chapter")
 public class Chapter implements Serializable {
 
-    @TableId(value = "chapter_id")
-    private String chapterId; //章节ID
+    // 章节 id
+    @TableId("chapter_id")
+    private String chapterId;
 
+    // 章节名
     @TableField("chapter_name")
-    private String chapterName; //章节名
+    private String chapterName;
 
+    // 章节简介
     @TableField("chapter_about")
-    private String chapterAbout; //章节简介
+    private String chapterAbout;
 
+    // 章节类型 0:课程 1:专刊
     @TableField("chapter_type")
-    private Integer chapterType; //章节类型 0:课程 1:专刊
+    private Integer chapterType;
 
+    // 章节源 课程id 专刊id
     @TableField("chapter_resource")
-    private String chapterResource; //章节源 课程id 专刊id
+    private String chapterResource;
 
+    // 创建时间
     @TableField("create_time")
-    private Date createTime; //创建时间
+    private Date createTime;
 }

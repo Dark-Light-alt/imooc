@@ -9,36 +9,53 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 课程问题表
+ * 课程问题
  */
 @Data
-@TableName(value = "question")
+@TableName("question")
 public class Question implements Serializable {
 
-    @TableId(value = "question_id")
-    private String questionId; //问题id
+    // 问题 id
+    @TableId("question_id")
+    private String questionId;
 
-    private String title; //标题
+    // 标题
+    @TableField
+    private String title;
 
-    private String content; //内容
+    // 内容
+    @TableField
+    private String content;
 
-    private String publisher; //发布人
+    // 发布人
+    @TableField
+    private String publisher;
 
+    // 课程 id
     @TableField("course_id")
-    private String courseId; //课程id
+    private String courseId;
 
+    // 课程视频 id
     @TableField("video_id")
-    private String videoId; //课程视频id
+    private String videoId;
 
-    private Integer pageviews; //浏览量
+    // 浏览量
+    @TableField
+    private Integer pageviews;
 
-    private Integer likes; //点赞量
+    // 点赞量
+    @TableField
+    private Integer likes;
 
+    // 发布时间
     @TableField("create_time")
-    private Date createTime; //发布时间
+    private Date createTime;
 
+    // 是否禁用：0启用 1禁用
     @TableField("question_isenable")
-    private Integer questionIsenable; //是否禁用：0启用 1禁用
+    private Integer questionIsenable;
 
-    private Integer issolve; //是否解决：0未解决 1已解决
+    // 是否解决：0未解决 1已解决
+    @TableField
+    private Integer issolve;
 }

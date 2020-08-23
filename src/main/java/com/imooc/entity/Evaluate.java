@@ -9,29 +9,41 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 评价表
+ * 评价
  */
 @Data
-@TableName(value = "evaluate")
+@TableName("evaluate")
 public class Evaluate implements Serializable {
 
-    @TableId(value = "evaluate_id")
-    private String evaluateId; //课程评价id
+    // 课程评价 id
+    @TableId("evaluate_id")
+    private String evaluateId;
 
-    private String content; //评价内容
+    // 评价内容
+    @TableField
+    private String content;
 
-    private Integer likes; //点赞量
+    // 点赞量
+    @TableField
+    private Integer likes;
 
-    private String author; //发布人
+    // 发布人
+    @TableField
+    private String author;
 
+    // 评价类型：0课程 1专刊
     @TableField("evaluate_type")
-    private Integer evaluateType; //评价类型：0课程 1专刊
+    private Integer evaluateType;
 
+    // 被评价源：课程、专刊
     @TableField("evaluate_be_resource")
-    private String evaluateBeResource; //被评价源：课程、专刊
+    private String evaluateBeResource;
 
-    private Integer score; //课程评分 1 - 10
+    // 课程评分 1 - 10
+    @TableField
+    private Integer score;
 
+    // 发布时间
     @TableField("create_time")
-    private Date createTime; //发布时间
+    private Date createTime;
 }

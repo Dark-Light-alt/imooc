@@ -9,27 +9,37 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 回复表
+ * 回复
  */
 @Data
-@TableName(value = "reply")
+@TableName("reply")
 public class Reply implements Serializable {
 
-    @TableId(value = "reply_id")
-    private String replyId; //回复id
+    // 回复 id
+    @TableId("reply_id")
+    private String replyId;
 
+    // 回答 id
     @TableField("answer_id")
-    private String answerId; //回答id
+    private String answerId;
 
-    private String content; //回复内容
+    // 回复内容
+    @TableField
+    private String content;
 
-    private String sender; //发送者
+    // 发送者
+    @TableField
+    private String sender;
 
-    private String receiver; //接收者
+    // 接收者
+    @TableField
+    private String receiver;
 
+    // 回复时间
     @TableField("create_time")
-    private Date createTime; //回复时间
-
+    private Date createTime;
+    
+    // 是否禁用：0启用 1禁用
     @TableField("reply_isenable")
-    private Integer replyIsenable; //是否禁用：0启用 1禁用
+    private Integer replyIsenable;
 }

@@ -9,24 +9,29 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 资料表
+ * 资料
  */
 @Data
-@TableName(value = "data")
+@TableName("data")
 public class Datas implements Serializable {
 
-    @TableId(value = "data_id")
-    private String dataId; //课程资料id
+    // 课程资料 id
+    @TableId("data_id")
+    private String dataId;
 
+    // 课程资料名
     @TableField("data_name")
-    private String dataName; //课程资料名
+    private String dataName;
 
+    // 课程资料路径
     @TableField("data_url")
-    private String dataUrl; //课程资料路径
+    private String dataUrl;
 
+    // 课程 id
     @TableField("course_id")
-    private String courseId; //课程id
+    private String courseId;
 
+    // 创建时间
     @TableField("create_time")
-    private Date createTime; //创建时间
+    private Date createTime;
 }
