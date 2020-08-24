@@ -18,8 +18,10 @@ public class Result {
     // 数据体：存放数据信息
     private Map<String, Object> data = new HashMap<>();
 
+    // 分页数据
+    private Pages pages;
+
     public Result() {
-        System.out.println();
     }
 
     /**
