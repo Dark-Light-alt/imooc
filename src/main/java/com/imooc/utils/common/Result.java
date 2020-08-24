@@ -19,6 +19,7 @@ public class Result {
     private Map<String, Object> data = new HashMap<>();
 
     public Result() {
+        System.out.println();
     }
 
     /**
