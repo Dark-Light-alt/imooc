@@ -73,6 +73,11 @@ public class EmployeeInfoServiceImpl extends ServiceImpl<EmployeeInfoDao, Employ
         return baseMapper.updateById(employeeInfo) != 0;
     }
 
+    @Override
+    public EmployeeInfo findById(String employeeInfoId) {
+        return baseMapper.selectById(employeeInfoId);
+    }
+
     /**
      * 查询员工信息
      *

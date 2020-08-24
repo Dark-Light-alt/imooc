@@ -69,4 +69,16 @@ public class EmployeeInfoController {
 
         return result;
     }
+
+    @RequestMapping(value = "findById/{employeeId}", method = RequestMethod.GET)
+    public Result findById(@PathVariable String employeeId) {
+
+        Result result = new Result();
+
+        result.putData("employeeInfo", employeeInfoServiceImpl.findById(employeeId));
+
+        result.success(200, "SUCCESS");
+
+        return result;
+    }
 }

@@ -32,6 +32,13 @@ public interface EmployeeInfoService extends IService<EmployeeInfo> {
     boolean update(EmployeeInfo employeeInfo);
 
     /**
+     * 根据员工 id 查询员工信息
+     * @param employeeInfoId
+     * @return
+     */
+    EmployeeInfo findById(String employeeInfoId);
+
+    /**
      * 查询员工信息分页
      *
      * @param pages
