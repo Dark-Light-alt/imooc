@@ -8,8 +8,10 @@ spring:
     username: imooc
     password: imooc
 
-mybatis:
+mybatis-plus:
   mapper-locations: classpath:mapper/*.xml
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
 # 支付宝支付配置信息
 alipay:
