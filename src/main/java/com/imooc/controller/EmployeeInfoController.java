@@ -32,6 +32,7 @@ public class EmployeeInfoController {
             pages.setTotal(data.getTotal());
 
             result.setPages(pages);
+            //添加数据
             result.putData("employeeInfoList", data.getRecords());
 
             result.success(200, "SUCCESS");
