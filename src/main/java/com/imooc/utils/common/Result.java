@@ -69,12 +69,4 @@ public class Result {
         this.putMeta("msg", msg);
         this.putMeta("timestamp", new Timestamp(System.currentTimeMillis()));
     }
-
-    @Override
-    public String toString() {
-        return "Result{" +
-                "meta=" + meta +
-                ", data=" + data +
-                '}';
-    }
 }

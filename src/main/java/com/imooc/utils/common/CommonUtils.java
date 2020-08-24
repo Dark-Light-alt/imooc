@@ -1,5 +1,7 @@
 package com.imooc.utils.common;
 
+import cn.hutool.core.util.ReUtil;
+
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.sql.Timestamp;
@@ -160,5 +162,25 @@ public final class CommonUtils {
             return false;
         }
         return lsStr.stream().distinct().count() != lsStr.size();
+    }
+
+    /**
+     * 正则校验手机号是否正确
+     *
+     * @param phone
+     * @return
+     */
+    public static boolean isCorrectPhone(String phone) {
+        return ReUtil.isMatch("^[1][3,4,5,7,8][0-9]{9}$", phone);
+    }
+
+    /**
+     * 正则校验邮箱是否正确
+     *
+     * @param email
+     * @return
+     */
+    public static boolean isCorrectEmail(String email) {
+        return ReUtil.isMatch("^([a-z0-9A-Z]+[-|\\.]?)+[a-z0-9A-Z]@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\.)+[a-zA-Z]{2,}$", email);
     }
 }
