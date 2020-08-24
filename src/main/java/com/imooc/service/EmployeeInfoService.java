@@ -14,4 +14,5 @@ public interface EmployeeInfoService extends IService<EmployeeInfo> {
      * @return
      */
     Page<EmployeeInfo> findAll(Pages pages);
+
 }

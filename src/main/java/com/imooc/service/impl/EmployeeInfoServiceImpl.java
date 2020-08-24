@@ -21,6 +21,16 @@ public class EmployeeInfoServiceImpl extends ServiceImpl<EmployeeInfoDao, Employ
         return baseMapper.selectPage(page, this.lambdaQueryWrapper(pages));
     }
 
+    @Override
+    public EmployeeInfo findById(String employeeId) {
+
+        LambdaQueryWrapper<EmployeeInfo> wrapper = new LambdaQueryWrapper<>();
+
+        wrapper.eq(EmployeeInfo::getEmployeeId,employeeId);
+
+        return baseMapper.selectOne(wrapper);
+    }
+
     /**
      * 查询员工信息 wrapper
      *
