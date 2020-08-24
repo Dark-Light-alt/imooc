@@ -1,13 +1,17 @@
 package com.imooc.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.imooc.entity.AccountNumber;
 import com.imooc.entity.EmployeeInfo;
+import com.imooc.service.impl.AccountNumberServiceImpl;
 import com.imooc.service.impl.EmployeeInfoServiceImpl;
 import com.imooc.utils.common.Pages;
 import com.imooc.utils.common.Result;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.Map;
 
 @RestController
 @RequestMapping("EmployeeInfoController")
@@ -15,6 +19,9 @@ public class EmployeeInfoController {
 
     @Resource
     private EmployeeInfoServiceImpl employeeInfoServiceImpl;
+
+    @Resource
+    private AccountNumberServiceImpl accountNumberServiceImpl;
 
     @RequestMapping(value = "findAll", method = RequestMethod.POST)
     public Result findAll(@RequestBody Pages pages) {
@@ -78,6 +85,25 @@ public class EmployeeInfoController {
         result.putData("employeeInfo", employeeInfoServiceImpl.findById(employeeId));
 
         result.success(200, "SUCCESS");
+
+        return result;
+    }
+
+    @RequestMapping(value = "allocationAccountNumber", method = RequestMethod.PUT)
+    public Result allocationAccountNumber(@RequestBody Map<String, String> params) {
+
+        Result result = new Result();
+
+        // 获取到 employeeId
+        String employeeId = params.get("employeeId");
+
+        AccountNumber accountNumber = JSON.parseObject(params.get("accountNumber"), AccountNumber.class);
+
+        accountNumberServiceImpl.append(accountNumber);
+
+        employeeInfoServiceImpl.allocationAccountNumber(employeeId, accountNumber.getAccountNumberId());
+
+        result.success(200, "账号分配成功");
 
         return result;
     }

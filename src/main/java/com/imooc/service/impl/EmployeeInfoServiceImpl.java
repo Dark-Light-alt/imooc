@@ -73,6 +73,29 @@ public class EmployeeInfoServiceImpl extends ServiceImpl<EmployeeInfoDao, Employ
         return baseMapper.updateById(employeeInfo) != 0;
     }
 
+    /**
+     * 分配账号
+     *
+     * @param employeeId      员工 id
+     * @param accountNumberId 账号 id
+     * @return
+     */
+    @Override
+    public boolean allocationAccountNumber(String employeeId, String accountNumberId) {
+
+        EmployeeInfo employeeInfo = new EmployeeInfo();
+        employeeInfo.setEmployeeId(employeeId);
+        employeeInfo.setAccountNumberId(accountNumberId);
+
+        return baseMapper.updateById(employeeInfo) != 0;
+    }
+
+    /**
+     * 根据 employeeId 查询员工信息
+     *
+     * @param employeeInfoId
+     * @return
+     */
     @Override
     public EmployeeInfo findById(String employeeInfoId) {
         return baseMapper.selectById(employeeInfoId);

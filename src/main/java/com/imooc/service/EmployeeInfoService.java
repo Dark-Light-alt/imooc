@@ -18,10 +18,10 @@ public interface EmployeeInfoService extends IService<EmployeeInfo> {
     /**
      * 办理离职
      *
-     * @param employeeInfoId
+     * @param employeeId
      * @return
      */
-    boolean resignation(String employeeInfoId);
+    boolean resignation(String employeeId);
 
     /**
      * 更改员工信息
@@ -32,7 +32,17 @@ public interface EmployeeInfoService extends IService<EmployeeInfo> {
     boolean update(EmployeeInfo employeeInfo);
 
     /**
+     * 分配账号
+     *
+     * @param employeeId      员工 id
+     * @param accountNumberId 账号 id
+     * @return
+     */
+    boolean allocationAccountNumber(String employeeId, String accountNumberId);
+
+    /**
      * 根据员工 id 查询员工信息
+     *
      * @param employeeInfoId
      * @return
      */
