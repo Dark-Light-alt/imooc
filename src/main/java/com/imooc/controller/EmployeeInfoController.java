@@ -6,10 +6,7 @@ import com.imooc.exception.ApiException;
 import com.imooc.service.impl.EmployeeInfoServiceImpl;
 import com.imooc.utils.common.Pages;
 import com.imooc.utils.common.Result;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 
@@ -41,6 +38,44 @@ public class EmployeeInfoController {
             result.error(500, e.msg());
         } catch (Exception e) {
             result.error(500, "服务器出小差");
+        }
+
+        return result;
+    }
+
+    @RequestMapping(value = "append", method = RequestMethod.PUT)
+    public Result append(@RequestBody EmployeeInfo employeeInfo) {
+
+        Result result = new Result();
+
+        try {
+            employeeInfoServiceImpl.append(employeeInfo);
+
+            result.success(200, "员工添加成功");
+        } catch (ApiException e) {
+            result.error(500, e.msg());
+        } catch (Exception e) {
+            e.printStackTrace();
+            result.error(500, "服务器开小差");
+        }
+
+        return result;
+    }
+
+    @RequestMapping(value = "resignation/{employeeId}", method = RequestMethod.GET)
+    public Result resignation(@PathVariable String employeeId) {
+
+        Result result = new Result();
+
+        try {
+            employeeInfoServiceImpl.resignation(employeeId);
+
+            result.success(200, "离职办理成功");
+        } catch (ApiException e) {
+            result.error(500, e.msg());
+        } catch (Exception e) {
+            e.printStackTrace();
+            result.error(500, "服务器开小差");
         }
 
         return result;
