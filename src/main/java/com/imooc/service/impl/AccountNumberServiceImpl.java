@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.imooc.dao.AccountNumberDao;
 import com.imooc.entity.AccountNumber;
 import com.imooc.service.AccountNumberService;
+import com.imooc.utils.common.CommonUtils;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -15,7 +16,7 @@ public class AccountNumberServiceImpl extends ServiceImpl<AccountNumberDao, Acco
 
         LambdaQueryWrapper<AccountNumber> wrapper = new LambdaQueryWrapper<>();
 
-        if (null != username && !"".equals(username)) {
+        if (CommonUtils.isNotEmpty(username)) {
             wrapper.eq(AccountNumber::getUsername, username);
         }
 
