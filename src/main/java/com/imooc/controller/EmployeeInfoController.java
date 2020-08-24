@@ -5,6 +5,7 @@ import com.imooc.entity.EmployeeInfo;
 import com.imooc.exception.ApiException;
 import com.imooc.service.impl.EmployeeInfoServiceImpl;
 import com.imooc.utils.common.Pages;
+import com.imooc.utils.common.Result;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
