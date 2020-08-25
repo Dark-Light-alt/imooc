@@ -125,6 +125,7 @@ public class EmployeeInfoServiceImpl extends ServiceImpl<EmployeeInfoDao, Employ
 
         LambdaQueryWrapper<EmployeeInfo> wrapper = new LambdaQueryWrapper<>();
 
+        //获取属性名                封装模糊查询
         if (CommonUtils.isNotEmpty(pages.getSearchs().get("name"))) {
             wrapper.like(EmployeeInfo::getEmployeeName, pages.getSearchs().get("name"));
         }
