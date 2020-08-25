@@ -58,19 +58,11 @@ public class EmployeeInfo {
     @TableField("leave_date")
     private Date leaveDate;
 
-    //部门
-    @TableField(exist = false)
-    private Department department;
-
-    //职位
-    @TableField(exist = false)
-    private Position position;
-
     // 部门 id
-  /*  @TableField("department_id")
+    @TableField("department_id")
     private String departmentId;
 
     // 职位 id
     @TableField("position_id")
-    private String positionId;*/
+    private String positionId;
 }
