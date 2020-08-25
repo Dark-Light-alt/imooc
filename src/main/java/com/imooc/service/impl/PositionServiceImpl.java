@@ -37,7 +37,7 @@ public class PositionServiceImpl extends ServiceImpl<PositionDao, Position> impl
     public boolean remove(String positionId) {
 
         if (employeeInfoServiceImpl.findByColumn("position_id", positionId) != 0) {
-            throw new ApiException(500, "存在所属员工");
+            throw new ApiException(500, "此职位存在所属员工");
         }
 
         return baseMapper.deleteById(positionId) != 0;

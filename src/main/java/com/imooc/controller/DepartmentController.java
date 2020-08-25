@@ -8,45 +8,89 @@ import com.imooc.utils.common.Result;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.util.List;
 
 @RestController
 @RequestMapping("DepartmentController")
 public class DepartmentController {
 
     @Resource
-    DepartmentServiceImpl departmentServiceImpl;
+    private DepartmentServiceImpl departmentServiceImpl;
 
-    /*@RequestMapping("selectAll")
-    @ResponseBody
-    public List<Department> selectAll() {
-        return departmentServiceImpl.selectAll();
-    }
-    */
-    @RequestMapping("findAll")
-    @ResponseBody
-    public Result findAll(@RequestBody Pages pages){
+    @RequestMapping(value = "pagingFindAll", method = RequestMethod.POST)
+    public Result pagingFindAll(@RequestBody Pages pages) {
+
         Result result = new Result();
 
-        Page<Department> data = departmentServiceImpl.findAll(pages);
+        Page<Department> data = departmentServiceImpl.pagingFindAll(pages);
 
         pages.setLastPage(data.getPages());
         pages.setTotal(data.getTotal());
+
         result.setPages(pages);
-        result.putData("department",data.getRecords());
+
+        result.putData("departmentList", data.getRecords());
+
+        result.success(200, "SUCCESS");
+
         return result;
     }
 
-
-    @RequestMapping(value = "insert", method = RequestMethod.POST)
-    @ResponseBody
-    public Result insert(@RequestBody Department department) {
+    @RequestMapping(value = "findAll", method = RequestMethod.GET)
+    public Result findAll() {
 
         Result result = new Result();
 
-        departmentServiceImpl.insert(department);
+        result.putData("departmentList", departmentServiceImpl.findAll());
 
-        result.success(200, "部门添加成功");
+        result.success(200, "SUCCESS");
+
+        return result;
+    }
+
+    @RequestMapping(value = "append", method = RequestMethod.PUT)
+    public Result append(@RequestBody Department department) {
+
+        Result result = new Result();
+
+        departmentServiceImpl.append(department);
+
+        result.success(200, "部门信息添加成功");
+
+        return result;
+    }
+
+    @RequestMapping(value = "findById/{departmentId}", method = RequestMethod.GET)
+    public Result findById(@PathVariable String departmentId) {
+
+        Result result = new Result();
+
+        result.putData("department", departmentServiceImpl.findById(departmentId));
+
+        result.success(200, "SUCCESS");
+
+        return result;
+    }
+
+    @RequestMapping(value = "update", method = RequestMethod.PUT)
+    public Result update(@RequestBody Department department) {
+
+        Result result = new Result();
+
+        departmentServiceImpl.update(department);
+
+        result.success(200, "部门信息修改成功");
+
+        return result;
+    }
+
+    @RequestMapping(value = "remove/{departmentId}", method = RequestMethod.DELETE)
+    public Result remove(@PathVariable String departmentId) {
+
+        Result result = new Result();
+
+        departmentServiceImpl.remove(departmentId);
+
+        result.success(200, "部门信息删除成功");
 
         return result;
     }
