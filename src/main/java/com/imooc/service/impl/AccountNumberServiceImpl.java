@@ -2,6 +2,7 @@ package com.imooc.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.imooc.dao.AccountNumberDao;
@@ -11,6 +12,8 @@ import com.imooc.service.AccountNumberService;
 import com.imooc.utils.common.CommonUtils;
 import com.imooc.utils.common.Pages;
 import org.springframework.stereotype.Service;
+
+import java.util.Date;
 
 @Service
 public class AccountNumberServiceImpl extends ServiceImpl<AccountNumberDao, AccountNumber> implements AccountNumberService {
@@ -43,6 +46,20 @@ public class AccountNumberServiceImpl extends ServiceImpl<AccountNumberDao, Acco
     }
 
     @Override
+    public boolean changeEndLoginTime(String username) {
+
+        LambdaUpdateWrapper<AccountNumber> wrapper = new LambdaUpdateWrapper();
+
+        wrapper.eq(AccountNumber::getUsername, username);
+
+        AccountNumber accountNumber = new AccountNumber();
+        accountNumber.setUsername(username);
+        accountNumber.setEndLoginTime(new Date());
+
+        return baseMapper.update(accountNumber,wrapper) != 0;
+    }
+
+    @Override
     public AccountNumber findByUsername(String username) {
 
         LambdaQueryWrapper<AccountNumber> wrapper = new LambdaQueryWrapper<>();
@@ -56,7 +73,7 @@ public class AccountNumberServiceImpl extends ServiceImpl<AccountNumberDao, Acco
 
     @Override
     public AccountNumber findById(String accountNumberId) {
-        return null;
+        return baseMapper.selectById(accountNumberId);
     }
 
     @Override

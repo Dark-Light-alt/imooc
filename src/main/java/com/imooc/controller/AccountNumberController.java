@@ -45,4 +45,16 @@ public class AccountNumberController {
 
         return result;
     }
+
+    @RequestMapping(value = "findById/{accountNumberId}", method = RequestMethod.GET)
+    public Result findById(@PathVariable String accountNumberId) {
+
+        Result result = new Result();
+
+        result.putData("accountNumber",accountNumberServiceImpl.findById(accountNumberId));
+
+        result.success(200, "SUCCESS");
+
+        return result;
+    }
 }
