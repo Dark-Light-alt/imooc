@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -95,22 +94,24 @@ public class RightsController {
     }
 
     @RequestMapping(value = "allocationRights", method = RequestMethod.PUT)
-    public Result allocationRights(@RequestBody Map<String, String> params) {
+    public Result allocationRights(@RequestBody Map<String, Object> params) {
+
+        System.out.println("进来了");
 
         Result result = new Result();
 
-        String positionId = params.get("positionId");
+        String positionId = String.valueOf(params.get("positionId"));
 
-        ArrayList<String> keys = JSONArray.parseObject(params.get("keys"), ArrayList.class);
+        String keysJson = JSONArray.toJSONString(params.get("keys"));
+
+        ArrayList<String> arrayList = JSONArray.parseObject(keysJson, ArrayList.class);
 
         positionRightsBridgeServiceImpl.removeRightsByPositionId(positionId);
 
         PositionRightsBridge positionRightsBridge = new PositionRightsBridge();
         positionRightsBridge.setPositionId(positionId);
 
-        System.out.println(keys);
-
-        keys.forEach(key -> {
+        arrayList.forEach(key -> {
             positionRightsBridge.setRightsId(key);
             positionRightsBridgeServiceImpl.append(positionRightsBridge);
         });
@@ -119,15 +120,21 @@ public class RightsController {
 
         return result;
     }
-    // 根据职位查询出拥有的权限列表
-    @RequestMapping(value = "findRightsByPositionId/{positionId}",method = RequestMethod.GET)
+
+    /**
+     * 根据职位查询出拥有的权限列表
+     *
+     * @param positionId
+     * @return
+     */
+    @RequestMapping(value = "findRightsByPositionId/{positionId}", method = RequestMethod.GET)
     public Result findRightsByPositionId(@PathVariable String positionId) {
 
         Result result = new Result();
 
-        result.putData("rightsList",rightsServiceImpl.findRightsByPositionId(positionId));
+        result.putData("rightsList", rightsServiceImpl.findRightsByPositionId(positionId));
 
-        result.success(200,"SUCCESS");
+        result.success(200, "SUCCESS");
 
         return result;
     }
