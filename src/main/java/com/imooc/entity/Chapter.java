@@ -38,4 +38,12 @@ public class Chapter implements Serializable {
     // 创建时间
     @TableField("create_time")
     private Date createTime;
+
+    //课程
+    @TableField(exist = false)
+    private Course course;
+
+    //专刊
+    @TableField(exist = false)
+    private Monograph monograph;
 }
