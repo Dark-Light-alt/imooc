@@ -13,10 +13,15 @@ import com.imooc.utils.common.CommonUtils;
 import com.imooc.utils.common.Pages;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class AccountNumberServiceImpl extends ServiceImpl<AccountNumberDao, AccountNumber> implements AccountNumberService {
+
+    @Resource
+    private EmployeeInfoServiceImpl employeeInfoServiceImpl;
 
     @Override
     public boolean append(AccountNumber accountNumber) {
@@ -56,7 +61,7 @@ public class AccountNumberServiceImpl extends ServiceImpl<AccountNumberDao, Acco
         accountNumber.setUsername(username);
         accountNumber.setEndLoginTime(new Date());
 
-        return baseMapper.update(accountNumber,wrapper) != 0;
+        return baseMapper.update(accountNumber, wrapper) != 0;
     }
 
     @Override
@@ -81,7 +86,17 @@ public class AccountNumberServiceImpl extends ServiceImpl<AccountNumberDao, Acco
 
         Page page = new Page(pages.getCurrentPage(), pages.getPageSize());
 
-        return baseMapper.selectPage(page, this.lambdaQueryWrapper(pages));
+        Page p = baseMapper.selectPage(page, this.lambdaQueryWrapper(pages));
+
+        List<AccountNumber> records = p.getRecords();
+
+        records.forEach(record -> {
+            record.setEmployeeInfo(employeeInfoServiceImpl.findByAccountNumberId(record.getAccountNumberId()));
+        });
+
+        p.setRecords(records);
+
+        return p;
     }
 
     /**

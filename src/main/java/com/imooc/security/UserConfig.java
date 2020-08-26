@@ -24,8 +24,6 @@ public class UserConfig implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
 
-        System.out.println(s);
-
         // 模拟角色和用户权限
         List<GrantedAuthority> permissions = AuthorityUtils.commaSeparatedStringToAuthorityList("ROLE_ADMIN");
 
