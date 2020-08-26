@@ -1,0 +1,21 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.imooc.dao.MonographDao">
+    <resultMap id="monographDao" type="com.imooc.entity.Monograph">
+        <id column="monograph_id" property="monographId"></id>
+        <result column="cover" property="cover"></result>
+        <result column="monograph_name" property="monographName"></result>
+        <result column="highlights" property="highlights"></result>
+        <result column="monograph_about" property="monographAbout"></result>
+        <result column="author" property="author"></result>
+        <result column="price" property="price"></result>
+        <result column="discounts" property="discounts"></result>
+        <result column="offer_end_time" property="offerEndTime"></result>
+        <result column="number_of_purchasers" property="numberOfPurchasers"></result>
+        <result column="off_shelf" property="offShelf"></result>
+        <result column="create_time" property="createTime"></result>
+        <collection property="chapterList" resultMap="com.imooc.dao.ChapterDao.chapterMap">
+        </collection>
+    </resultMap>
+</mapper>
