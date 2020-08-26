@@ -12,6 +12,8 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
+import java.util.List;
+
 /**
  * 课程方向
  */
@@ -30,4 +32,7 @@ public class Direction {
     // 是否禁用：0启用 1禁用
     @TableField("direction_isenable")
     private Integer directionIsenable;
+
+    @TableField(exist = false)
+    private List<Type> types;
 }
