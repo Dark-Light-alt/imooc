@@ -84,9 +84,9 @@
 
         <!-- oracle 驱动支持 -->
         <dependency>
-            <groupId>com.oracle.database.jdbc</groupId>
+            <groupId>aaa</groupId>
             <artifactId>ojdbc6</artifactId>
-            <version>11.2.0.4</version>
+            <version>6</version>
         </dependency>
 
         <!-- mybatis plus 持久层支持 -->
@@ -214,6 +214,4 @@
             <version>3.6.1</version>
         </dependency>
     </dependencies>
-
-
 </project>

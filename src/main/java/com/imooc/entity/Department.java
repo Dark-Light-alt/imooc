@@ -17,6 +17,6 @@ public class Department {
     private String departmentId;
 
     // 部门名称
-    @TableField("department_name")
+    @TableField("department_Name")
     private String departmentName;
 }

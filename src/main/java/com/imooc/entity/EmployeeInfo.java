@@ -66,7 +66,7 @@ public class EmployeeInfo {
     @TableField("position_id")
     private String positionId;
 
-    // 账号 id
+    //用户账号编号
     @TableField("account_number_id")
     private String accountNumberId;
 }

@@ -40,7 +40,7 @@ public class Course {
     private Integer numberofstudents;
 
     @TableField("type_id")
-    private String type_id;
+    private String typeId;
 
     @TableField("course_level")
     private Integer courselevel;
