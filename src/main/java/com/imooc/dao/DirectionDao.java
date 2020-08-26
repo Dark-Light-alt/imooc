@@ -14,7 +14,7 @@ import java.util.List;
 public interface DirectionDao extends BaseMapper<Direction> {
 
     /**
-     * 分页查询 tree 型结构
+     * 分页查询 tree 型结狗
      *
      * @param page
      * @param wrapper

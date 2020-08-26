@@ -1,4 +1,5 @@
 package com.imooc.service.impl;
+
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.imooc.dao.ChapterDao;
 import com.imooc.entity.Chapter;
@@ -7,7 +8,6 @@ import com.imooc.service.ChapterService;
 import com.imooc.utils.common.CommonUtils;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
 import java.util.List;
 
 @Service
@@ -15,6 +15,7 @@ public class ChapterServiceImpl extends ServiceImpl<ChapterDao, Chapter> impleme
 
     /**
      * 根据monographId查询章节
+     *
      * @param monographId
      * @return
      */
@@ -24,6 +25,7 @@ public class ChapterServiceImpl extends ServiceImpl<ChapterDao, Chapter> impleme
 
     /**
      * 添加章节
+     *
      * @param chapter
      * @return
      */
@@ -36,9 +38,10 @@ public class ChapterServiceImpl extends ServiceImpl<ChapterDao, Chapter> impleme
 
     /**
      * 验证字段不为空
+     *
      * @param chapter
      */
-    public void vaild(Chapter chapter){
+    public void vaild(Chapter chapter) {
         if (!CommonUtils.isNotEmpty(chapter.getChapterName())) {
             throw new ApiException(500, "标题不能为空");
         }
