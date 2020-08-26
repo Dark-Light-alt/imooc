@@ -94,17 +94,13 @@ public class RightsController {
     }
 
     @RequestMapping(value = "allocationRights", method = RequestMethod.PUT)
-    public Result allocationRights(@RequestBody Map<String, Object> params) {
-
-        System.out.println("进来了");
+    public Result allocationRights(@RequestBody Map<String, String> params) {
 
         Result result = new Result();
 
         String positionId = String.valueOf(params.get("positionId"));
 
-        String keysJson = JSONArray.toJSONString(params.get("keys"));
-
-        ArrayList<String> arrayList = JSONArray.parseObject(keysJson, ArrayList.class);
+        ArrayList<String> arrayList = JSONArray.parseObject(params.get("keys"), ArrayList.class);
 
         positionRightsBridgeServiceImpl.removeRightsByPositionId(positionId);
 
