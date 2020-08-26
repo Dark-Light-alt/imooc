@@ -7,10 +7,12 @@ import com.imooc.utils.common.Pages;
 
 public interface DirectionService extends IService<Direction> {
 
+
     /**
-     * 分页查询所有方向
+     * 分页查询 tree 型结构
+     *
      * @param pages
      * @return
      */
-    Page<Direction> findAll(Pages pages);
+    Page<Direction> pagingFindAll(Pages pages);
 }

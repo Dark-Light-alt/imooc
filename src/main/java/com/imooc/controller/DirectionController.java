@@ -2,7 +2,6 @@ package com.imooc.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.imooc.entity.Direction;
-import com.imooc.exception.ApiException;
 import com.imooc.service.impl.DirectionServiceImpl;
 import com.imooc.utils.common.Pages;
 import com.imooc.utils.common.Result;
@@ -18,32 +17,30 @@ import javax.annotation.Resource;
 public class DirectionController {
 
     @Resource
-    DirectionServiceImpl directionServiceImpl;
+    private DirectionServiceImpl directionServiceImpl;
 
     /**
      * 分页查询所有
+     *
      * @param pages
      * @return
      */
-    @RequestMapping(value = "findAll",method = RequestMethod.POST)
-    public Result findAll(@RequestBody Pages pages){
+    @RequestMapping(value = "pagingFindAll", method = RequestMethod.POST)
+    public Result findAll(@RequestBody Pages pages) {
+
         Result result = new Result();
 
-        try{
-            Page<Direction> data = directionServiceImpl.findAll(pages);
+        Page<Direction> data = directionServiceImpl.pagingFindAll(pages);
 
-            pages.setLastPage(data.getPages());
-            pages.setTotal(data.getTotal());
+        pages.setLastPage(data.getPages());
+        pages.setTotal(data.getTotal());
 
-            result.setPages(pages);
-            result.putData("directionList",data.getRecords());
+        result.setPages(pages);
 
-            result.success(200,"SUCCESS");
-        }catch(ApiException e){
-            result.error(500,e.getMessage());
-        }catch (Exception e){
-            result.error(500,"服务器开小差");
-        }
+        result.putData("directionList", data.getRecords());
+
+        result.success(200, "SUCCESS");
+
         return result;
     }
 }

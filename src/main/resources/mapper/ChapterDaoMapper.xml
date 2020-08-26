@@ -1,6 +1,4 @@
-<!DOCTYPE mapper
-        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.imooc.dao.ChapterDao">
     <resultMap id="chapterMap" type="com.imooc.entity.Chapter">
         <id column="chapter_id" property="chapterId"></id>
@@ -9,7 +7,7 @@
         <result column="chapter_type" property="chapterType"></result>
         <result column="chapter_resource" property="chapterResource"></result>
         <result column="create_time" property="createTime"></result>
-        <association property="course" javaType="com.imooc.entity.Course" autoMapping="true">
+        <association property="course" javaType="com.imooc.entity.Course">
             <id column="course_id" property="courseid"></id>
             <result column="cover" property="cover"></result>
             <result column="background" property="background"></result>
@@ -24,7 +22,7 @@
             <result column="create_time" property="createtime"></result>
             <result column="course_isenabl" property="courseisenabl"></result>
         </association>
-        <association property="monograph" javaType="com.imooc.entity.Monograph" autoMapping="true">
+        <association property="monograph" javaType="com.imooc.entity.Monograph">
             <id column="monograph_id" property="monographId"></id>
             <result column="cover" property="cover"></result>
             <result column="monograph_name" property="monographName"></result>
@@ -41,7 +39,15 @@
     </resultMap>
 
     <select id="findByMonograph" resultMap="chapterMap">
-          select chap.chapter_name,chap.chapter_about,chap.create_Time,m.monograph_id,m.monograph_name from chapter chap
-left join monograph m on chap.chapter_resource = m.monograph_id where m.monograph_id=#{monographId} order by chap.create_Time asc
+        select
+            chap.chapter_name,
+            chap.chapter_about,
+            chap.create_Time,
+            m.monograph_id,
+            m.monograph_name
+        from chapter chap
+        left join monograph m
+        on chap.chapter_resource = m.monograph_id
+        where m.monograph_id=#{monographId} order by chap.create_Time asc
     </select>
 </mapper>

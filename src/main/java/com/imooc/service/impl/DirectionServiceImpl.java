@@ -1,4 +1,5 @@
 package com.imooc.service.impl;
+
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -10,22 +11,25 @@ import com.imooc.utils.common.Pages;
 import org.springframework.stereotype.Service;
 
 @Service
-public class DirectionServiceImpl extends ServiceImpl<DirectionDao,Direction> implements DirectionService {
+public class DirectionServiceImpl extends ServiceImpl<DirectionDao, Direction> implements DirectionService {
 
 
     @Override
-    public Page<Direction> findAll(Pages pages) {
+    public Page<Direction> pagingFindAll(Pages pages) {
+
         Page<Direction> page = new Page<>(pages.getCurrentPage(), pages.getPageSize());
 
-        //条件构造器
+        return page.setRecords(baseMapper.pagingFindAll(page, lambdaQueryWrapper(pages)));
+    }
+
+    private LambdaQueryWrapper<Direction> lambdaQueryWrapper(Pages pages) {
+
         LambdaQueryWrapper<Direction> wrapper = new LambdaQueryWrapper<>();
 
-        //如果课程方向不为空
-        if(CommonUtils.isNotEmpty(pages.getSearchs().get("directionName"))){
-            //添加模糊查询的条件
-            wrapper.like(Direction::getDirectionName,pages.getSearchs().get("directionName"));
+        if (CommonUtils.isNotEmpty(pages.getSearchs().get("directionName"))) {
+            wrapper.like(Direction::getDirectionName, pages.getSearchs().get("directionName"));
         }
 
-        return baseMapper.selectPage(page,wrapper);
+        return wrapper;
     }
 }
