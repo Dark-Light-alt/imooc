@@ -1,0 +1,32 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.imooc.dao.CustomerDao">
+    <resultMap id="CustomerMap" type="com.imooc.entity.Customer" autoMapping="true">
+        <id column="customerId" property="customerId"></id>
+        <association property="position" javaType="com.imooc.entity.Position" autoMapping="true">
+            <id column="positionId" property="positionId"></id>
+        </association>
+    </resultMap>
+
+    <select id="selectPosition" resultMap="CustomerMap">
+        SELECT
+            c.customer_id as customerId,
+            c.customer_nickname as customerNickname,
+            c.customer_photo as customerPhoto,
+            c.customer_email as customerEmail,
+            c.customer_phone as customerPhone,
+            c.customer_password as customerPassword,
+            c.customer_address as customerAddress,
+            c.custome_sex as customeSex,
+            c.personal_about as personalAbout,
+            c.create_time as createTime,
+            p.position_id as positionId,
+            p.position_name as positionName
+        FROM customer c
+        LEFT JOIN position p
+        ON c.position_id = p.position_id
+        ${ew.customSqlsegment}
+    </select>
+
+</mapper>

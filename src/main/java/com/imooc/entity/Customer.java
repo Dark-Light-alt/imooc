@@ -58,4 +58,7 @@ public class Customer implements Serializable {
     //注册日期
     @TableField("create_time")
     private Date createTime;
+
+    @TableField(exist = false)
+    private Position position;
 }

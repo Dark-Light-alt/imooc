@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.imooc.dao.RightsDao">
+
+    <select id="findHaveThreeRights" resultType="java.lang.String">
+        SELECT
+            r.rights_id
+        FROM rights r
+        WHERE r.rights_id IN (SELECT rights_id FROM position_rights_bridge WHERE position_id = #{positionId}) AND r.rights_level = 2
+    </select>
+
+    <select id="findRightsByPositionId" resultMap="rightsList">
+        SELECT
+            rh.rights_id,
+            rh.rights_name,
+            rh.rights_path,
+            rh.icon,
+            rh.rights_level,
+            rh.parent_id,
+            rh.create_time
+        FROM rights rh WHERE rh.rights_id IN (SELECT rights_id FROM position_rights_bridge WHERE position_id = #{param1}) AND rh.parent_id = #{param2}
+    </select>
+
+    <resultMap id="rightsList" type="com.imooc.entity.Rights">
+        <id column="rights_id" property="rightsId"></id>
+        <result column="rights_name" property="rightsName"></result>
+        <result column="rights_path" property="rightsPath"></result>
+        <result column="icon" property="icon"></result>
+        <result column="rights_level" property="rightsLevel"></result>
+        <result column="parent_id" property="parentId"></result>
+        <result column="create_time" property="createTime"></result>
+    </resultMap>
+</mapper>
