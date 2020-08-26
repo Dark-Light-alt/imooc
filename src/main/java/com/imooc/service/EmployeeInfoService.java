@@ -1,5 +1,6 @@
 package com.imooc.service;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.imooc.entity.EmployeeInfo;
@@ -56,4 +57,18 @@ public interface EmployeeInfoService extends IService<EmployeeInfo> {
      */
     Page<EmployeeInfo> findAll(Pages pages);
 
+
+    /**
+     * 根据 账号 id 查询员工信息
+     *
+     * @param accountNumberId
+     * @return
+     */
+    default EmployeeInfo findByAccountNumberId(String accountNumberId) {
+
+        LambdaQueryWrapper<EmployeeInfo> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(EmployeeInfo::getAccountNumberId, accountNumberId);
+
+        return getOne(wrapper);
+    }
 }

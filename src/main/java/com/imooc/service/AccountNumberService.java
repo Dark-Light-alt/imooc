@@ -33,6 +33,14 @@ public interface AccountNumberService extends IService<AccountNumber> {
     boolean changeLocked(String accountNumberId, Integer islocked);
 
     /**
+     * 根据用户名修改账号最后登录时间
+     *
+     * @param username
+     * @return
+     */
+    boolean changeEndLoginTime(String username);
+
+    /**
      * 根据 username 查询账号信息
      *
      * @param username 用户名
@@ -42,6 +50,7 @@ public interface AccountNumberService extends IService<AccountNumber> {
 
     /**
      * 根据 accountNumberId 查询账号信息
+     *
      * @param accountNumberId
      * @return
      */
@@ -49,6 +58,7 @@ public interface AccountNumberService extends IService<AccountNumber> {
 
     /**
      * 分页查询所有账号信息
+     *
      * @param pages
      * @return
      */

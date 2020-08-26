@@ -26,6 +26,7 @@ public class ControllerExceptionAspect {
         } catch (ApiException e) {
             result.error(500, e.msg());
         } catch (Exception e) {
+            e.printStackTrace();
             result.error(500, "服务器开小差了 ^_^");
         }
 

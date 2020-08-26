@@ -125,6 +125,7 @@ public class EmployeeInfoServiceImpl extends ServiceImpl<EmployeeInfoDao, Employ
 
         LambdaQueryWrapper<EmployeeInfo> wrapper = new LambdaQueryWrapper<>();
 
+        //获取属性名                封装模糊查询
         if (CommonUtils.isNotEmpty(pages.getSearchs().get("name"))) {
             wrapper.like(EmployeeInfo::getEmployeeName, pages.getSearchs().get("name"));
         }
@@ -221,5 +222,21 @@ public class EmployeeInfoServiceImpl extends ServiceImpl<EmployeeInfoDao, Employ
         wrapper.eq(column, value);
 
         return baseMapper.selectOne(wrapper);
+    }
+
+    /**
+     * 获取某列的 count
+     *
+     * @param column 列名
+     * @param value  值
+     * @return
+     */
+    public int findByColumn(String column, Object value) {
+
+        QueryWrapper<EmployeeInfo> wrapper = new QueryWrapper<>();
+
+        wrapper.eq(column, value);
+
+        return baseMapper.selectCount(wrapper);
     }
 }

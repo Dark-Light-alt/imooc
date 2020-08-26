@@ -19,17 +19,15 @@ import java.util.List;
 public class UserConfig implements UserDetailsService {
 
     @Resource
-    private AccountNumberServiceImpl accountNumberServiceImpl;
+    private AccountNumberServiceImpl iAccountNumberServiceImpl;
 
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
 
-        System.out.println(s);
-
         // 模拟角色和用户权限
         List<GrantedAuthority> permissions = AuthorityUtils.commaSeparatedStringToAuthorityList("ROLE_ADMIN");
 
-        AccountNumber accountNumber = accountNumberServiceImpl.findByUsername(s);
+        AccountNumber accountNumber = iAccountNumberServiceImpl.findByUsername(s);
 
         System.out.println(accountNumber);
 

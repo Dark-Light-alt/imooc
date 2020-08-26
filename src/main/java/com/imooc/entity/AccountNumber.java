@@ -43,6 +43,9 @@ public class AccountNumber implements UserDetails {
     @TableField
     private Integer islocked;
 
+    @TableField(exist = false)
+    private EmployeeInfo employeeInfo;
+
     // 权限
     @TableField(exist = false)
     private List<GrantedAuthority> permissions;

@@ -2,6 +2,7 @@ package com.imooc.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.imooc.dao.AccountNumberDao;
@@ -12,8 +13,15 @@ import com.imooc.utils.common.CommonUtils;
 import com.imooc.utils.common.Pages;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
+import java.util.Date;
+import java.util.List;
+
 @Service
 public class AccountNumberServiceImpl extends ServiceImpl<AccountNumberDao, AccountNumber> implements AccountNumberService {
+
+    @Resource
+    private EmployeeInfoServiceImpl employeeInfoServiceImpl;
 
     @Override
     public boolean append(AccountNumber accountNumber) {
@@ -43,6 +51,20 @@ public class AccountNumberServiceImpl extends ServiceImpl<AccountNumberDao, Acco
     }
 
     @Override
+    public boolean changeEndLoginTime(String username) {
+
+        LambdaUpdateWrapper<AccountNumber> wrapper = new LambdaUpdateWrapper();
+
+        wrapper.eq(AccountNumber::getUsername, username);
+
+        AccountNumber accountNumber = new AccountNumber();
+        accountNumber.setUsername(username);
+        accountNumber.setEndLoginTime(new Date());
+
+        return baseMapper.update(accountNumber, wrapper) != 0;
+    }
+
+    @Override
     public AccountNumber findByUsername(String username) {
 
         LambdaQueryWrapper<AccountNumber> wrapper = new LambdaQueryWrapper<>();
@@ -56,7 +78,7 @@ public class AccountNumberServiceImpl extends ServiceImpl<AccountNumberDao, Acco
 
     @Override
     public AccountNumber findById(String accountNumberId) {
-        return null;
+        return baseMapper.selectById(accountNumberId);
     }
 
     @Override
@@ -64,7 +86,17 @@ public class AccountNumberServiceImpl extends ServiceImpl<AccountNumberDao, Acco
 
         Page page = new Page(pages.getCurrentPage(), pages.getPageSize());
 
-        return baseMapper.selectPage(page, this.lambdaQueryWrapper(pages));
+        Page p = baseMapper.selectPage(page, this.lambdaQueryWrapper(pages));
+
+        List<AccountNumber> records = p.getRecords();
+
+        records.forEach(record -> {
+            record.setEmployeeInfo(employeeInfoServiceImpl.findByAccountNumberId(record.getAccountNumberId()));
+        });
+
+        p.setRecords(records);
+
+        return p;
     }
 
     /**

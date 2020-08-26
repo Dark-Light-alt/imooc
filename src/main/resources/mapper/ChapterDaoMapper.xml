@@ -1,0 +1,47 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.imooc.dao.ChapterDao">
+    <resultMap id="chapterMap" type="com.imooc.entity.Chapter">
+        <id column="chapter_id" property="chapterId"></id>
+        <result column="chapter_name" property="chapterName"></result>
+        <result column="chapter_about" property="chapterAbout"></result>
+        <result column="chapter_type" property="chapterType"></result>
+        <result column="chapter_resource" property="chapterResource"></result>
+        <result column="create_time" property="createTime"></result>
+        <association property="course" javaType="com.imooc.entity.Course" autoMapping="true">
+            <id column="course_id" property="courseid"></id>
+            <result column="cover" property="cover"></result>
+            <result column="background" property="background"></result>
+            <result column="course_name" property="coursename"></result>
+            <result column="course_about" property="courseabout"></result>
+            <result column="author" property="author"></result>
+            <result column="duration" property="duration"></result>
+            <result column="number_of_students" property="numberofstudents"></result>
+            <result column="type_id" property="typeId"></result>
+            <result column="course_level" property="courselevel"></result>
+            <result column="isfree" property="isfree"></result>
+            <result column="create_time" property="createtime"></result>
+            <result column="course_isenabl" property="courseisenabl"></result>
+        </association>
+        <association property="monograph" javaType="com.imooc.entity.Monograph" autoMapping="true">
+            <id column="monograph_id" property="monographId"></id>
+            <result column="cover" property="cover"></result>
+            <result column="monograph_name" property="monographName"></result>
+            <result column="highlights" property="highlights"></result>
+            <result column="monograph_about" property="monographAbout"></result>
+            <result column="author" property="author"></result>
+            <result column="price" property="price"></result>
+            <result column="discounts" property="discounts"></result>
+            <result column="offer_end_time" property="offerEndTime"></result>
+            <result column="number_of_purchasers" property="numberOfPurchasers"></result>
+            <result column="off_shelf" property="offShelf"></result>
+            <result column="create_time" property="createTime"></result>
+        </association>
+    </resultMap>
+
+    <select id="findByMonograph" resultMap="chapterMap">
+          select chap.chapter_name,chap.chapter_about,chap.create_Time,m.monograph_id,m.monograph_name from chapter chap
+left join monograph m on chap.chapter_resource = m.monograph_id where m.monograph_id=#{monographId} order by chap.create_Time asc
+    </select>
+</mapper>
