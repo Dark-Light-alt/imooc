@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -115,6 +116,18 @@ public class RightsController {
         });
 
         result.success(200, "权限分配成功");
+
+        return result;
+    }
+    // 根据职位查询出拥有的权限列表
+    @RequestMapping(value = "findRightsByPositionId/{positionId}",method = RequestMethod.GET)
+    public Result findRightsByPositionId(@PathVariable String positionId) {
+
+        Result result = new Result();
+
+        result.putData("rightsList",rightsServiceImpl.findRightsByPositionId(positionId));
+
+        result.success(200,"SUCCESS");
 
         return result;
     }

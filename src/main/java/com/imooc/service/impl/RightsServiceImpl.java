@@ -174,6 +174,10 @@ public class RightsServiceImpl extends ServiceImpl<RightsDao, Rights> implements
      */
     private void validExist(Rights rights, Boolean flag) {
 
+        if (!CommonUtils.isNotEmpty(rights.getRightsPath())) {
+            return;
+        }
+
         Rights rightsPath = findByParam("rights_path", rights.getRightsPath());
 
         if (flag) {
