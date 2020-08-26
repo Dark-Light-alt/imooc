@@ -1,6 +1,7 @@
 package com.imooc.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.imooc.annotation.Operation;
 import com.imooc.entity.AccountNumber;
 import com.imooc.service.impl.AccountNumberServiceImpl;
 import com.imooc.utils.common.Pages;
@@ -16,6 +17,7 @@ public class AccountNumberController {
     @Resource
     private AccountNumberServiceImpl accountNumberServiceImpl;
 
+    @Operation("查询账号")
     @RequestMapping(value = "pagingFindAll", method = RequestMethod.POST)
     public Result pagingFindAll(@RequestBody Pages pages) {
 
@@ -51,7 +53,7 @@ public class AccountNumberController {
 
         Result result = new Result();
 
-        result.putData("accountNumber",accountNumberServiceImpl.findById(accountNumberId));
+        result.putData("accountNumber", accountNumberServiceImpl.findById(accountNumberId));
 
         result.success(200, "SUCCESS");
 
