@@ -10,7 +10,7 @@ import java.util.List;
 public interface ChapterDao extends BaseMapper<Chapter> {
 
     /**
-     * 根据monographId查询章节
+     * 根据monographId查询章
      * @param monographId
      * @return
      */
