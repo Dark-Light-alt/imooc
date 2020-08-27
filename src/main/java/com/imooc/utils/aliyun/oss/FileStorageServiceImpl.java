@@ -7,9 +7,6 @@ import com.imooc.utils.aliyun.BaseConfig;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.InputStream;
 
 /**
@@ -22,15 +19,16 @@ public class FileStorageServiceImpl implements FileStorageService {
     private BaseConfig baseConfig;
 
     /**
-     * 上传文件
+     * 文件上传
      *
-     * @param file     文件
-     * @param type     文件所属类别
+     * @param in       输入流对象
+     * @param fileName 文件名
+     * @param type     文件类别
      * @param uploader 上传者
      * @return url
      */
     @Override
-    public String upload(File file, String type, String uploader) {
+    public String upload(InputStream in, String fileName, String type, String uploader) {
 
         // 构建 oss 对象存储客户端
         OSS ossClient = baseConfig.ossClient();
@@ -38,10 +36,8 @@ public class FileStorageServiceImpl implements FileStorageService {
         String url = null;
 
         try {
-            InputStream in = new FileInputStream(file);
-
             // 获取文件后缀
-            String suffix = getSuffix(file.getName());
+            String suffix = getSuffix(fileName);
 
             // 获取文件上传至服务器的类型
             String contentType = contentType(suffix);
@@ -64,9 +60,6 @@ public class FileStorageServiceImpl implements FileStorageService {
 
             // 获取文件上传之后的 url
             url = getURL(rename);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-            return null;
         } finally {
             ossClient.shutdown();
         }

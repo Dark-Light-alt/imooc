@@ -1,6 +1,6 @@
 package com.imooc.utils.aliyun.oss;
 
-import java.io.File;
+import java.io.InputStream;
 import java.util.UUID;
 
 /**
@@ -33,14 +33,15 @@ public interface FileStorageService {
     String VIDEO = "video";
 
     /**
-     * 上传文件
+     * 文件上传
      *
-     * @param file     文件
-     * @param type     文件所属类别
+     * @param in       输入流对象
+     * @param fileName 文件名
+     * @param type     文件类别
      * @param uploader 上传者
      * @return url
      */
-    String upload(File file, String type, String uploader);
+    String upload(InputStream in, String fileName, String type, String uploader);
 
     /**
      * 根据文件后缀获取 contentType
