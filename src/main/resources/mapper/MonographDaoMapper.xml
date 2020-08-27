@@ -2,7 +2,7 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.imooc.dao.MonographDao">
-    <resultMap id="monographDao" type="com.imooc.entity.Monograph">
+    <resultMap id="monographMap" type="com.imooc.entity.Monograph">
         <id column="monograph_id" property="monographId"></id>
         <result column="cover" property="cover"></result>
         <result column="monograph_name" property="monographName"></result>
@@ -15,7 +15,37 @@
         <result column="number_of_purchasers" property="numberOfPurchasers"></result>
         <result column="off_shelf" property="offShelf"></result>
         <result column="create_time" property="createTime"></result>
-        <collection property="chapterList" resultMap="com.imooc.dao.ChapterDao.chapterMap">
+        <collection property="chapterList" column="monograph_id" ofType="com.imooc.entity.Chapter" select="chapters">
+            <id column="chapter_id" property="chapterId"></id>
+            <result column="chapter_name" property="chapterName"></result>
+            <result column="chapter_about" property="chapterAbout"></result>
+            <result column="chapter_type" property="chapterType"></result>
+            <result column="chapter_resource" property="chapterResource"></result>
+            <result column="create_time" property="createTime"></result>
         </collection>
     </resultMap>
+
+    <select id="pageFindMonograph" resultMap="monographMap">
+        select
+            monograph_id,
+            cover,
+            monograph_name,
+            highlights,
+            monograph_about,
+            author,
+            off_shelf
+        from monograph
+        ${ew.customSqlSegment}
+    </select>
+
+    <select id="chapters" resultType="com.imooc.entity.Chapter">
+        select
+             chapter_id,
+             chapter_name,
+             chapter_about,
+             create_Time
+        from chapter
+        where chapter_resource = #{monograph_id}
+        order by create_Time asc
+    </select>
 </mapper>

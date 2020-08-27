@@ -9,10 +9,4 @@ import java.util.List;
 @Mapper
 public interface ChapterDao extends BaseMapper<Chapter> {
 
-    /**
-     * 根据monographId查询章
-     * @param monographId
-     * @return
-     */
-    List<Chapter> findByMonograph(String monographId);
 }
