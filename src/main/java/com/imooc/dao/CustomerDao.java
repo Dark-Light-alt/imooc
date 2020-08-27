@@ -12,7 +12,7 @@ import java.util.List;
 @Mapper
 public interface CustomerDao extends BaseMapper<Customer> {
     /**
-     * 查询员工职位
+     * 查询所有用户、用户职位
      *
      * @return@Param(Constants.WRAPPER)
      */
