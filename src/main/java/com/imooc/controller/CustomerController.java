@@ -21,11 +21,11 @@ public class CustomerController {
 
 
 
-    @RequestMapping(value = "selectPosition", method = RequestMethod.POST)
-    public Result selectPosition(@RequestBody Pages pages){
+    @RequestMapping(value = "pagingFindAll", method = RequestMethod.POST)
+    public Result pagingFindAll(@RequestBody Pages pages){
         Result result = new Result();
 
-        Page<Customer> data = customerServiceImpl.selectPosition(pages);
+        Page<Customer> data = customerServiceImpl.pagingFindAll(pages);
 
         pages.setLastPage(data.getPages());
         pages.setTotal(data.getTotal());
