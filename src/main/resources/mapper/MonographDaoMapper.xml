@@ -25,6 +25,34 @@
         </collection>
     </resultMap>
 
+    <resultMap id="monographAuthor" type="com.imooc.entity.Monograph">
+        <id column="monograph_id" property="monographId"></id>
+        <result column="cover" property="cover"></result>
+        <result column="monograph_name" property="monographName"></result>
+        <result column="highlights" property="highlights"></result>
+        <result column="monograph_about" property="monographAbout"></result>
+        <result column="author" property="author"></result>
+        <result column="price" property="price"></result>
+        <result column="discounts" property="discounts"></result>
+        <result column="offer_end_time" property="offerEndTime"></result>
+        <result column="number_of_purchasers" property="numberOfPurchasers"></result>
+        <result column="off_shelf" property="offShelf"></result>
+        <result column="create_time" property="createTime"></result>
+        <association property="employeeInfo" javaType="com.imooc.entity.EmployeeInfo">
+            <id column="employee_id" property="employeeId"></id>
+            <result column="employee_name" property="employeeName"></result>
+            <result column="employee_sex" property="employeeSex"></result>
+            <result column="employee_phone" property="employeePhone"></result>
+            <result column="employee_email" property="employeeEmail"></result>
+            <result column="employee_idcard" property="employeeIdcard"></result>
+            <result column="employee_address" property="employeeAddress"></result>
+            <result column="photo" property="photo"></result>
+            <result column="hiredate" property="hiredate"></result>
+            <result column="isleave" property="isleave"></result>
+            <result column="leave_date" property="leaveDate"></result>
+        </association>
+    </resultMap>
+
     <select id="pageFindMonograph" resultMap="monographMap">
         select
             monograph_id,
@@ -47,5 +75,25 @@
         from chapter
         where chapter_resource = #{monograph_id}
         order by create_Time asc
+    </select>
+
+    <select id="pageFindMonographAuthor" resultMap="monographAuthor">
+        select
+              m.monograph_id,
+              m.cover,
+              m.monograph_name,
+              m.highlights,
+              m.monograph_about,
+              m.price,
+              m.discounts,
+              m.offer_end_time,
+              m.number_of_purchasers,
+              m.off_shelf,
+              m.create_time,
+              e.employee_id,
+              e.employee_name,
+              e.account_number_id
+         from monograph  m left join employee_info e on m.author=e.employee_id
+        ${ew.customSqlSegment}
     </select>
 </mapper>

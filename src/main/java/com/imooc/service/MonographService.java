@@ -1,7 +1,5 @@
 package com.imooc.service;
 
-
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.imooc.entity.Monograph;
@@ -10,11 +8,11 @@ import com.imooc.utils.common.Pages;
 public interface MonographService extends IService<Monograph> {
 
     /**
-     * 分页查询所有
+     * 分页查询用户的所有专刊
      * @param pages
      * @return
      */
-    Page<Monograph> findAll(Pages pages);
+    Page<Monograph> findAllByEmployeeId(Pages pages,String employeeId);
 
     /**
      * 修改
@@ -51,4 +49,19 @@ public interface MonographService extends IService<Monograph> {
      * @return
      */
     Page<Monograph> pageFindMonograph(Pages pages);
+
+    /**
+     * 分页关联查询专栏和作者
+     * @param pages
+     * @return
+     */
+    Page<Monograph> pageFindMonographAuthor(Pages pages);
+
+
+    /**
+     * 删除专栏
+     * @param monographId
+     * @return
+     */
+    int delete(String monographId);
 }

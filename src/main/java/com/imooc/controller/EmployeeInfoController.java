@@ -11,6 +11,7 @@ import com.imooc.utils.common.Result;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -107,4 +108,22 @@ public class EmployeeInfoController {
 
         return result;
     }
+
+
+    /**
+     * 不分页查询所有员工  做下拉框列表
+     *
+     */
+    @RequestMapping(value = "findAllEmployeeInfo", method = RequestMethod.POST)
+    public Result findAllEmployeeInfo() {
+
+        Result result = new Result();
+
+        result.putData("employeeInfoList", employeeInfoServiceImpl.findAllEmployeeInfo());
+
+        result.success(200, "SUCCESS");
+
+        return result;
+    }
+
 }
