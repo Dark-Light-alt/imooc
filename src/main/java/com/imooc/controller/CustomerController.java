@@ -19,23 +19,11 @@ public class CustomerController {
     @Resource
     private CustomerServiceImpl customerServiceImpl;
 
-    @RequestMapping(value = "findAll", method = RequestMethod.GET)
-    public Result findAll() {
-
+    @RequestMapping(value = "pagingFindAll", method = RequestMethod.POST)
+    public Result pagingFindAll(@RequestBody Pages pages){
         Result result = new Result();
 
-        result.putData("customerList", customerServiceImpl.findAll());
-
-        result.success(200, "SUCCESS");
-
-        return result;
-    }
-
-    @RequestMapping(value = "selectPosition", method = RequestMethod.POST)
-    public Result selectPosition(@RequestBody Pages pages){
-        Result result = new Result();
-
-        Page<Customer> data = customerServiceImpl.selectPosition(pages);
+        Page<Customer> data = customerServiceImpl.pagingFindAll(pages);
 
         pages.setLastPage(data.getPages());
         pages.setTotal(data.getTotal());

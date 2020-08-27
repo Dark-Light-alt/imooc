@@ -1,0 +1,11 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.imooc.dao.ChapterDao">
+    <resultMap id="chapterMap" type="com.imooc.entity.Chapter">
+        <id column="chapter_id" property="chapterId"></id>
+        <result column="chapter_name" property="chapterName"></result>
+        <result column="chapter_about" property="chapterAbout"></result>
+        <result column="chapter_type" property="chapterType"></result>
+        <result column="chapter_resource" property="chapterResource"></result>
+        <result column="create_time" property="createTime"></result>
+    </resultMap>
+</mapper>

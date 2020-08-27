@@ -1,6 +1,7 @@
 package com.imooc.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.imooc.dao.MonographDao;
@@ -24,19 +25,7 @@ public class MonographServiceImpl extends ServiceImpl<MonographDao, Monograph> i
 
         Page page = new Page(pages.getCurrentPage(), pages.getPageSize());
 
-        LambdaQueryWrapper<Monograph> wrapper = new LambdaQueryWrapper<>();
-
-        //根据专刊名和作者模糊查询
-        if (CommonUtils.isNotEmpty(pages.getSearchs().get("monographName"))) {
-            wrapper.like(Monograph::getMonographName, pages.getSearchs().get("monographName"));
-        }
-        if (CommonUtils.isNotEmpty(pages.getSearchs().get("author"))) {
-            wrapper.like(Monograph::getAuthor, pages.getSearchs().get("author"));
-        }
-        //按照创建时间排序
-        wrapper.orderByDesc(Monograph::getCreateTime);
-
-        return baseMapper.selectPage(page, wrapper);
+        return baseMapper.selectPage(page, this.wrapperFun(pages));
     }
 
     /**
@@ -97,6 +86,43 @@ public class MonographServiceImpl extends ServiceImpl<MonographDao, Monograph> i
 
         return baseMapper.insert(monograph) != 0;
     }
+
+    /**
+     * 分页查询专栏和章节
+     * @param pages
+     * @return
+     */
+    @Override
+    public Page<Monograph> pageFindMonograph(Pages pages) {
+        Page<Monograph> page = new Page<>(pages.getCurrentPage(),pages.getPageSize());
+
+        return page.setRecords(baseMapper.pageFindMonograph(page,this.wrapperFun(pages)));
+    }
+
+    /**
+     * 模糊查询条件构造器
+     * @param pages
+     * @return
+     */
+    public QueryWrapper<Monograph> wrapperFun(Pages pages){
+        QueryWrapper<Monograph> wrapper = new QueryWrapper<>();
+
+        //根据关键字查询
+        if(CommonUtils.isNotEmpty(pages.getSearchs().get("keyword"))){
+            wrapper.like("monograph_name",pages.getSearchs().get("keyword"))
+                    .or()
+                    .like("highlights",pages.getSearchs().get("keyword"))
+                    .or()
+                    .like("monograph_about",pages.getSearchs().get("keyword"))
+                    .or()
+                    .like("author",pages.getSearchs().get("keyword"));
+        }
+
+        wrapper.orderByAsc("create_Time");
+
+        return wrapper;
+    }
+
 
     /**
      * 验证参数不能为空

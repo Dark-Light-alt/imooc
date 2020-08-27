@@ -12,10 +12,10 @@ import java.util.List;
 @Mapper
 public interface CustomerDao extends BaseMapper<Customer> {
     /**
-     * 查询员工职位
+     * 分页查询所有用户、用户职位
      *
      * @return@Param(Constants.WRAPPER)
      */
-    List<Customer> selectPosition(Page<Customer> page,  @Param("ew") LambdaQueryWrapper<Customer> wrapper);
+    List<Customer> pagingFindAll(Page<Customer> page,  @Param("ew") LambdaQueryWrapper<Customer> wrapper);
 
 }
