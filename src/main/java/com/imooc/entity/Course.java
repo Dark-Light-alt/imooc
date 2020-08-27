@@ -51,6 +51,6 @@ public class Course {
     @TableField("create_time")
     private Date createtime;
 
-    @TableField("course_isenabl")
-    private Integer courseisenabl;
+    @TableField("course_status")
+    private Integer courseStatus;
 }
