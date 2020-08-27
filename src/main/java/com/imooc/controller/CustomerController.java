@@ -19,17 +19,7 @@ public class CustomerController {
     @Resource
     private CustomerServiceImpl customerServiceImpl;
 
-    @RequestMapping(value = "findAll", method = RequestMethod.GET)
-    public Result findAll() {
 
-        Result result = new Result();
-
-        result.putData("customerList", customerServiceImpl.findAll());
-
-        result.success(200, "SUCCESS");
-
-        return result;
-    }
 
     @RequestMapping(value = "selectPosition", method = RequestMethod.POST)
     public Result selectPosition(@RequestBody Pages pages){

@@ -18,29 +18,17 @@ public class CustomerServiceImpl extends ServiceImpl<CustomerDao, Customer> impl
 
     @Resource
     private CustomerDao customerDao;
-
-    /**
-     * 查询所有 用户职位
-     *
-     * @return
-     */
-    @Override
-    public List<Customer> findAll() {
-        return baseMapper.selectList(new LambdaQueryWrapper<>());
-    }
-
-
     /**
      * 用户和职位 分页查询
      *
      * @param pages
      * @return
      */
-    public Page<Customer> selectPosition(Pages pages) {
+    public Page<Customer> pagingFindAll(Pages pages) {
 
         Page<Customer> page = new Page<>(pages.getCurrentPage(), pages.getPageSize());
 
-        return page.setRecords(baseMapper.selectPosition(page, lambdaQueryWrapper(pages)));
+        return page.setRecords(baseMapper.pagingFindAll(page, lambdaQueryWrapper(pages)));
     }
 
     /**
@@ -59,4 +47,6 @@ public class CustomerServiceImpl extends ServiceImpl<CustomerDao, Customer> impl
 
         return wrapper;
     }
+
+
 }
