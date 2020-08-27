@@ -14,16 +14,6 @@ import java.util.List;
 public class ChapterServiceImpl extends ServiceImpl<ChapterDao, Chapter> implements ChapterService {
 
     /**
-     * 根据monographId查询章节
-     *
-     * @param monographId
-     * @return
-     */
-    public List<Chapter> findByMonograph(String monographId) {
-        return baseMapper.findByMonograph(monographId);
-    }
-
-    /**
      * 添加章节
      *
      * @param chapter
