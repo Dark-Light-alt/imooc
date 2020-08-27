@@ -8,20 +8,8 @@ import com.imooc.service.ChapterService;
 import com.imooc.utils.common.CommonUtils;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
 public class ChapterServiceImpl extends ServiceImpl<ChapterDao, Chapter> implements ChapterService {
-
-    /**
-     * 根据monographId查询章节
-     *
-     * @param monographId
-     * @return
-     */
-    public List<Chapter> findByMonograph(String monographId) {
-        return baseMapper.findByMonograph(monographId);
-    }
 
     /**
      * 添加章节
@@ -49,5 +37,4 @@ public class ChapterServiceImpl extends ServiceImpl<ChapterDao, Chapter> impleme
             throw new ApiException(500, "简介不能为空");
         }
     }
-
 }
