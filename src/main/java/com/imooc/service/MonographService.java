@@ -1,6 +1,7 @@
 package com.imooc.service;
 
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.imooc.entity.Monograph;
@@ -42,4 +43,12 @@ public interface MonographService extends IService<Monograph> {
      * @return
      */
     boolean append(Monograph monograph);
+
+
+    /**
+     * 分页查询专栏和章节
+     * @param pages
+     * @return
+     */
+    Page<Monograph> pageFindMonograph(Pages pages);
 }

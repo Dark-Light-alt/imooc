@@ -1,12 +1,9 @@
 package com.imooc.dao;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.imooc.entity.Chapter;
+import com.imooc.entity.Type;
 import org.apache.ibatis.annotations.Mapper;
 
-import java.util.List;
-
 @Mapper
-public interface ChapterDao extends BaseMapper<Chapter> {
-
+public interface TypeDao extends BaseMapper<Type> {
 }

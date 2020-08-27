@@ -16,6 +16,11 @@ public class MonographController {
     @Resource
     MonographServiceImpl monographServiceImpl;
 
+    /**
+     * 分页查询所有
+     * @param pages
+     * @return
+     */
     @RequestMapping(value = "findAll",method = RequestMethod.POST)
     public Result findAll(@RequestBody Pages pages){
         Result result = new Result();
@@ -38,7 +43,11 @@ public class MonographController {
         return result;
     }
 
-
+    /**
+     * 修改
+     * @param monograph
+     * @return
+     */
     @RequestMapping(value = "update",method = RequestMethod.PUT)
     public Result update(@RequestBody Monograph monograph){
         Result result = new Result();
@@ -52,6 +61,11 @@ public class MonographController {
     }
 
 
+    /**
+     * 根据monographId查询
+     * @param monographId
+     * @return
+     */
     @RequestMapping(value = "findById/{monographId}",method = RequestMethod.GET)
     public Result findById(@PathVariable("monographId")String monographId){
         Result result = new Result();
@@ -65,6 +79,11 @@ public class MonographController {
         return result;
     }
 
+    /**
+     * 下架
+     * @param monographId
+     * @return
+     */
     @RequestMapping(value = "soldOut/{monographId}",method = RequestMethod.GET)
     public Result soldOut(@PathVariable("monographId") String monographId){
         Result result = new Result();
@@ -78,6 +97,11 @@ public class MonographController {
         return result;
     }
 
+    /**
+     * 添加
+     * @param monograph
+     * @return
+     */
     @RequestMapping(value = "append",method = RequestMethod.PUT)
     public Result append(@RequestBody Monograph monograph){
         System.out.println(monograph);
@@ -89,6 +113,29 @@ public class MonographController {
         if(append){
             result.success(200,"操作成功");
         }
+
+        return result;
+    }
+
+    /**
+     * 分页查询专栏和章节
+     * @param pages
+     * @return
+     */
+    @RequestMapping(value = "pageFindMonograph",method = RequestMethod.POST)
+    public Result pageFindMonograph(@RequestBody Pages pages){
+        Result result = new Result();
+
+        Page<Monograph> data = monographServiceImpl.pageFindMonograph(pages);
+
+        //设置总页数和总条数
+        pages.setTotal(data.getTotal());
+        pages.setLastPage(data.getPages());
+
+        result.setPages(pages);
+        result.putData("monographList",data.getRecords());
+
+        result.success(200,"SUCCESS");
 
         return result;
     }
