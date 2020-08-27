@@ -9,7 +9,7 @@
         </association>
     </resultMap>
 
-    <select id="selectPosition" resultMap="CustomerMap">
+    <select id="pagingFindAll" resultMap="CustomerMap">
         SELECT
             c.customer_id as customerId,
             c.customer_nickname as customerNickname,
