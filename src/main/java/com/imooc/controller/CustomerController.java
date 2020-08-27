@@ -19,8 +19,6 @@ public class CustomerController {
     @Resource
     private CustomerServiceImpl customerServiceImpl;
 
-
-
     @RequestMapping(value = "pagingFindAll", method = RequestMethod.POST)
     public Result pagingFindAll(@RequestBody Pages pages){
         Result result = new Result();
