@@ -16,7 +16,7 @@ import java.util.Date;
 public class Course {
 
     @TableId("course_id")
-    private String courseid;
+    private String courseId;
 
     @TableField("cover")
     private String cover;
@@ -25,10 +25,10 @@ public class Course {
     private String background;
 
     @TableField("course_name")
-    private String coursename;
+    private String courseName;
 
     @TableField("course_about")
-    private String courseabout;
+    private String courseAbout;
 
     @TableField("author")
     private String author;
@@ -37,19 +37,19 @@ public class Course {
     private Integer duration;
 
     @TableField("number_of_students")
-    private Integer numberofstudents;
+    private Integer numberOfStudents;
 
     @TableField("type_id")
     private String typeId;
 
     @TableField("course_level")
-    private Integer courselevel;
+    private Integer courseLevel;
 
     @TableField("isfree")
     private Integer isfree;
 
     @TableField("create_time")
-    private Date createtime;
+    private Date createTime;
 
     @TableField("course_status")
     private Integer courseStatus;
