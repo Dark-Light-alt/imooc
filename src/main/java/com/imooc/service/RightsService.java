@@ -17,6 +17,14 @@ public interface RightsService extends IService<Rights> {
     boolean append(Rights rights);
 
     /**
+     * 根据权限 id 删除所有有关联的
+     *
+     * @param rightsId
+     * @return
+     */
+    boolean remove(String rightsId);
+
+    /**
      * 修改权限
      *
      * @param rights

@@ -10,6 +10,14 @@ import java.util.List;
 public interface RightsDao extends BaseMapper<Rights> {
 
     /**
+     * 根据权限 id 删除该权限及子孙级
+     *
+     * @param rightsId
+     * @return
+     */
+    int remove(String rightsId);
+
+    /**
      * 根据职位 id 查询所拥有的三级权限 id
      *
      * @return

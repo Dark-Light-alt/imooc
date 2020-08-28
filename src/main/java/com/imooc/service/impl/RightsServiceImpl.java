@@ -27,6 +27,11 @@ public class RightsServiceImpl extends ServiceImpl<RightsDao, Rights> implements
     }
 
     @Override
+    public boolean remove(String rightsId) {
+        return baseMapper.remove(rightsId) != 0;
+    }
+
+    @Override
     public boolean update(Rights rights) {
 
         // 验证

@@ -24,11 +24,10 @@ public class FileStorageServiceImpl implements FileStorageService {
      * @param in       输入流对象
      * @param fileName 文件名
      * @param type     文件类别
-     * @param uploader 上传者
      * @return url
      */
     @Override
-    public String upload(InputStream in, String fileName, String type, String uploader) {
+    public String upload(InputStream in, String fileName, String type) {
 
         // 构建 oss 对象存储客户端
         OSS ossClient = baseConfig.ossClient();
@@ -51,7 +50,7 @@ public class FileStorageServiceImpl implements FileStorageService {
             meta.setCacheControl("no-cache");
 
             // 对文件进行重命名
-            String rename = rename(type, suffix, uploader);
+            String rename = rename(type, suffix);
 
             // 创建上传请求
             PutObjectRequest request = new PutObjectRequest(BUCKET, rename, in, meta);

@@ -30,9 +30,6 @@ public class Course {
     @TableField("author")
     private String author;
 
-    @TableField("duration")
-    private Integer duration;
-
     @TableField("number_of_students")
     private Integer numberOfStudents;
 

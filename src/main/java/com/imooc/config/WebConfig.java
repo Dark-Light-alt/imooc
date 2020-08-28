@@ -4,11 +4,15 @@ import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.alibaba.fastjson.support.config.FastJsonConfig;
 import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
 import org.springframework.boot.autoconfigure.http.HttpMessageConverters;
+import org.springframework.boot.web.servlet.MultipartConfigFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.util.unit.DataSize;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+import javax.servlet.MultipartConfigElement;
 
 @Configuration
 public class WebConfig {
@@ -48,5 +52,20 @@ public class WebConfig {
         HttpMessageConverter<?> httpMessageConverter = fastJsonConverter;
 
         return new HttpMessageConverters(httpMessageConverter);
+    }
+
+    /**
+     * 设置文件上传配置
+     *
+     * @return
+     */
+    @Bean
+    public MultipartConfigElement multipartConfigElement() {
+
+        MultipartConfigFactory factory = new MultipartConfigFactory();
+
+        factory.setMaxFileSize(DataSize.ofMegabytes(500L));
+
+        return factory.createMultipartConfig();
     }
 }
