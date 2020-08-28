@@ -2,6 +2,7 @@
 <mapper namespace="com.imooc.dao.ChapterDao">
 
     <select id="findChapterIdByResource" resultType="java.lang.String">
+
         SELECT
             chapter_id
         FROM chapter

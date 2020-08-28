@@ -52,6 +52,7 @@ public class ChapterServiceImpl extends ServiceImpl<ChapterDao, Chapter> impleme
     /**
      * 根据数据源 id 删除对应的所有章节
      *
+     *
      * @param resource 数据源 id
      * @return
      */
