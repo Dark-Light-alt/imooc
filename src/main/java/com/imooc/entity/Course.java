@@ -21,9 +21,6 @@ public class Course {
     @TableField("cover")
     private String cover;
 
-    @TableField("background")
-    private String background;
-
     @TableField("course_name")
     private String courseName;
 
