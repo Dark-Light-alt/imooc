@@ -9,4 +9,10 @@ import java.util.List;
 @Mapper
 public interface ChapterDao extends BaseMapper<Chapter> {
 
+    /**
+     * 根据数据源 id 查询到对应的章节 id
+     * @param resource
+     * @return
+     */
+    List<String> findChapterIdByResource(String resource);
 }

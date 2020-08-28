@@ -21,9 +21,6 @@ public class Course {
     @TableField("cover")
     private String cover;
 
-    @TableField("background")
-    private String background;
-
     @TableField("course_name")
     private String courseName;
 
@@ -32,9 +29,6 @@ public class Course {
 
     @TableField("author")
     private String author;
-
-    @TableField("duration")
-    private Integer duration;
 
     @TableField("number_of_students")
     private Integer numberOfStudents;

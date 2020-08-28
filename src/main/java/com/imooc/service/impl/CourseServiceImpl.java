@@ -12,11 +12,20 @@ import com.imooc.utils.common.CommonUtils;
 import com.imooc.utils.common.Pages;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
+import java.util.List;
+
 /**
  * 课程服务实现
  */
 @Service
 public class CourseServiceImpl extends ServiceImpl<CourseDao, Course> implements CourseService {
+
+    @Resource
+    private ChapterServiceImpl chapterServiceImpl;
+
+    @Resource
+    private VideoServiceImpl videoServiceImpl;
 
     /**
      * 添加课程信息
@@ -42,6 +51,18 @@ public class CourseServiceImpl extends ServiceImpl<CourseDao, Course> implements
      */
     @Override
     public boolean remove(String courseId) {
+
+        // 查询到课程对应的所有章节
+        List<String> chapterIds = chapterServiceImpl.findChapterIdByResource(courseId);
+
+        if (null != chapterIds && chapterIds.size() != 0) {
+            // 删除章节下的所有视频
+            videoServiceImpl.removeByChapterId(chapterIds);
+
+            // 删除章节
+            chapterServiceImpl.removeChapterByResource(courseId);
+        }
+        // 删除课程
         return baseMapper.deleteById(courseId) != 0;
     }
 
@@ -100,10 +121,6 @@ public class CourseServiceImpl extends ServiceImpl<CourseDao, Course> implements
 
         if (!CommonUtils.isNotEmpty(course.getCover())) {
             throw new ApiException(500, "课程封面不能为空");
-        }
-
-        if (!CommonUtils.isNotEmpty(course.getBackground())) {
-            throw new ApiException(500, "课程背景不能为空");
         }
 
         if (null == course.getCourseLevel()) {

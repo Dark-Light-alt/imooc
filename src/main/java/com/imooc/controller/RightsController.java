@@ -134,4 +134,16 @@ public class RightsController {
 
         return result;
     }
+
+    @RequestMapping(value = "remove/{rightsId}", method = RequestMethod.DELETE)
+    public Result remove(@PathVariable String rightsId) {
+
+        Result result = new Result();
+
+        rightsServiceImpl.remove(rightsId);
+
+        result.success(200, "权限信息删除成功");
+
+        return result;
+    }
 }
