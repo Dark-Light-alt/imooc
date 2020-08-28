@@ -87,19 +87,19 @@ public class MonographServiceImpl extends ServiceImpl<MonographDao, Monograph> i
     }
 
     /**
-     * 专栏下架
-     *
+     * 修改专栏状态
      * @param monographId
+     * @param status
      * @return
      */
     @Override
-    public boolean soldOut(String monographId) {
+    public boolean updateOffShelf(String monographId,Integer status) {
         LambdaQueryWrapper<Monograph> wrapper = new LambdaQueryWrapper<>();
 
         wrapper.eq(Monograph::getMonographId, monographId);
 
         Monograph monograph = new Monograph();
-        monograph.setOffShelf(1);
+        monograph.setOffShelf(status);
 
         return baseMapper.update(monograph, wrapper) != 0;
     }
@@ -121,26 +121,38 @@ public class MonographServiceImpl extends ServiceImpl<MonographDao, Monograph> i
     }
 
     /**
-     * 分页查询专栏和章节
-     * @param pages
-     * @return
-     */
-    @Override
-    public Page<Monograph> pageFindMonograph(Pages pages) {
-        Page<Monograph> page = new Page<>(pages.getCurrentPage(),pages.getPageSize());
-
-        return page.setRecords(baseMapper.pageFindMonograph(page,this.wrapperFun(pages)));
-    }
-
-    /**
-     * 分页关联查询专栏和作者
+     * 根据状态分页关联查询专栏和作者
      * @param pages
      * @return
      */
     @Override
     public Page<Monograph> pageFindMonographAuthor(Pages pages) {
         Page<Monograph> page = new Page<>(pages.getCurrentPage(),pages.getPageSize());
-        return page.setRecords(baseMapper.pageFindMonographAuthor(page,this.wrapperFun(pages)));
+
+        QueryWrapper<Monograph> wrapper = new QueryWrapper<>();
+
+        wrapper.eq("off_shelf",1)
+                .or()
+                .eq("off_shelf",2)
+                .or()
+                .eq("off_shelf",3);
+        //根据关键字查询
+        if(CommonUtils.isNotEmpty(pages.getSearchs().get("keyword"))){
+            wrapper.and(
+                w->
+                    wrapper.like("monograph_name",pages.getSearchs().get("keyword"))
+                            .or()
+                            .like("highlights",pages.getSearchs().get("keyword"))
+                            .or()
+                            .like("monograph_about",pages.getSearchs().get("keyword"))
+                            .or()
+                            .like("author",pages.getSearchs().get("keyword"))
+                );
+        }
+
+        wrapper.orderByAsc("create_Time");
+
+        return page.setRecords(baseMapper.pageFindMonographAuthor(page,wrapper));
     }
 
     /**
@@ -184,31 +196,6 @@ public class MonographServiceImpl extends ServiceImpl<MonographDao, Monograph> i
         //再删除专栏
         num = baseMapper.deleteById(monographId);
         return num;
-    }
-
-
-    /**
-     * 模糊查询条件构造器
-     * @param pages
-     * @return
-     */
-    public QueryWrapper<Monograph> wrapperFun(Pages pages){
-        QueryWrapper<Monograph> wrapper = new QueryWrapper<>();
-
-        //根据关键字查询
-        if(CommonUtils.isNotEmpty(pages.getSearchs().get("keyword"))){
-            wrapper.like("monograph_name",pages.getSearchs().get("keyword"))
-                    .or()
-                    .like("highlights",pages.getSearchs().get("keyword"))
-                    .or()
-                    .like("monograph_about",pages.getSearchs().get("keyword"))
-                    .or()
-                    .like("author",pages.getSearchs().get("keyword"));
-        }
-
-        wrapper.orderByAsc("create_Time");
-
-        return wrapper;
     }
 
 

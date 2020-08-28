@@ -79,12 +79,6 @@ public class ChapterController {
         return result;
     }
 
-    /**
-     * 修改章节信息
-     *
-     * @param chapter
-     * @return
-     */
     @RequestMapping(value = "update", method = RequestMethod.PUT)
     public Result update(@RequestBody Chapter chapter) {
 
@@ -93,24 +87,6 @@ public class ChapterController {
         chapterServiceImpl.update(chapter);
 
         result.success(200, "章节信息修改成功");
-
-        return result;
-    }
-
-    /**
-     * 根据章节 id 删除章节信息和对应的视频
-     *
-     * @param chapterId
-     * @return
-     */
-    @RequestMapping(value = "removeChapterAndVideo/{chapterId}", method = RequestMethod.DELETE)
-    public Result removeChapterAndVideo(@PathVariable String chapterId) {
-
-        Result result = new Result();
-
-        chapterServiceImpl.removeChapterAndVideo(chapterId);
-
-        result.success(200, "章节信息删除成功");
 
         return result;
     }

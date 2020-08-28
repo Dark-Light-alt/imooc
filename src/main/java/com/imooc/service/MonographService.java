@@ -29,11 +29,12 @@ public interface MonographService extends IService<Monograph> {
     Monograph findById(String monographId);
 
     /**
-     * 下架专栏
+     * 修改专栏状态
      * @param monographId
+     * @param status
      * @return
      */
-    boolean soldOut(String monographId);
+    boolean updateOffShelf(String monographId,Integer status);
 
     /**
      * 添加专栏
@@ -42,13 +43,6 @@ public interface MonographService extends IService<Monograph> {
      */
     boolean append(Monograph monograph);
 
-
-    /**
-     * 分页查询专栏和章节
-     * @param pages
-     * @return
-     */
-    Page<Monograph> pageFindMonograph(Pages pages);
 
     /**
      * 分页关联查询专栏和作者

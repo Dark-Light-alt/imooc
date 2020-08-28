@@ -55,17 +55,20 @@ public class MonographController {
     }
 
     /**
-     * 下架
-     * @param monographId
+     * 修改专栏状态
+     * @param map
      * @return
      */
-    @RequestMapping(value = "soldOut/{monographId}",method = RequestMethod.GET)
-    public Result soldOut(@PathVariable("monographId") String monographId){
+    @RequestMapping(value = "updateOffShelf",method = RequestMethod.POST)
+    public Result soldOut(@RequestBody Map map){
+        String monographId = map.get("monographId").toString();
+
+        int offShelf = Integer.parseInt(map.get("offShelf").toString());
         Result result = new Result();
 
-        boolean soldOut = monographServiceImpl.soldOut(monographId);
+        boolean update = monographServiceImpl.updateOffShelf(monographId,offShelf);
 
-        if(soldOut){
+        if(update){
             result.success(200,"操作成功");
         }
 
@@ -92,28 +95,6 @@ public class MonographController {
         return result;
     }
 
-    /**
-     * 查询专栏和章节
-     * @param pages
-     * @return
-     */
-    @RequestMapping(value = "pageFindMonograph",method = RequestMethod.POST)
-    public Result pageFindMonograph(@RequestBody Pages pages){
-        Result result = new Result();
-
-        Page<Monograph> data = monographServiceImpl.pageFindMonograph(pages);
-
-        //设置总页数和总条数
-        pages.setTotal(data.getTotal());
-        pages.setLastPage(data.getPages());
-
-        result.setPages(pages);
-        result.putData("monographList",data.getRecords());
-
-        result.success(200,"SUCCESS");
-
-        return result;
-    }
 
     /**
      * 分页关联查询专栏和作者
@@ -135,7 +116,7 @@ public class MonographController {
             data = monographServiceImpl.findAllByEmployeeId(pages,employeeId);
         }else
         {
-            //正常分页查询
+            //根据完成状态分页查询
             data = monographServiceImpl.pageFindMonographAuthor(pages);
         }
 
