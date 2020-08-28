@@ -6,6 +6,7 @@ import com.imooc.entity.Chapter;
 import com.imooc.utils.common.Pages;
 
 public interface ChapterService extends IService<Chapter> {
+
     /**
      * 添加章节
      *

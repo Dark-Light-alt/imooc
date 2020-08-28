@@ -11,8 +11,16 @@ import com.imooc.utils.common.CommonUtils;
 import com.imooc.utils.common.Pages;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
+import java.util.Arrays;
+import java.util.List;
+
 @Service
 public class ChapterServiceImpl extends ServiceImpl<ChapterDao, Chapter> implements ChapterService {
+
+    @Resource
+    private VideoServiceImpl videoServiceImpl;
+
 
     /**
      * 添加章节
@@ -28,14 +36,32 @@ public class ChapterServiceImpl extends ServiceImpl<ChapterDao, Chapter> impleme
     }
 
     /**
-     * 根据课程 id 删除对应的所有章节和章节所对应的的视频
+     * 根据章节 id 删除对应的章节数据和视频
      *
-     * @param courseId 章节 id
+     * @param chapterId
      * @return
      */
     @Override
-    public boolean removeCourseChapter(String courseId) {
-        return false;
+    public boolean removeChapterAndVideo(String chapterId) {
+
+        // 删除对应的视频
+        videoServiceImpl.removeByChapterId(Arrays.asList(chapterId));
+
+        return baseMapper.deleteById(chapterId) != 0;
+    }
+
+    /**
+     * 根据数据源 id 删除对应的所有章节
+     *
+     * @param resource 数据源 id
+     * @return
+     */
+    @Override
+    public boolean removeChapterByResource(String resource) {
+        LambdaQueryWrapper<Chapter> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(Chapter::getChapterResource, resource);
+
+        return baseMapper.delete(wrapper) != 0;
     }
 
     /**
@@ -50,6 +76,17 @@ public class ChapterServiceImpl extends ServiceImpl<ChapterDao, Chapter> impleme
         vaild(chapter);
 
         return baseMapper.updateById(chapter) != 0;
+    }
+
+    /**
+     * 根据数据源 id 查询到对应的章节 id
+     *
+     * @param resource
+     * @return
+     */
+    @Override
+    public List<String> findChapterIdByResource(String resource) {
+        return baseMapper.findChapterIdByResource(resource);
     }
 
     /**
