@@ -17,7 +17,6 @@ public class AccountNumberController {
     @Resource
     private AccountNumberServiceImpl accountNumberServiceImpl;
 
-    @Operation("查询账号")
     @RequestMapping(value = "pagingFindAll", method = RequestMethod.POST)
     public Result pagingFindAll(@RequestBody Pages pages) {
 
