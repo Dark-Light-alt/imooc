@@ -69,4 +69,7 @@ public class EmployeeInfo {
     //用户账号编号
     @TableField("account_number_id")
     private String accountNumberId;
+
+    @TableField(exist = false)
+    private Position position;
 }

@@ -113,4 +113,111 @@ public class CourseController {
 
         return result;
     }
+
+    @RequestMapping(value = "previewCourse/{courseId}", method = RequestMethod.GET)
+    public Result previewCourse(@PathVariable String courseId) {
+
+        Result result = new Result();
+
+        result.putData("course", courseServiceImpl.previewCourse(courseId));
+
+        result.success(200, "SUCCESS");
+
+        return result;
+    }
+
+    /**
+     * 实战课程管理
+     * 用于实战课程的上下架
+     *
+     * @return
+     */
+    @RequestMapping(value = "payForCourseManage", method = RequestMethod.POST)
+    public Result payForCourseManage(@RequestBody Pages pages) {
+
+        Result result = new Result();
+
+        Page<Course> data = courseServiceImpl.payForCourseManage(pages);
+
+        pages.setLastPage(data.getPages());
+        pages.setTotal(data.getTotal());
+
+        result.putData("courseList", data.getRecords());
+        result.setPages(pages);
+
+        result.success(200, "SUCCESS");
+
+        return result;
+    }
+
+    @RequestMapping(value = "freeForCourseManage", method = RequestMethod.POST)
+    public Result freeForCourseManage(@RequestBody Pages pages) {
+        Result result = new Result();
+
+        Page<Course> data = courseServiceImpl.freeForCourseManage(pages);
+
+        pages.setLastPage(data.getPages());
+        pages.setTotal(data.getTotal());
+
+        result.putData("courseList", data.getRecords());
+        result.setPages(pages);
+
+        result.success(200, "SUCCESS");
+
+        return result;
+    }
+
+    /**
+     * 课程状态修改 0未完成 1未上架 2 已上架 3已下架
+     *
+     * @param courseId 课程 id
+     * @return
+     */
+    @RequestMapping(value = "changeStatus/{courseId}/{status}", method = RequestMethod.GET)
+    public Result changeStatus(@PathVariable String courseId, @PathVariable Integer status) {
+
+        Result result = new Result();
+
+        courseServiceImpl.changeStatus(courseId, status);
+
+        result.success(200, "SUCCESS");
+
+        return result;
+    }
+
+    /**
+     * 课程定价
+     *
+     * @param course
+     * @return
+     */
+    @RequestMapping(value = "pricing", method = RequestMethod.PUT)
+    public Result pricing(@RequestBody Course course) {
+
+        Result result = new Result();
+
+        courseServiceImpl.pricing(course);
+
+        result.success(200, "课程定价成功");
+
+        return result;
+    }
+
+    /**
+     * 课程下架
+     *
+     * @param courseId
+     * @return
+     */
+    @RequestMapping(value = "soldout/{courseId}", method = RequestMethod.GET)
+    public Result soldout(@PathVariable String courseId) {
+
+        Result result = new Result();
+
+        courseServiceImpl.changeStatus(courseId, 3);
+
+        result.success(200, "课程下架成功");
+
+        return result;
+    }
 }

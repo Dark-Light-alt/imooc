@@ -45,6 +45,14 @@ public interface CourseService extends IService<Course> {
     boolean changeStatus(String courseId, Integer status);
 
     /**
+     * 定价
+     *
+     * @param course
+     * @return
+     */
+    boolean pricing(Course course);
+
+    /**
      * 根据 id 查询课程信息
      *
      * @param courseId
@@ -60,4 +68,30 @@ public interface CourseService extends IService<Course> {
      * @return
      */
     Page<Course> findByAuthor(Pages pages, String author);
+
+    /**
+     * 课程预览
+     * 查看课程下的章节，章节下的视频课程
+     *
+     * @param courseId
+     * @return
+     */
+    Course previewCourse(String courseId);
+
+    /**
+     * 实战课程管理
+     * 用于课程的上下架
+     *
+     * @return
+     */
+    Page<Course> payForCourseManage(Pages pages);
+
+    /**
+     * 免费课程管理
+     * 用于课程的上下架
+     *
+     * @param pages
+     * @return
+     */
+    Page<Course> freeForCourseManage(Pages pages);
 }
