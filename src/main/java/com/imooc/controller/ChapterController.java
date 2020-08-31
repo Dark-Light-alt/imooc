@@ -9,6 +9,7 @@ import com.imooc.utils.common.Result;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -87,6 +88,46 @@ public class ChapterController {
         chapterServiceImpl.update(chapter);
 
         result.success(200, "章节信息修改成功");
+
+        return result;
+    }
+
+
+    /**
+     * 根据专栏分页查询章节和文章
+     * @return
+     */
+    @RequestMapping(value = "findACByMid/{monographId}", method = RequestMethod.GET)
+    public Result findACByMid(@PathVariable("monographId") String monographId) {
+
+        Result result = new Result();
+
+        List<Chapter> chapterList = chapterServiceImpl.findACByMid(monographId);
+
+        result.putData("chapterList",chapterList);
+
+        result.success(200, "SUCCESS");
+
+        return result;
+    }
+
+    /**
+     * 删除章节和文章
+     *
+     * @param chapterId
+     * @return
+     */
+    @RequestMapping(value = "deleteChatsAndArts/{chapterId}", method = RequestMethod.GET)
+    public Result deleteChatsAndArts(@PathVariable("chapterId") String chapterId) {
+
+        Result result = new Result();
+
+        boolean b = chapterServiceImpl.deleteChatsAndArts(chapterId);
+
+        if(b){
+            result.success(200, "删除成功");
+        }
+
 
         return result;
     }

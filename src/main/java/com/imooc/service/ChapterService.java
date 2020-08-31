@@ -5,6 +5,8 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.imooc.entity.Chapter;
 import com.imooc.utils.common.Pages;
 
+import java.util.List;
+
 public interface ChapterService extends IService<Chapter> {
 
     /**
@@ -15,13 +17,9 @@ public interface ChapterService extends IService<Chapter> {
      */
     boolean append(Chapter chapter);
 
-    /**
-     * 根据课程 id 删除对应的所有章节和章节所对应的的视频
-     *
-     * @param courseId 章节 id
-     * @return
-     */
-    boolean removeCourseChapter(String courseId);
+    boolean removeChapterAndVideo(String chapterId);
+
+    boolean removeChapterByResource(String resource);
 
     /**
      * 修改章节信息
@@ -30,6 +28,8 @@ public interface ChapterService extends IService<Chapter> {
      * @return
      */
     boolean update(Chapter chapter);
+
+    List<String> findChapterIdByResource(String resource);
 
     /**
      * 根据 id 查询章节信息
@@ -47,4 +47,17 @@ public interface ChapterService extends IService<Chapter> {
      * @return
      */
     Page<Chapter> findChapter(Pages pages, String chapterResource);
+
+    /**
+     * 根据专刊分页查询文章和章节
+     * @return
+     */
+    List<Chapter> findACByMid(String monographId);
+
+    /**
+     * 根据id删除章节
+     * @param chapterId
+     * @return
+     */
+    boolean deleteChatsAndArts(String chapterId);
 }

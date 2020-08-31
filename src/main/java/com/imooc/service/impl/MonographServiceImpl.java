@@ -48,10 +48,6 @@ public class MonographServiceImpl extends ServiceImpl<MonographDao, Monograph> i
             wrapper.and(
                 w -> w.like("monograph_name",pages.getSearchs().get("keyword"))
                         .or()
-                        .like("highlights",pages.getSearchs().get("keyword"))
-                        .or()
-                        .like("monograph_about",pages.getSearchs().get("keyword"))
-                        .or()
                         .like("author",pages.getSearchs().get("keyword"))
             );
         }
@@ -131,20 +127,12 @@ public class MonographServiceImpl extends ServiceImpl<MonographDao, Monograph> i
 
         QueryWrapper<Monograph> wrapper = new QueryWrapper<>();
 
-        wrapper.eq("off_shelf",1)
-                .or()
-                .eq("off_shelf",2)
-                .or()
-                .eq("off_shelf",3);
+        wrapper.ne("off_shelf",0);
         //根据关键字查询
         if(CommonUtils.isNotEmpty(pages.getSearchs().get("keyword"))){
             wrapper.and(
                 w->
                     wrapper.like("monograph_name",pages.getSearchs().get("keyword"))
-                            .or()
-                            .like("highlights",pages.getSearchs().get("keyword"))
-                            .or()
-                            .like("monograph_about",pages.getSearchs().get("keyword"))
                             .or()
                             .like("author",pages.getSearchs().get("keyword"))
                 );
@@ -174,21 +162,21 @@ public class MonographServiceImpl extends ServiceImpl<MonographDao, Monograph> i
         //有章节 先删除章节
         if(chapters.size()>0){
 
-            LambdaQueryWrapper<Article> wrapper2 = new LambdaQueryWrapper<>();
             //有章节
             //循环章节
             for(Chapter chapter:chapters){
                 //查询章节下是否有文章
-                wrapper2.eq(Article::getChapterId, chapter.getChapterId());
 
-                List<Article> articles = articleDao.selectList(wrapper2);
+                List<Article> articles = articleDao.selectList(
+                        new LambdaQueryWrapper<Article>().eq(Article::getChapterId, chapter.getChapterId()));
 
-                if(articles.size()>0){
-                    //有文章先删除文章
-                   articleDao.delete(wrapper2);
+                //有文章先删除文章
+                for(Article article:articles){
+                    articleDao.deleteById(article.getArticleId());
                 }
+
                 //删除章节
-                chapterDao.delete(wrapper);
+                chapterDao.deleteById(chapter.getChapterId());
             }
 
         }
@@ -197,7 +185,6 @@ public class MonographServiceImpl extends ServiceImpl<MonographDao, Monograph> i
         num = baseMapper.deleteById(monographId);
         return num;
     }
-
 
     /**
      * 验证参数不能为空

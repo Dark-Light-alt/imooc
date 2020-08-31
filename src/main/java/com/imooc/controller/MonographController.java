@@ -4,16 +4,24 @@ import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.imooc.entity.Monograph;
 import com.imooc.service.impl.MonographServiceImpl;
+import com.imooc.utils.aliyun.oss.FileStorageService;
+import com.imooc.utils.aliyun.oss.FileStorageServiceImpl;
 import com.imooc.utils.common.Pages;
 import com.imooc.utils.common.Result;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Map;
 
 @RestController
 @RequestMapping("MonographController")
 public class MonographController {
+
+    @Resource
+    FileStorageServiceImpl fileStorageServiceImpl;
 
     @Resource
     MonographServiceImpl monographServiceImpl;
@@ -114,6 +122,8 @@ public class MonographController {
             //查询员工的专刊
             String employeeId = map.get("employeeId").toString();
             data = monographServiceImpl.findAllByEmployeeId(pages,employeeId);
+
+            System.out.println(data);
         }else
         {
             //根据完成状态分页查询
@@ -139,6 +149,7 @@ public class MonographController {
      */
     @RequestMapping(value = "delete/{monographId}",method = RequestMethod.GET)
     public Result delete(@PathVariable("monographId") String monographId){
+
         Result result = new Result();
 
         int i = monographServiceImpl.delete(monographId);
@@ -146,6 +157,25 @@ public class MonographController {
         if(i>0){
             result.success(200,"操作成功");
         }
+
+        return result;
+    }
+
+
+    @RequestMapping("upload")
+    public Result upload(@RequestParam("file") MultipartFile file) throws IOException {
+
+        Result result = new Result();
+
+        InputStream inputStream = file.getInputStream();
+
+        String fileName = file.getOriginalFilename();
+
+        String url = fileStorageServiceImpl.upload(inputStream, fileName, FileStorageService.IMG);
+
+        result.putData("url",url);
+
+        result.success(200,"SUCCESS");
 
         return result;
     }

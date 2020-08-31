@@ -8,6 +8,7 @@ import lombok.Data;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 专刊
@@ -63,4 +64,10 @@ public class Monograph implements Serializable {
     // 创建时间
     @TableField("create_time")
     private Date createTime;
+
+
+    //员工
+    @TableField(exist = false)
+    private EmployeeInfo employeeInfo;
+
 }
