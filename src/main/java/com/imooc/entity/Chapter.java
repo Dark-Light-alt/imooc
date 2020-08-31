@@ -52,4 +52,8 @@ public class Chapter implements Serializable {
     @TableField(exist = false)
     private List<Article> articleList;
 
+    //视频列表
+    @TableField(exist = false)
+    private List<Video> videoList;
+
 }
