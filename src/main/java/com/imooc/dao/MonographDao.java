@@ -14,10 +14,10 @@ import java.util.List;
 public interface MonographDao extends BaseMapper<Monograph> {
 
     /**
-     * 分页查询章节和文章
+     * 根据offshelf状态查询专栏和作者
      * @param page
      * @param wrapper
      * @return
      */
-    List<Monograph> pageFindMonograph(Page<Monograph> page, @Param(Constants.WRAPPER) QueryWrapper<Monograph> wrapper);
+    List<Monograph> pageFindMonographAuthor(Page<Monograph> page,@Param(Constants.WRAPPER) QueryWrapper<Monograph> wrapper);
 }
