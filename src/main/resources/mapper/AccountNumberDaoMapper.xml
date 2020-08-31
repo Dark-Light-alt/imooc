@@ -12,11 +12,8 @@
 
     </resultMap>
 
-    <select id="selectPasspord" resultMap="AccountNumberMap">
-        select * from account_number
-    </select>
-
     <select id="selectByAccountId" resultMap="AccountNumberMap">
         select * from account_number where account_number_id = #{account_number_id}
     </select>
+
 </mapper>
