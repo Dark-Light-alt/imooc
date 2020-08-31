@@ -13,6 +13,7 @@ import com.imooc.utils.common.Pages;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -84,6 +85,30 @@ public class CourseServiceImpl extends ServiceImpl<CourseDao, Course> implements
         return baseMapper.update(null, wrapper) != 0;
     }
 
+    /**
+     * 定价
+     *
+     * @param course
+     * @return
+     */
+    @Override
+    public boolean pricing(Course course) {
+
+        if (null == course.getPrice()) {
+            throw new ApiException(500, "课程价格不能为空");
+        }
+
+        if (course.getPrice().compareTo(new BigDecimal("0")) == 0 || course.getPrice().compareTo(new BigDecimal("0")) == -1) {
+            throw new ApiException(500, "课程价格不能小于0或等于0");
+        }
+
+        LambdaUpdateWrapper<Course> wrapper = new LambdaUpdateWrapper<>();
+        wrapper.set(Course::getPrice, course.getPrice());
+        wrapper.eq(Course::getCourseId, course.getCourseId());
+
+        return baseMapper.update(null, wrapper) != 0;
+    }
+
     @Override
     public Course findById(String courseId) {
         return baseMapper.selectById(courseId);
@@ -106,6 +131,71 @@ public class CourseServiceImpl extends ServiceImpl<CourseDao, Course> implements
         wrapper.orderByDesc(Course::getCreateTime);
 
         return baseMapper.selectPage(page, wrapper);
+    }
+
+    /**
+     * 课程预览
+     * 查看课程下的章节，章节下的视频课程
+     *
+     * @param courseId
+     * @return
+     */
+    @Override
+    public Course previewCourse(String courseId) {
+        return baseMapper.previewCourse(courseId);
+    }
+
+
+    /**
+     * 实战课程管理
+     * 用于课程的上下架
+     *
+     * @return
+     */
+    @Override
+    public Page<Course> payForCourseManage(Pages pages) {
+
+        Page<Course> page = new Page<>(pages.getCurrentPage(), pages.getPageSize());
+
+        LambdaQueryWrapper<Course> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(Course::getIsfree, 1);
+        wrapper.ne(Course::getCourseStatus, 0);
+
+        String courseName = pages.getSearchs().get("payForCourseName");
+
+        if (CommonUtils.isNotEmpty(courseName)) {
+            wrapper.like(Course::getCourseName, courseName);
+        }
+
+        wrapper.orderByDesc(Course::getCreateTime);
+
+        return page.setRecords(baseMapper.payForCourseManage(page, wrapper));
+    }
+
+    /**
+     * 免费课程管理
+     *
+     * @param pages
+     * @return
+     */
+    @Override
+    public Page<Course> freeForCourseManage(Pages pages) {
+
+        Page<Course> page = new Page<>(pages.getCurrentPage(), pages.getPageSize());
+
+        LambdaQueryWrapper<Course> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(Course::getIsfree, 0);
+        wrapper.ne(Course::getCourseStatus, 0);
+
+        String courseName = pages.getSearchs().get("freeForCourseName");
+
+        if (CommonUtils.isNotEmpty(courseName)) {
+            wrapper.like(Course::getCourseName, courseName);
+        }
+
+        wrapper.orderByDesc(Course::getCreateTime);
+
+        return page.setRecords(baseMapper.freeForCourseManage(page, wrapper));
     }
 
 

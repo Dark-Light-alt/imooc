@@ -6,12 +6,16 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.imooc.dao.SysNoticeDao;
 import com.imooc.entity.SysNotice;
 import com.imooc.service.SysNoticeService;
+import org.springframework.stereotype.Service;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 /**
  * 系统提示服务实现
  */
+@Service
 public class SysNoticeServiceImpl extends ServiceImpl<SysNoticeDao, SysNotice> implements SysNoticeService {
 
     /**
@@ -69,11 +73,30 @@ public class SysNoticeServiceImpl extends ServiceImpl<SysNoticeDao, SysNotice> i
         return baseMapper.deleteById(sysNoticeId);
     }
 
+    /**
+     * 删除 3 个月之前已读的系统信息
+     *
+     * @return
+     */
     @Override
     public int removeByTime() {
 
+        // 获取日历实例
+        Calendar calender = Calendar.getInstance();
+        // 设置当前时间
+        calender.setTime(new Date());
+        // 设置为前 3 个月
+        calender.add(Calendar.MONTH, -3);
+        // 获取 3 个月前的时间
+        Date time = calender.getTime();
+
         LambdaQueryWrapper<SysNotice> wrapper = new LambdaQueryWrapper<>();
 
-        return 0;
+        // 小于或等于 3 个月前的时间
+        wrapper.le(SysNotice::getCreateTime, time);
+
+        wrapper.eq(SysNotice::getIsreading, 1);
+
+        return baseMapper.delete(wrapper);
     }
 }

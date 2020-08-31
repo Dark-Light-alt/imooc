@@ -12,7 +12,7 @@ public interface ChapterDao extends BaseMapper<Chapter> {
     /**
      * 根据数据源 id 查询到对应的章节 id
      * @param resource
-     * @return
+     * @return 对应的章节 id
      */
     List<String> findChapterIdByResource(String resource);
 }

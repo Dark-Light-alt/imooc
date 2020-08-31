@@ -7,6 +7,7 @@ import lombok.Data;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 章节
@@ -46,4 +47,7 @@ public class Chapter implements Serializable {
     //专刊
     @TableField(exist = false)
     private Monograph monograph;
+
+    @TableField(exist = false)
+    private List<Video> videoList;
 }
