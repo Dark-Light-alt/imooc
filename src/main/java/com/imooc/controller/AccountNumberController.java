@@ -59,4 +59,38 @@ public class AccountNumberController {
 
         return result;
     }
+
+    /**
+     * fxy 查询原密码
+     * @return
+     */
+    @RequestMapping(value = "selectPasspord", method = RequestMethod.POST)
+    public Result selectPasspord(@RequestBody String password){
+        Result result = new Result();
+
+        result.putData("accountNumber", accountNumberServiceImpl.selectPasspord(password));
+
+        System.out.println("aa"+accountNumberServiceImpl.selectPasspord(password));
+
+        result.success(200, "SUCCESS");
+
+        return result;
+
+    }
+    /**
+     * fxy 根据id查询密码
+     */
+    @RequestMapping(value = "selectByAccountId/{accountNumberId}", method = RequestMethod.GET)
+    public Result selectByAccountId(@PathVariable String accountNumberId){
+        Result result = new Result();
+
+        result.putData("passwordById", accountNumberServiceImpl.selectByAccountId(accountNumberId));
+
+        System.out.println("accountNumberId:"+accountNumberServiceImpl.selectByAccountId(accountNumberId));
+
+        result.success(200, "SUCCESS");
+
+        return result;
+
+    }
 }

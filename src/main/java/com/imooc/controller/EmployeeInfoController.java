@@ -36,6 +36,7 @@ public class EmployeeInfoController {
         result.setPages(pages);
         result.putData("employeeInfoList", data.getRecords());
 
+
         result.success(200, "SUCCESS");
 
         return result;
@@ -107,4 +108,25 @@ public class EmployeeInfoController {
 
         return result;
     }
+
+    /**
+     * fxy 根据id 查询账号表密码
+     * @param employeeId
+     * @return
+     */
+    @RequestMapping(value = "findEmployeeId/{employeeId}", method = RequestMethod.GET)
+    public Result findEmployeeId(@PathVariable("employeeId") String employeeId) {
+
+        Result result = new Result();
+
+        result.putData("accountNumber", employeeInfoServiceImpl.findEmployeeId(employeeId));
+
+        System.out.println(employeeInfoServiceImpl.findEmployeeId(employeeId));
+
+        result.success(200, "SUCCESS");
+
+        return result;
+    }
+
+
 }

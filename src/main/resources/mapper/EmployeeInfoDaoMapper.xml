@@ -2,6 +2,10 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.imooc.dao.EmployeeInfoDao">
 
+    <resultMap id="byUsernameMap" type="java.util.Map">
+
+    </resultMap>
+
     <select id="findByUsername" resultType="com.imooc.entity.EmployeeInfo">
         SELECT
             e.employee_id as employeeId,

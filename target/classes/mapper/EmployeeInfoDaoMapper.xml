@@ -2,6 +2,27 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.imooc.dao.EmployeeInfoDao">
 
+    <resultMap id="EmployeeInfoMap" type="com.imooc.entity.EmployeeInfo">
+        <id column="employee_id" property="employeeId"></id>
+        <result column="employee_name" property="employeeName"></result>
+        <result column="employee_sex" property="employeeSex"></result>
+        <result column="employee_phone" property="employeePhone"></result>
+        <result column="employee_email" property="employeeEmail"></result>
+        <result column="employee_idcard" property="employeeIdcard"></result>
+        <result column="employee_address" property="employeeAddress"></result>
+        <result column="photo" property="photo"></result>
+        <result column="hiredate" property="hiredate"></result>
+        <result column="isleave" property="isleave"></result>
+        <result column="leave_date" property="leaveDate"></result>
+        <result column="department_id" property="departmentId"></result>
+        <result column="position_id" property="positionId"></result>
+        <result column="account_number_id" property="accountNumberId"></result>
+
+        <association property="accountNumber" javaType="com.imooc.entity.AccountNumber" resultMap="com.imooc.dao.AccountNumberDao.AccountNumberMap">
+        </association>
+
+    </resultMap>
+
     <select id="findByUsername" resultType="com.imooc.entity.EmployeeInfo">
         SELECT
             e.employee_id as employeeId,
@@ -11,4 +32,20 @@
         FROM employee_info e
         WHERE e.account_number_id = (SELECT account_number_id FROM account_number WHERE username = #{username})
     </select>
+
+    <select id="findEmployeeId" resultMap="EmployeeInfoMap">
+
+    SELECT
+            a.account_number_id,
+            a.username,
+            a.password as password,
+            a.islocked
+        FROM employee_info e
+        left join account_number a
+        on
+        e.account_number_id = a.account_number_id
+        where e.employee_id = #{employeeId}
+
+    </select>
+
 </mapper>

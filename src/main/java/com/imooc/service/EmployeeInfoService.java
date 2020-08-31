@@ -71,4 +71,14 @@ public interface EmployeeInfoService extends IService<EmployeeInfo> {
 
         return getOne(wrapper);
     }
+
+    /**
+     * fxy 根据id 查询账号表密码
+     * @param employeeId
+     * @return
+     */
+    EmployeeInfo findEmployeeId(String employeeId);
+
+
+
 }

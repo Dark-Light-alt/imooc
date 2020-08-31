@@ -18,6 +18,13 @@ public class CustomerServiceImpl extends ServiceImpl<CustomerDao, Customer> impl
 
     @Resource
     private CustomerDao customerDao;
+
+    /**
+     * 查询所有 用户职位
+     *
+     * @return
+     */
+
     /**
      * 用户和职位 分页查询
      *
@@ -47,6 +54,4 @@ public class CustomerServiceImpl extends ServiceImpl<CustomerDao, Customer> impl
 
         return wrapper;
     }
-
-
 }

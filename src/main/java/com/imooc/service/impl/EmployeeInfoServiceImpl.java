@@ -13,11 +13,14 @@ import com.imooc.utils.common.CommonUtils;
 import com.imooc.utils.common.Pages;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.Date;
 
 @Service
 public class EmployeeInfoServiceImpl extends ServiceImpl<EmployeeInfoDao, EmployeeInfo> implements EmployeeInfoService {
 
+    @Resource
+    private EmployeeInfoDao employeeInfoDao;
     /**
      * 添加员工信息
      *
@@ -136,6 +139,15 @@ public class EmployeeInfoServiceImpl extends ServiceImpl<EmployeeInfoDao, Employ
         wrapper.orderByDesc(EmployeeInfo::getHiredate);
 
         return wrapper;
+    }
+
+    /**
+     * fxy 根据id查询 账号表密码
+     * @param employeeId
+     * @return
+     */
+    public EmployeeInfo findEmployeeId(String employeeId){
+        return employeeInfoDao.findEmployeeId(employeeId);
     }
 
     /**
