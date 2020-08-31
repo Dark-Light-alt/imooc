@@ -1,11 +1,9 @@
 package com.imooc.controller;
 
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.imooc.entity.Customer;
 import com.imooc.service.impl.CustomerServiceImpl;
-import com.imooc.utils.common.Pages;
+import com.imooc.utils.ImageVerificationCode;
+import com.imooc.utils.SymmetryCryptoUtil;
 import com.imooc.utils.common.Result;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,22 +17,19 @@ public class CustomerController {
     @Resource
     private CustomerServiceImpl customerServiceImpl;
 
-    @RequestMapping(value = "pagingFindAll", method = RequestMethod.POST)
-    public Result pagingFindAll(@RequestBody Pages pages){
-        Result result = new Result();
+    @Resource
+    private ImageVerificationCode imageVerificationCode;
 
-        Page<Customer> data = customerServiceImpl.pagingFindAll(pages);
+    @Resource
+    private SymmetryCryptoUtil symmetryCryptoUtil;
 
-        pages.setLastPage(data.getPages());
-        pages.setTotal(data.getTotal());
-
-        result.setPages(pages);
-
-        result.putData("customerList", data.getRecords());
-
-        result.success(200, "SUCCESS");
-
-        return result;
+    /**
+     * 生成图片验证码
+     *
+     * @return
+     */
+    @RequestMapping(value = "", method = RequestMethod.GET)
+    public Result generateImageVerification() {
+        return new Result();
     }
-
 }

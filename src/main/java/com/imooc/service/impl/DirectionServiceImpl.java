@@ -42,13 +42,11 @@ public class DirectionServiceImpl extends ServiceImpl<DirectionDao, Direction> i
     @Override
     public boolean changeEnable(String directionId, Integer enable) {
 
-        Direction direction = new Direction();
-        direction.setDirectionIsenable(enable);
-
         LambdaUpdateWrapper<Direction> wrapper = new LambdaUpdateWrapper();
+        wrapper.set(Direction::getDirectionIsenable, enable);
         wrapper.eq(Direction::getDirectionId, directionId);
 
-        return baseMapper.update(direction, wrapper) != 0;
+        return baseMapper.update(null, wrapper) != 0;
     }
 
     @Override

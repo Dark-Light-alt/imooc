@@ -164,7 +164,7 @@ public class ChapterServiceImpl extends ServiceImpl<ChapterDao, Chapter> impleme
      *
      * @param chapter
      */
-    public void vaild(Chapter chapter) {
+    private void vaild(Chapter chapter) {
         if (!CommonUtils.isNotEmpty(chapter.getChapterName())) {
             throw new ApiException(500, "标题不能为空");
         }

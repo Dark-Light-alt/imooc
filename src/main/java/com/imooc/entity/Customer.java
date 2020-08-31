@@ -60,5 +60,8 @@ public class Customer implements Serializable {
     private Date createTime;
 
     @TableField(exist = false)
-    private Position position;
+    private CustomerPosition customerPosition;
+
+    @TableField(exist = false)
+    private CustomerReal customerReal;
 }
