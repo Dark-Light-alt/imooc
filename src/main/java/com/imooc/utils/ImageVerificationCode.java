@@ -2,53 +2,64 @@ package com.imooc.utils;
 
 import cn.hutool.captcha.CaptchaUtil;
 import cn.hutool.captcha.LineCaptcha;
-import com.imooc.utils.common.CommonUtils;
+import org.springframework.stereotype.Component;
 
-import javax.servlet.http.HttpSession;
+import javax.annotation.Resource;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 图片验证码实现
  */
+@Component
 public class ImageVerificationCode {
 
-    private static final String IMAGE_VERIFICATION_CODE = "imageVerificationCode";
+    public static final String IMAGE_VERIFICATION_CODE = "imageVerificationCode";
+
+    public static final String IMAGE_VERIFCATION = "imageVerification";
+
+    @Resource
+    private SymmetryCryptoUtil symmetryCryptoUtil;
 
     /**
-     * 生成验证码并存储到 session
+     * 生成验证码
      *
-     * @param session
-     * @return 返回 base64 格式的图片
+     * @return
      */
-    public String generateVerification(HttpSession session) {
+    public Map<String, String> generateVerification() {
+
+        Map<String, String> map = new HashMap<>();
 
         LineCaptcha captcha = CaptchaUtil.createLineCaptcha(120, 40);
 
-        session.setAttribute(IMAGE_VERIFICATION_CODE, captcha.getCode());
+        // 对生成的 code 进行加密
+        String code = symmetryCryptoUtil.encode(captcha.getCode());
 
         // 获取 base64 格式的图片
-        String verificationImage = "data:image/png;base64," + captcha.getImageBase64();
+        String image = "data:image/png;base64," + captcha.getImageBase64();
 
-        return verificationImage;
+        map.put(IMAGE_VERIFICATION_CODE, code);
+
+        map.put(IMAGE_VERIFCATION, image);
+
+        return map;
     }
 
+
     /**
-     * 验证验证码
+     * 校验验证码
      *
-     * @param session
-     * @param code    前端用户传来的验证码
+     * @param inputCode 用户传入的验证码
+     * @param code      存储在用户浏览器中的验证码
      * @return
      */
-    public boolean verification(HttpSession session, String code) {
+    public boolean verification(String inputCode, String code) {
 
-        Object sessionCode = session.getAttribute(IMAGE_VERIFICATION_CODE);
+        // 对存储在浏览器中的验证码进行解密
+        String decode = symmetryCryptoUtil.decode(code);
 
-        if (null != sessionCode && !CommonUtils.isNotEmpty(code)) {
-
-            String c = String.valueOf(sessionCode);
-
-            if (c.toUpperCase().equals(code.toUpperCase())) {
-                return true;
-            }
+        if (inputCode.toUpperCase().equals(code.toUpperCase())) {
+            return true;
         }
 
         return false;
