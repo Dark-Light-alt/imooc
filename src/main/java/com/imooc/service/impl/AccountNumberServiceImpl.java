@@ -50,25 +50,21 @@ public class AccountNumberServiceImpl extends ServiceImpl<AccountNumberDao, Acco
     @Override
     public boolean changeLocked(String accountNumberId, Integer islocked) {
 
-        AccountNumber accountNumber = new AccountNumber();
-        accountNumber.setAccountNumberId(accountNumberId);
-        accountNumber.setIslocked(islocked);
+        LambdaUpdateWrapper<AccountNumber> wrapper = new LambdaUpdateWrapper<>();
+        wrapper.set(AccountNumber::getIslocked, islocked);
+        wrapper.eq(AccountNumber::getAccountNumberId, accountNumberId);
 
-        return baseMapper.updateById(accountNumber) != 0;
+        return baseMapper.update(null, wrapper) != 0;
     }
 
     @Override
     public boolean changeEndLoginTime(String username) {
 
         LambdaUpdateWrapper<AccountNumber> wrapper = new LambdaUpdateWrapper();
-
+        wrapper.set(AccountNumber::getEndLoginTime, new Date());
         wrapper.eq(AccountNumber::getUsername, username);
 
-        AccountNumber accountNumber = new AccountNumber();
-        accountNumber.setUsername(username);
-        accountNumber.setEndLoginTime(new Date());
-
-        return baseMapper.update(accountNumber, wrapper) != 0;
+        return baseMapper.update(null, wrapper) != 0;
     }
 
     @Override

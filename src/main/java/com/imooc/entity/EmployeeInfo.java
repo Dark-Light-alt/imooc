@@ -71,5 +71,5 @@ public class EmployeeInfo {
     private String accountNumberId;
 
     @TableField(exist = false)
-    private AccountNumber accountNumber;
+    private Position position;
 }

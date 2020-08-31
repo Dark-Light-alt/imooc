@@ -82,4 +82,16 @@ public class TypeController {
 
         return result;
     }
+
+    @RequestMapping(value = "findAll",method = RequestMethod.GET)
+    public Result findAll(){
+
+        Result result = new Result();
+
+        result.putData("typeList",typeServiceImpl.findAll());
+
+        result.success(200,"SUCCESS");
+
+        return result;
+    }
 }
