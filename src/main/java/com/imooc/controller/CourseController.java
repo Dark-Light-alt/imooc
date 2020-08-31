@@ -220,4 +220,76 @@ public class CourseController {
 
         return result;
     }
+
+    /**
+     * 查询已经上架的课程
+     *
+     * @return
+     */
+    @RequestMapping(value = "list", method = RequestMethod.GET)
+    public Result list() {
+
+        Result result = new Result();
+
+        result.putData("courseList", courseServiceImpl.list());
+
+        result.success(200, "SUCCESS");
+
+        return result;
+    }
+
+    /**
+     * 根据课程方向查询已上架的课程
+     *
+     * @param directionId 课程方向 id
+     * @param num         前 ？ 条
+     * @return
+     */
+    @RequestMapping(value = "findCourseByDirection/{directionId}/{num}", method = RequestMethod.GET)
+    public Result findCourseByDirection(@PathVariable String directionId, @PathVariable Integer num) {
+
+        Result result = new Result();
+
+        result.putData("courseByDirectionList", courseServiceImpl.findCourseByDirection(directionId, num));
+
+        result.success(200, "SUCCESS");
+
+        return result;
+    }
+
+    /**
+     * 根据学习人数查看上架的热门课程
+     *
+     * @param isfree 0 免费 1 实战课程
+     * @param num    前 ？ 条
+     * @return
+     */
+    @RequestMapping(value = "findHotCourse/{isfree}/{num}", method = RequestMethod.GET)
+    public Result findHotCourse(@PathVariable Integer isfree, @PathVariable Integer num) {
+        Result result = new Result();
+
+        result.putData("hotCourseList", courseServiceImpl.findHotCourse(isfree, num));
+
+        result.success(200, "SUCCESS");
+
+        return result;
+    }
+
+    /**
+     * 根据学习人数和最新时间查询新上好课
+     *
+     * @param num 前 ？ 条
+     * @return
+     */
+    @RequestMapping(value = "findNewCourse/{num}", method = RequestMethod.GET)
+    public Result findNewCourse(@PathVariable Integer num) {
+
+        Result result = new Result();
+
+        result.putData("newCourseList", courseServiceImpl.findNewCourse(num));
+
+        result.success(200, "SUCCESS");
+
+        return result;
+    }
 }

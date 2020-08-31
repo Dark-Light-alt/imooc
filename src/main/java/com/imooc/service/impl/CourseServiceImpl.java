@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 课程服务实现
@@ -198,6 +199,53 @@ public class CourseServiceImpl extends ServiceImpl<CourseDao, Course> implements
         return page.setRecords(baseMapper.freeForCourseManage(page, wrapper));
     }
 
+    /**
+     * 根据课程方向查询已上架的课程
+     *
+     * @param directionId 课程方向 id
+     * @param num         前 ？ 条
+     * @return
+     */
+    @Override
+    public List<Course> findCourseByDirection(String directionId, Integer num) {
+        return baseMapper.findCourseByDirection(directionId, num);
+    }
+
+    /**
+     * 根据学习人数查看上架的热门课程
+     *
+     * @param isfree 0 免费 1 实战课程
+     * @param num    前 ？ 条
+     * @return
+     */
+    @Override
+    public List<Map<String, Object>> findHotCourse(Integer isfree, Integer num) {
+        return baseMapper.findHotCourse(isfree, num);
+    }
+
+    /**
+     * 根据学习人数和最新时间查询新上好课
+     *
+     * @param num 前 ？ 条
+     * @return
+     */
+    @Override
+    public List<Map<String, Object>> findNewCourse(Integer num) {
+        return baseMapper.findNewCourse(num);
+    }
+
+    /**
+     * 查询已经上架的课程
+     *
+     * @return
+     */
+    public List<Course> list() {
+        LambdaQueryWrapper<Course> wrapper = new LambdaQueryWrapper<>();
+
+        wrapper.eq(Course::getCourseStatus, 2);
+        wrapper.orderByDesc(Course::getCreateTime);
+        return baseMapper.selectList(wrapper);
+    }
 
     private void valid(Course course) {
 
