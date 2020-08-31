@@ -14,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.annotation.Resource;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -33,13 +34,36 @@ public class MonographController {
      */
     @RequestMapping(value = "update",method = RequestMethod.PUT)
     public Result update(@RequestBody Monograph monograph){
+        System.out.println("monograph:"+monograph);
+
         Result result = new Result();
 
         boolean update = monographServiceImpl.update(monograph);
 
+
+        result.success(200,"操作成功");
+
+
+        return result;
+    }
+
+    /**
+     * 修改
+     * @param monograph
+     * @return
+     */
+    @RequestMapping(value = "putAway",method = RequestMethod.PUT)
+    public Result putAway(@RequestBody Monograph monograph){
+        System.out.println("monograph:"+monograph);
+
+        Result result = new Result();
+
+        boolean update = monographServiceImpl.putAway(monograph);
+
         if(update){
-            result.success(200,"操作成功");
+            result.success(200,"上架成功");
         }
+
         return result;
     }
 
@@ -180,5 +204,20 @@ public class MonographController {
         return result;
     }
 
+    @RequestMapping(value = "previewMonograph",method = RequestMethod.POST)
+    public Result previewMonograph(@RequestBody Map map){
+        Result result = new Result();
+
+        String monographId = map.get("monographId").toString();
+        System.out.println(monographId);
+
+        Monograph monograph = monographServiceImpl.previewMonograph(monographId);
+
+        result.putData("monograph",monograph);
+
+        result.success(200,"SUCCESS");
+
+        return result;
+    }
 
 }

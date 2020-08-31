@@ -65,9 +65,12 @@ public class Monograph implements Serializable {
     @TableField("create_time")
     private Date createTime;
 
-
     //员工
     @TableField(exist = false)
     private EmployeeInfo employeeInfo;
+
+    //章节
+    @TableField(exist = false)
+    private List<Chapter> chapterList;
 
 }

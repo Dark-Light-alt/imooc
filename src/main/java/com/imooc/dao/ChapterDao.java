@@ -22,9 +22,4 @@ public interface ChapterDao extends BaseMapper<Chapter> {
      */
     List<String> findChapterIdByResource(String resource);
 
-    /**
-     * 根据专刊分页查询文章和章节
-     * @return
-     */
-    List<Chapter> findACByMid(String monographId);
 }

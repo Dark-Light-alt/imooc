@@ -94,24 +94,6 @@ public class ChapterController {
 
 
     /**
-     * 根据专栏分页查询章节和文章
-     * @return
-     */
-    @RequestMapping(value = "findACByMid/{monographId}", method = RequestMethod.GET)
-    public Result findACByMid(@PathVariable("monographId") String monographId) {
-
-        Result result = new Result();
-
-        List<Chapter> chapterList = chapterServiceImpl.findACByMid(monographId);
-
-        result.putData("chapterList",chapterList);
-
-        result.success(200, "SUCCESS");
-
-        return result;
-    }
-
-    /**
      * 删除章节和文章
      *
      * @param chapterId

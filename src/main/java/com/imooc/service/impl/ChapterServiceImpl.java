@@ -132,15 +132,6 @@ public class ChapterServiceImpl extends ServiceImpl<ChapterDao, Chapter> impleme
 
 
     /**
-     * 根据专刊查询文章和章节
-     * @return
-     */
-    @Override
-    public List<Chapter> findACByMid(String monographId) {
-        return baseMapper.findACByMid(monographId);
-    }
-
-    /**
      * 删除章节和文章
      * @param chapterId
      * @return

@@ -132,7 +132,7 @@ public class MonographServiceImpl extends ServiceImpl<MonographDao, Monograph> i
         if(CommonUtils.isNotEmpty(pages.getSearchs().get("keyword"))){
             wrapper.and(
                 w->
-                    wrapper.like("monograph_name",pages.getSearchs().get("keyword"))
+                    w.like("monograph_name",pages.getSearchs().get("keyword"))
                             .or()
                             .like("author",pages.getSearchs().get("keyword"))
                 );
@@ -187,12 +187,34 @@ public class MonographServiceImpl extends ServiceImpl<MonographDao, Monograph> i
     }
 
     /**
+     * 预览专刊
+     * @param monographId
+     * @return
+     */
+    @Override
+    public Monograph previewMonograph(String monographId) {
+        return baseMapper.previewMonograph(monographId);
+    }
+
+    /**
+     * 上架
+     * @param monograph
+     * @return
+     */
+    @Override
+    public boolean putAway(Monograph monograph) {
+        if (null == monograph.getPrice()) {
+            throw new ApiException(500, "价格不能为空");
+        }
+        return baseMapper.updateById(monograph) != 0;
+    }
+
+    /**
      * 验证参数不能为空
      *
      * @param monograph
      */
     private void valid(Monograph monograph) {
-        System.out.println(monograph);
         if (!CommonUtils.isNotEmpty(monograph.getMonographName())) {
             throw new ApiException(500, "专刊名不能为空");
         }

@@ -5,6 +5,8 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.imooc.entity.Monograph;
 import com.imooc.utils.common.Pages;
 
+import java.util.List;
+
 public interface MonographService extends IService<Monograph> {
 
     /**
@@ -59,5 +61,17 @@ public interface MonographService extends IService<Monograph> {
      */
     int delete(String monographId);
 
+    /**
+     * 预览专刊
+     * @param monographId
+     * @return
+     */
+    Monograph previewMonograph(String monographId);
 
+    /**
+     * 上架
+     * @param monograph
+     * @return
+     */
+    boolean putAway(Monograph monograph);
 }

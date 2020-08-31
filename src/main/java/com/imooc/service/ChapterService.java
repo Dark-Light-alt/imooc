@@ -48,11 +48,6 @@ public interface ChapterService extends IService<Chapter> {
      */
     Page<Chapter> findChapter(Pages pages, String chapterResource);
 
-    /**
-     * 根据专刊分页查询文章和章节
-     * @return
-     */
-    List<Chapter> findACByMid(String monographId);
 
     /**
      * 根据id删除章节
