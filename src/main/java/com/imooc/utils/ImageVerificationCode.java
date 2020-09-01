@@ -14,9 +14,9 @@ import java.util.Map;
 @Component
 public class ImageVerificationCode {
 
-    public static final String IMAGE_VERIFICATION_CODE = "imageVerificationCode";
+    public static final String IMAGE_CODE = "imageCode";
 
-    public static final String IMAGE_VERIFCATION = "imageVerification";
+    public static final String IMAGE = "image";
 
     @Resource
     private SymmetryCryptoUtil symmetryCryptoUtil;
@@ -38,9 +38,9 @@ public class ImageVerificationCode {
         // 获取 base64 格式的图片
         String image = "data:image/png;base64," + captcha.getImageBase64();
 
-        map.put(IMAGE_VERIFICATION_CODE, code);
+        map.put(IMAGE_CODE, code);
 
-        map.put(IMAGE_VERIFCATION, image);
+        map.put(IMAGE, image);
 
         return map;
     }
