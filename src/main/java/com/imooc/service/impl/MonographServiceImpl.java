@@ -4,8 +4,6 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.imooc.dao.ArticleDao;
-import com.imooc.dao.ChapterDao;
 import com.imooc.dao.MonographDao;
 import com.imooc.entity.Article;
 import com.imooc.entity.Chapter;
@@ -16,16 +14,10 @@ import com.imooc.utils.common.CommonUtils;
 import com.imooc.utils.common.Pages;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
 import java.util.List;
 
 @Service
 public class MonographServiceImpl extends ServiceImpl<MonographDao, Monograph> implements MonographService {
-    @Resource
-    ChapterDao chapterDao;
-
-    @Resource
-    ArticleDao articleDao;
 
     /**
      * 分页查询用户的所有专刊
@@ -34,21 +26,21 @@ public class MonographServiceImpl extends ServiceImpl<MonographDao, Monograph> i
      * @return
      */
     @Override
-    public Page<Monograph> findAllByEmployeeId(Pages pages,String employeeId) {
+    public Page<Monograph> findAllByEmployeeId(Pages pages, String employeeId) {
 
         Page page = new Page(pages.getCurrentPage(), pages.getPageSize());
 
         QueryWrapper<Monograph> wrapper = new QueryWrapper<>();
 
         //根据作者(用户id)查询
-        wrapper.eq("author",employeeId);
+        wrapper.eq("author", employeeId);
 
         //根据关键字查询
-        if(CommonUtils.isNotEmpty(pages.getSearchs().get("keyword"))){
+        if (CommonUtils.isNotEmpty(pages.getSearchs().get("keyword"))) {
             wrapper.and(
-                w -> w.like("monograph_name",pages.getSearchs().get("keyword"))
-                        .or()
-                        .like("author",pages.getSearchs().get("keyword"))
+                    w -> w.like("monograph_name", pages.getSearchs().get("keyword"))
+                            .or()
+                            .like("author", pages.getSearchs().get("keyword"))
             );
         }
 
@@ -84,12 +76,13 @@ public class MonographServiceImpl extends ServiceImpl<MonographDao, Monograph> i
 
     /**
      * 修改专栏状态
+     *
      * @param monographId
      * @param status
      * @return
      */
     @Override
-    public boolean updateOffShelf(String monographId,Integer status) {
+    public boolean updateOffShelf(String monographId, Integer status) {
         LambdaQueryWrapper<Monograph> wrapper = new LambdaQueryWrapper<>();
 
         wrapper.eq(Monograph::getMonographId, monographId);
@@ -118,33 +111,35 @@ public class MonographServiceImpl extends ServiceImpl<MonographDao, Monograph> i
 
     /**
      * 根据状态分页关联查询专栏和作者
+     *
      * @param pages
      * @return
      */
     @Override
     public Page<Monograph> pageFindMonographAuthor(Pages pages) {
-        Page<Monograph> page = new Page<>(pages.getCurrentPage(),pages.getPageSize());
+        Page<Monograph> page = new Page<>(pages.getCurrentPage(), pages.getPageSize());
 
         QueryWrapper<Monograph> wrapper = new QueryWrapper<>();
 
-        wrapper.ne("off_shelf",0);
+        wrapper.ne("off_shelf", 0);
         //根据关键字查询
-        if(CommonUtils.isNotEmpty(pages.getSearchs().get("keyword"))){
+        if (CommonUtils.isNotEmpty(pages.getSearchs().get("keyword"))) {
             wrapper.and(
-                w->
-                    w.like("monograph_name",pages.getSearchs().get("keyword"))
-                            .or()
-                            .like("author",pages.getSearchs().get("keyword"))
-                );
+                    w ->
+                            w.like("monograph_name", pages.getSearchs().get("keyword"))
+                                    .or()
+                                    .like("author", pages.getSearchs().get("keyword"))
+            );
         }
 
         wrapper.orderByAsc("create_Time");
 
-        return page.setRecords(baseMapper.pageFindMonographAuthor(page,wrapper));
+        return page.setRecords(baseMapper.pageFindMonographAuthor(page, wrapper));
     }
 
     /**
      * 删除专栏
+     *
      * @param monographId
      * @return
      */
@@ -152,26 +147,26 @@ public class MonographServiceImpl extends ServiceImpl<MonographDao, Monograph> i
     public int delete(String monographId) {
         //查询专栏下是否有章节
         LambdaQueryWrapper<Chapter> wrapper = new LambdaQueryWrapper<>();
-        wrapper.eq(Chapter::getChapterResource,monographId);
+        wrapper.eq(Chapter::getChapterResource, monographId);
 
         List<Chapter> chapters = chapterDao.selectList(wrapper);
 
         //删除专栏条数
-        int num=0;
+        int num = 0;
 
         //有章节 先删除章节
-        if(chapters.size()>0){
+        if (chapters.size() > 0) {
 
             //有章节
             //循环章节
-            for(Chapter chapter:chapters){
+            for (Chapter chapter : chapters) {
                 //查询章节下是否有文章
 
                 List<Article> articles = articleDao.selectList(
                         new LambdaQueryWrapper<Article>().eq(Article::getChapterId, chapter.getChapterId()));
 
                 //有文章先删除文章
-                for(Article article:articles){
+                for (Article article : articles) {
                     articleDao.deleteById(article.getArticleId());
                 }
 
@@ -188,6 +183,7 @@ public class MonographServiceImpl extends ServiceImpl<MonographDao, Monograph> i
 
     /**
      * 预览专刊
+     *
      * @param monographId
      * @return
      */
@@ -198,6 +194,7 @@ public class MonographServiceImpl extends ServiceImpl<MonographDao, Monograph> i
 
     /**
      * 上架
+     *
      * @param monograph
      * @return
      */
