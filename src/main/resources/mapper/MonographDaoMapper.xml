@@ -30,7 +30,6 @@
         </association>
     </resultMap>
 
-
     <resultMap id="previewMonographMap" type="com.imooc.entity.Monograph">
         <id column="monograph_id" property="monographId"></id>
         <result column="cover" property="cover"></result>

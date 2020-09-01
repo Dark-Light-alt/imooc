@@ -8,7 +8,6 @@ import com.imooc.utils.common.Pages;
 
 import java.util.List;
 
-
 public interface ArticleService extends IService<Article> {
 
     /**

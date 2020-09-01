@@ -4,7 +4,6 @@ import java.io.*;
 
 public class ReadAndWriteFile{
 
-
     /**
      * 读取文件
      * @param filePath
