@@ -104,7 +104,9 @@ public class AccountNumberController {
         if (!accountNumber.getPassword().equals(password)) {
             throw new ApiException(500, "原密码错误");
         }
+
         accountNumber.setPassword(newPassword);
+
         accountNumberServiceImpl.update(accountNumber);
 
         result.success(200, "密码修改成功");
