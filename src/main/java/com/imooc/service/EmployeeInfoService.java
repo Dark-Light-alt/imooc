@@ -6,6 +6,8 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.imooc.entity.EmployeeInfo;
 import com.imooc.utils.common.Pages;
 
+import java.util.List;
+
 public interface EmployeeInfoService extends IService<EmployeeInfo> {
 
     /**
@@ -70,4 +72,13 @@ public interface EmployeeInfoService extends IService<EmployeeInfo> {
         return getOne(wrapper);
     }
 
+<<<<<<< HEAD
+=======
+
+    /**
+     * 不分页的查询所有员工   做下拉框
+     * @return
+     */
+    List<EmployeeInfo> findAllEmployeeInfo();
+>>>>>>> 8863759132b5954f24d17d0824ae9498791a7367
 }

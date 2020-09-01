@@ -1,20 +1,20 @@
 package com.imooc.service;
 
-
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.imooc.entity.Monograph;
 import com.imooc.utils.common.Pages;
 
+import java.util.List;
+
 public interface MonographService extends IService<Monograph> {
 
     /**
-     * 分页查询所有
+     * 分页查询用户的所有专刊
      * @param pages
      * @return
      */
-    Page<Monograph> findAll(Pages pages);
+    Page<Monograph> findAllByEmployeeId(Pages pages,String employeeId);
 
     /**
      * 修改
@@ -31,11 +31,12 @@ public interface MonographService extends IService<Monograph> {
     Monograph findById(String monographId);
 
     /**
-     * 下架专栏
+     * 修改专栏状态
      * @param monographId
+     * @param status
      * @return
      */
-    boolean soldOut(String monographId);
+    boolean updateOffShelf(String monographId,Integer status);
 
     /**
      * 添加专栏
@@ -46,9 +47,31 @@ public interface MonographService extends IService<Monograph> {
 
 
     /**
-     * 分页查询专栏和章节
+     * 分页关联查询专栏和作者
      * @param pages
      * @return
      */
-    Page<Monograph> pageFindMonograph(Pages pages);
+    Page<Monograph> pageFindMonographAuthor(Pages pages);
+
+
+    /**
+     * 删除专栏
+     * @param monographId
+     * @return
+     */
+    int delete(String monographId);
+
+    /**
+     * 预览专刊
+     * @param monographId
+     * @return
+     */
+    Monograph previewMonograph(String monographId);
+
+    /**
+     * 上架
+     * @param monograph
+     * @return
+     */
+    boolean putAway(Monograph monograph);
 }

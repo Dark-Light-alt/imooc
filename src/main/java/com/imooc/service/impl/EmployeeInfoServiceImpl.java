@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class EmployeeInfoServiceImpl extends ServiceImpl<EmployeeInfoDao, EmployeeInfo> implements EmployeeInfoService {
@@ -110,6 +111,15 @@ public class EmployeeInfoServiceImpl extends ServiceImpl<EmployeeInfoDao, Employ
         Page page = new Page(pages.getCurrentPage(), pages.getPageSize());
 
         return baseMapper.selectPage(page, this.lambdaQueryWrapper(pages));
+    }
+
+    /**
+     * 不分页的查询所有员工   做下拉框
+     * @return
+     */
+    @Override
+    public List<EmployeeInfo> findAllEmployeeInfo() {
+        return baseMapper.selectList(null);
     }
 
     /**

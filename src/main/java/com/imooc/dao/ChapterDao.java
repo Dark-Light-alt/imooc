@@ -1,8 +1,14 @@
 package com.imooc.dao;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.core.toolkit.Constants;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.imooc.entity.Chapter;
+import com.imooc.entity.Monograph;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -15,4 +21,5 @@ public interface ChapterDao extends BaseMapper<Chapter> {
      * @return 对应的章节 id
      */
     List<String> findChapterIdByResource(String resource);
+
 }
