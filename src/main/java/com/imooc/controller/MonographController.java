@@ -1,44 +1,48 @@
 package com.imooc.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.imooc.entity.Monograph;
 import com.imooc.service.impl.MonographServiceImpl;
+import com.imooc.utils.aliyun.oss.FileStorageService;
+import com.imooc.utils.aliyun.oss.FileStorageServiceImpl;
 import com.imooc.utils.common.Pages;
 import com.imooc.utils.common.Result;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("MonographController")
 public class MonographController {
 
     @Resource
+    FileStorageServiceImpl fileStorageServiceImpl;
+
+    @Resource
     MonographServiceImpl monographServiceImpl;
 
     /**
-     * 分页查询所有
-     * @param pages
+     * 修改
+     * @param monograph
      * @return
      */
-    @RequestMapping(value = "findAll",method = RequestMethod.POST)
-    public Result findAll(@RequestBody Pages pages){
+    @RequestMapping(value = "update",method = RequestMethod.PUT)
+    public Result update(@RequestBody Monograph monograph){
+        System.out.println("monograph:"+monograph);
+
         Result result = new Result();
 
-        Page<Monograph> data = monographServiceImpl.findAll(pages);
+        boolean update = monographServiceImpl.update(monograph);
 
-        //设置总页数和总条数
-        pages.setTotal(data.getTotal());
-        pages.setLastPage(data.getPages());
 
-        System.out.println(data.getRecords());
+        result.success(200,"操作成功");
 
-        System.out.println(pages);
-
-        result.setPages(pages);
-        result.putData("monographList",data.getRecords());
-
-        result.success(200,"SUCCESS");
 
         return result;
     }
@@ -48,15 +52,18 @@ public class MonographController {
      * @param monograph
      * @return
      */
-    @RequestMapping(value = "update",method = RequestMethod.PUT)
-    public Result update(@RequestBody Monograph monograph){
+    @RequestMapping(value = "putAway",method = RequestMethod.PUT)
+    public Result putAway(@RequestBody Monograph monograph){
+        System.out.println("monograph:"+monograph);
+
         Result result = new Result();
 
-        boolean update = monographServiceImpl.update(monograph);
+        boolean update = monographServiceImpl.putAway(monograph);
 
         if(update){
-            result.success(200,"操作成功");
+            result.success(200,"上架成功");
         }
+
         return result;
     }
 
@@ -80,17 +87,20 @@ public class MonographController {
     }
 
     /**
-     * 下架
-     * @param monographId
+     * 修改专栏状态
+     * @param map
      * @return
      */
-    @RequestMapping(value = "soldOut/{monographId}",method = RequestMethod.GET)
-    public Result soldOut(@PathVariable("monographId") String monographId){
+    @RequestMapping(value = "updateOffShelf",method = RequestMethod.POST)
+    public Result soldOut(@RequestBody Map map){
+        String monographId = map.get("monographId").toString();
+
+        int offShelf = Integer.parseInt(map.get("offShelf").toString());
         Result result = new Result();
 
-        boolean soldOut = monographServiceImpl.soldOut(monographId);
+        boolean update = monographServiceImpl.updateOffShelf(monographId,offShelf);
 
-        if(soldOut){
+        if(update){
             result.success(200,"操作成功");
         }
 
@@ -117,16 +127,32 @@ public class MonographController {
         return result;
     }
 
+
     /**
-     * 分页查询专栏和章节
-     * @param pages
+     * 分页关联查询专栏和作者
+     * @param map
      * @return
      */
-    @RequestMapping(value = "pageFindMonograph",method = RequestMethod.POST)
-    public Result pageFindMonograph(@RequestBody Pages pages){
+    @RequestMapping(value = "pageFindMonographAuthor",method = RequestMethod.POST)
+    public Result pageFindMonographAuthor(@RequestBody Map map){
         Result result = new Result();
 
-        Page<Monograph> data = monographServiceImpl.pageFindMonograph(pages);
+        Pages pages =  JSONObject.parseObject(map.get("pages").toString(),Pages.class);
+
+        Page<Monograph> data = null;
+
+        if(null != map.get("employeeId")){
+            //如果员工编号不为null
+            //查询员工的专刊
+            String employeeId = map.get("employeeId").toString();
+            data = monographServiceImpl.findAllByEmployeeId(pages,employeeId);
+
+            System.out.println(data);
+        }else
+        {
+            //根据完成状态分页查询
+            data = monographServiceImpl.pageFindMonographAuthor(pages);
+        }
 
         //设置总页数和总条数
         pages.setTotal(data.getTotal());
@@ -139,4 +165,59 @@ public class MonographController {
 
         return result;
     }
+
+    /**
+     * 删除专栏
+     * @param monographId
+     * @return
+     */
+    @RequestMapping(value = "delete/{monographId}",method = RequestMethod.GET)
+    public Result delete(@PathVariable("monographId") String monographId){
+
+        Result result = new Result();
+
+        int i = monographServiceImpl.delete(monographId);
+
+        if(i>0){
+            result.success(200,"操作成功");
+        }
+
+        return result;
+    }
+
+
+    @RequestMapping("upload")
+    public Result upload(@RequestParam("file") MultipartFile file) throws IOException {
+
+        Result result = new Result();
+
+        InputStream inputStream = file.getInputStream();
+
+        String fileName = file.getOriginalFilename();
+
+        String url = fileStorageServiceImpl.upload(inputStream, fileName, FileStorageService.IMG);
+
+        result.putData("url",url);
+
+        result.success(200,"SUCCESS");
+
+        return result;
+    }
+
+    @RequestMapping(value = "previewMonograph",method = RequestMethod.POST)
+    public Result previewMonograph(@RequestBody Map map){
+        Result result = new Result();
+
+        String monographId = map.get("monographId").toString();
+        System.out.println(monographId);
+
+        Monograph monograph = monographServiceImpl.previewMonograph(monographId);
+
+        result.putData("monograph",monograph);
+
+        result.success(200,"SUCCESS");
+
+        return result;
+    }
+
 }

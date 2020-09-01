@@ -3,7 +3,9 @@ package com.imooc.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.imooc.dao.ArticleDao;
 import com.imooc.dao.ChapterDao;
+import com.imooc.entity.Article;
 import com.imooc.entity.Chapter;
 import com.imooc.exception.ApiException;
 import com.imooc.service.ChapterService;
@@ -19,8 +21,10 @@ import java.util.List;
 public class ChapterServiceImpl extends ServiceImpl<ChapterDao, Chapter> implements ChapterService {
 
     @Resource
-    private VideoServiceImpl videoServiceImpl;
+    ArticleDao articleDao;
 
+    @Resource
+    private VideoServiceImpl videoServiceImpl;
 
     /**
      * 添加章节
@@ -124,6 +128,26 @@ public class ChapterServiceImpl extends ServiceImpl<ChapterDao, Chapter> impleme
         wrapper.orderByAsc(Chapter::getCreateTime);
 
         return baseMapper.selectPage(page, wrapper);
+    }
+
+
+    /**
+     * 删除章节和文章
+     * @param chapterId
+     * @return
+     */
+    @Override
+    public boolean deleteChatsAndArts(String chapterId) {
+        LambdaQueryWrapper<Article> wrapper = new LambdaQueryWrapper<>();
+
+        wrapper.eq(Article::getChapterId,chapterId);
+
+        //先删除章节下的文章
+        articleDao.delete(wrapper);
+
+        //在删除章节
+        int i = baseMapper.deleteById(chapterId);
+        return i != 0;
     }
 
     /**

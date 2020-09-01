@@ -7,9 +7,6 @@ import com.imooc.utils.common.Pages;
 
 import java.util.List;
 
-/**
- * 章节实现
- */
 public interface ChapterService extends IService<Chapter> {
 
     /**
@@ -20,20 +17,8 @@ public interface ChapterService extends IService<Chapter> {
      */
     boolean append(Chapter chapter);
 
-    /**
-     * 根据章节 id 删除对应的章节数据和视频
-     *
-     * @param chapterId
-     * @return
-     */
     boolean removeChapterAndVideo(String chapterId);
 
-    /**
-     * 根据数据源 id 删除对应的所有章节
-     *
-     * @param resource 数据源 id
-     * @return
-     */
     boolean removeChapterByResource(String resource);
 
     /**
@@ -44,12 +29,6 @@ public interface ChapterService extends IService<Chapter> {
      */
     boolean update(Chapter chapter);
 
-    /**
-     * 根据数据源 id 查询到对应的章节 id
-     *
-     * @param resource
-     * @return
-     */
     List<String> findChapterIdByResource(String resource);
 
     /**
@@ -68,4 +47,12 @@ public interface ChapterService extends IService<Chapter> {
      * @return
      */
     Page<Chapter> findChapter(Pages pages, String chapterResource);
+
+
+    /**
+     * 根据id删除章节
+     * @param chapterId
+     * @return
+     */
+    boolean deleteChatsAndArts(String chapterId);
 }

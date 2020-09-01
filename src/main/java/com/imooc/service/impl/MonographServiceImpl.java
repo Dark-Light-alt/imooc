@@ -4,7 +4,11 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.imooc.dao.ArticleDao;
+import com.imooc.dao.ChapterDao;
 import com.imooc.dao.MonographDao;
+import com.imooc.entity.Article;
+import com.imooc.entity.Chapter;
 import com.imooc.entity.Monograph;
 import com.imooc.exception.ApiException;
 import com.imooc.service.MonographService;
@@ -12,20 +16,45 @@ import com.imooc.utils.common.CommonUtils;
 import com.imooc.utils.common.Pages;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
+import java.util.List;
+
 @Service
 public class MonographServiceImpl extends ServiceImpl<MonographDao, Monograph> implements MonographService {
+    @Resource
+    ChapterDao chapterDao;
+
+    @Resource
+    ArticleDao articleDao;
+
     /**
-     * 分页查询
+     * 分页查询用户的所有专刊
      *
      * @param pages
      * @return
      */
     @Override
-    public Page<Monograph> findAll(Pages pages) {
+    public Page<Monograph> findAllByEmployeeId(Pages pages,String employeeId) {
 
         Page page = new Page(pages.getCurrentPage(), pages.getPageSize());
 
-        return baseMapper.selectPage(page, this.wrapperFun(pages));
+        QueryWrapper<Monograph> wrapper = new QueryWrapper<>();
+
+        //根据作者(用户id)查询
+        wrapper.eq("author",employeeId);
+
+        //根据关键字查询
+        if(CommonUtils.isNotEmpty(pages.getSearchs().get("keyword"))){
+            wrapper.and(
+                w -> w.like("monograph_name",pages.getSearchs().get("keyword"))
+                        .or()
+                        .like("author",pages.getSearchs().get("keyword"))
+            );
+        }
+
+        wrapper.orderByAsc("create_Time");
+
+        return baseMapper.selectPage(page, wrapper);
     }
 
     /**
@@ -54,19 +83,19 @@ public class MonographServiceImpl extends ServiceImpl<MonographDao, Monograph> i
     }
 
     /**
-     * 专栏下架
-     *
+     * 修改专栏状态
      * @param monographId
+     * @param status
      * @return
      */
     @Override
-    public boolean soldOut(String monographId) {
+    public boolean updateOffShelf(String monographId,Integer status) {
         LambdaQueryWrapper<Monograph> wrapper = new LambdaQueryWrapper<>();
 
         wrapper.eq(Monograph::getMonographId, monographId);
 
         Monograph monograph = new Monograph();
-        monograph.setOffShelf(1);
+        monograph.setOffShelf(status);
 
         return baseMapper.update(monograph, wrapper) != 0;
     }
@@ -88,41 +117,97 @@ public class MonographServiceImpl extends ServiceImpl<MonographDao, Monograph> i
     }
 
     /**
-     * 分页查询专栏和章节
+     * 根据状态分页关联查询专栏和作者
      * @param pages
      * @return
      */
     @Override
-    public Page<Monograph> pageFindMonograph(Pages pages) {
+    public Page<Monograph> pageFindMonographAuthor(Pages pages) {
         Page<Monograph> page = new Page<>(pages.getCurrentPage(),pages.getPageSize());
 
-        return page.setRecords(baseMapper.pageFindMonograph(page,this.wrapperFun(pages)));
-    }
-
-    /**
-     * 模糊查询条件构造器
-     * @param pages
-     * @return
-     */
-    public QueryWrapper<Monograph> wrapperFun(Pages pages){
         QueryWrapper<Monograph> wrapper = new QueryWrapper<>();
 
+        wrapper.ne("off_shelf",0);
         //根据关键字查询
         if(CommonUtils.isNotEmpty(pages.getSearchs().get("keyword"))){
-            wrapper.like("monograph_name",pages.getSearchs().get("keyword"))
-                    .or()
-                    .like("highlights",pages.getSearchs().get("keyword"))
-                    .or()
-                    .like("monograph_about",pages.getSearchs().get("keyword"))
-                    .or()
-                    .like("author",pages.getSearchs().get("keyword"));
+            wrapper.and(
+                w->
+                    w.like("monograph_name",pages.getSearchs().get("keyword"))
+                            .or()
+                            .like("author",pages.getSearchs().get("keyword"))
+                );
         }
 
         wrapper.orderByAsc("create_Time");
 
-        return wrapper;
+        return page.setRecords(baseMapper.pageFindMonographAuthor(page,wrapper));
     }
 
+    /**
+     * 删除专栏
+     * @param monographId
+     * @return
+     */
+    @Override
+    public int delete(String monographId) {
+        //查询专栏下是否有章节
+        LambdaQueryWrapper<Chapter> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(Chapter::getChapterResource,monographId);
+
+        List<Chapter> chapters = chapterDao.selectList(wrapper);
+
+        //删除专栏条数
+        int num=0;
+
+        //有章节 先删除章节
+        if(chapters.size()>0){
+
+            //有章节
+            //循环章节
+            for(Chapter chapter:chapters){
+                //查询章节下是否有文章
+
+                List<Article> articles = articleDao.selectList(
+                        new LambdaQueryWrapper<Article>().eq(Article::getChapterId, chapter.getChapterId()));
+
+                //有文章先删除文章
+                for(Article article:articles){
+                    articleDao.deleteById(article.getArticleId());
+                }
+
+                //删除章节
+                chapterDao.deleteById(chapter.getChapterId());
+            }
+
+        }
+
+        //再删除专栏
+        num = baseMapper.deleteById(monographId);
+        return num;
+    }
+
+    /**
+     * 预览专刊
+     * @param monographId
+     * @return
+     */
+    @Override
+    public Monograph previewMonograph(String monographId) {
+        return baseMapper.previewMonograph(monographId);
+    }
+
+    /**
+     * 上架
+     * @param monograph
+     * @return
+     */
+    @Override
+    public boolean putAway(Monograph monograph) {
+        if (null == monograph.getPrice()) {
+            throw new ApiException(500, "价格不能为空");
+        }
+        return baseMapper.updateById(monograph) != 0;
+    }
 
     /**
      * 验证参数不能为空
@@ -130,7 +215,6 @@ public class MonographServiceImpl extends ServiceImpl<MonographDao, Monograph> i
      * @param monograph
      */
     private void valid(Monograph monograph) {
-        System.out.println(monograph);
         if (!CommonUtils.isNotEmpty(monograph.getMonographName())) {
             throw new ApiException(500, "专刊名不能为空");
         }
