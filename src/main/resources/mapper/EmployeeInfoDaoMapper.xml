@@ -2,10 +2,6 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.imooc.dao.EmployeeInfoDao">
 
-    <resultMap id="byUsernameMap" type="java.util.Map">
-
-    </resultMap>
-
     <select id="findByUsername" resultType="com.imooc.entity.EmployeeInfo">
         SELECT
             e.employee_id as employeeId,
@@ -15,4 +11,5 @@
         FROM employee_info e
         WHERE e.account_number_id = (SELECT account_number_id FROM account_number WHERE username = #{username})
     </select>
+
 </mapper>

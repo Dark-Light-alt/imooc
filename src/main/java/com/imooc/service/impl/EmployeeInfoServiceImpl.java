@@ -93,12 +93,6 @@ public class EmployeeInfoServiceImpl extends ServiceImpl<EmployeeInfoDao, Employ
         return baseMapper.updateById(employeeInfo) != 0;
     }
 
-    /**
-     * 根据 employeeId 查询员工信息
-     *
-     * @param employeeInfoId
-     * @return
-     */
     @Override
     public EmployeeInfo findById(String employeeInfoId) {
         return baseMapper.selectById(employeeInfoId);
@@ -139,15 +133,6 @@ public class EmployeeInfoServiceImpl extends ServiceImpl<EmployeeInfoDao, Employ
         wrapper.orderByDesc(EmployeeInfo::getHiredate);
 
         return wrapper;
-    }
-
-    /**
-     * fxy 根据id查询 账号表密码
-     * @param employeeId
-     * @return
-     */
-    public EmployeeInfo findEmployeeId(String employeeId){
-        return employeeInfoDao.findEmployeeId(employeeId);
     }
 
     /**

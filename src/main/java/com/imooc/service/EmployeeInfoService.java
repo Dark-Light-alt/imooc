@@ -57,7 +57,6 @@ public interface EmployeeInfoService extends IService<EmployeeInfo> {
      */
     Page<EmployeeInfo> findAll(Pages pages);
 
-
     /**
      * 根据 账号 id 查询员工信息
      *
@@ -68,17 +67,7 @@ public interface EmployeeInfoService extends IService<EmployeeInfo> {
 
         LambdaQueryWrapper<EmployeeInfo> wrapper = new LambdaQueryWrapper<>();
         wrapper.eq(EmployeeInfo::getAccountNumberId, accountNumberId);
-
         return getOne(wrapper);
     }
-
-    /**
-     * fxy 根据id 查询账号表密码
-     * @param employeeId
-     * @return
-     */
-    EmployeeInfo findEmployeeId(String employeeId);
-
-
 
 }

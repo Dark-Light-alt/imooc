@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.imooc.dao.CarouselDao">
+
+    <resultMap id="findAllList" type="com.imooc.entity.Carousel">
+        <id column="carousel_id" property="carouselId"></id>
+        <result column="course_id" property="courseId"></result>
+        <result column="cover" property="cover"></result>
+        <result column="sort" property="sort"></result>
+        <association property="course" javaType="com.imooc.entity.Course">
+            <id column="course_id" property="courseId"></id>
+            <result column="course_name" property="courseName"></result>
+            <result column="course_about" property="courseAbout"></result>
+            <result column="create_time" property="createTime"></result>
+        </association>
+    </resultMap>
+
+    <select id="findAll" resultMap="findAllList">
+        SELECT
+            carousel.*,
+            course.course_name,
+            course.course_about,
+            course.create_time
+        FROM carousel
+        LEFT JOIN course
+        ON carousel.course_id = course.course_id
+        ${ew.customSqlsegment}
+    </select>
+</mapper>

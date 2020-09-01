@@ -33,8 +33,7 @@
         WHERE e.account_number_id = (SELECT account_number_id FROM account_number WHERE username = #{username})
     </select>
 
-    <select id="findEmployeeId" resultMap="EmployeeInfoMap">
-
+    <select id="findById" resultMap="EmployeeInfoMap">
     SELECT
             a.account_number_id,
             a.username,
@@ -45,7 +44,24 @@
         on
         e.account_number_id = a.account_number_id
         where e.employee_id = #{employeeId}
-
     </select>
+
+    <update id="updataPassword">
+        update employee_info set
+        employee_name=#{employeeName},
+        employee_sex=#{employeeSex},
+        employee_phone={employeePhone},
+        employee_email=#{employeeEmail},
+        employee_idcard=#{employeeIdcard},
+        employee_address=#{employeeAddress},
+        photo=#{photo},
+        hiredate={hiredate},
+        isleave=#{isleave},
+        leave_date=#{leaveDate},
+        department_id=#{department.department_id},
+        position_id=#{position.position_id},
+        account_number_id=#{account_number.account_number_id}
+       where employee_id=#{employeeId}
+    </update>
 
 </mapper>

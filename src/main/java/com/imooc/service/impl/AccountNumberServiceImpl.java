@@ -7,7 +7,6 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.imooc.dao.AccountNumberDao;
 import com.imooc.entity.AccountNumber;
-import com.imooc.entity.EmployeeInfo;
 import com.imooc.exception.ApiException;
 import com.imooc.service.AccountNumberService;
 import com.imooc.utils.common.CommonUtils;
@@ -24,12 +23,6 @@ public class AccountNumberServiceImpl extends ServiceImpl<AccountNumberDao, Acco
     @Resource
     private EmployeeInfoServiceImpl employeeInfoServiceImpl;
 
-    @Resource
-    private AccountNumberService accountNumberService;
-
-    @Resource
-    private AccountNumberDao accountNumberDao;
-
     @Override
     public boolean append(AccountNumber accountNumber) {
 
@@ -44,7 +37,10 @@ public class AccountNumberServiceImpl extends ServiceImpl<AccountNumberDao, Acco
 
     @Override
     public boolean update(AccountNumber accountNumber) {
-        return false;
+
+        valid(accountNumber);
+
+        return baseMapper.updateById(accountNumber) != 0;
     }
 
     @Override
@@ -84,6 +80,7 @@ public class AccountNumberServiceImpl extends ServiceImpl<AccountNumberDao, Acco
         return baseMapper.selectById(accountNumberId);
     }
 
+
     @Override
     public Page<AccountNumber> pagingFindAll(Pages pages) {
 
@@ -104,7 +101,8 @@ public class AccountNumberServiceImpl extends ServiceImpl<AccountNumberDao, Acco
 
     @Override
     public AccountNumber findByEmployeeId(String employeeId) {
-        return null;
+
+        return baseMapper.selectById(employeeId);
     }
 
     /**
@@ -178,5 +176,4 @@ public class AccountNumberServiceImpl extends ServiceImpl<AccountNumberDao, Acco
 
         return baseMapper.selectOne(wrapper);
     }
-
 }
