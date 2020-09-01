@@ -46,4 +46,25 @@ public interface ArticleService extends IService<Article> {
      * @return
      */
     Article findById(String articleId);
+
+    /**
+     * 根据条件删除文章
+     * @param wrapper
+     * @return
+     */
+    int deleteByWrapper(LambdaQueryWrapper<Article> wrapper);
+
+    /**
+     * 根据主键articleId删除文章
+     * @param articleId
+     * @return
+     */
+    int deleteById(String articleId);
+
+    /**
+     * 根据条件查询文章列表
+     * @param wrapper
+     * @return
+     */
+    List<Article> selectByWrapper(LambdaQueryWrapper<Article> wrapper);
 }
