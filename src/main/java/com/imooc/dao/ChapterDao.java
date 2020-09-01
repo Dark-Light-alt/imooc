@@ -21,6 +21,4 @@ public interface ChapterDao extends BaseMapper<Chapter> {
      * @return 对应的章节 id
      */
     List<String> findChapterIdByResource(String resource);
-
-
 }

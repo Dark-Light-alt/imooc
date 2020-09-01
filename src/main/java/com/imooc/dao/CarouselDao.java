@@ -12,7 +12,6 @@ import java.util.List;
 
 @Mapper
 public interface CarouselDao extends BaseMapper<Carousel> {
-
     /**
      * 分页查询所有
      *
