@@ -20,6 +20,10 @@ import java.util.List;
 public class ChapterServiceImpl extends ServiceImpl<ChapterDao, Chapter> implements ChapterService {
 
     @Resource
+
+    ArticleServiceImpl articleServiceImpl;
+
+    @Resource
     private VideoServiceImpl videoServiceImpl;
 
     /**
@@ -138,9 +142,32 @@ public class ChapterServiceImpl extends ServiceImpl<ChapterDao, Chapter> impleme
 
         wrapper.eq(Article::getChapterId,chapterId);
 
+        //先删除章节下的文章
+        articleServiceImpl.deleteByWrapper(wrapper);
+
         //在删除章节
         int i = baseMapper.deleteById(chapterId);
         return i != 0;
+    }
+
+    /**
+     * 根据条件查找章节
+     * @param wrapper
+     * @return
+     */
+    @Override
+    public List<Chapter> selectByWrapper(LambdaQueryWrapper<Chapter> wrapper) {
+        return baseMapper.selectList(wrapper);
+    }
+
+    /**
+     * 根据主键删除章节
+     * @param chapterId
+     * @return
+     */
+    @Override
+    public int deleteById(String chapterId) {
+        return baseMapper.deleteById(chapterId);
     }
 
     /**

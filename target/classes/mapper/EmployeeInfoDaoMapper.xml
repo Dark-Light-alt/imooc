@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.imooc.dao.EmployeeInfoDao">
+<<<<<<< HEAD
+=======
+
+>>>>>>> 2093de07d3f41eb91adf84c3f44e6aec352457d4
     <select id="findByUsername" resultType="com.imooc.entity.EmployeeInfo">
         SELECT
             e.employee_id as employeeId,
@@ -10,5 +14,8 @@
         FROM employee_info e
         WHERE e.account_number_id = (SELECT account_number_id FROM account_number WHERE username = #{username})
     </select>
+<<<<<<< HEAD
 
+=======
+>>>>>>> 2093de07d3f41eb91adf84c3f44e6aec352457d4
 </mapper>

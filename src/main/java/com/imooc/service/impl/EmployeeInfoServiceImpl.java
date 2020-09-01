@@ -167,6 +167,9 @@ public class EmployeeInfoServiceImpl extends ServiceImpl<EmployeeInfoDao, Employ
         if (!CommonUtils.isNotEmpty(employeeInfo.getEmployeeAddress())) {
             throw new ApiException(500, "居住地址不能为空");
         }
+        if (!CommonUtils.isNotEmpty(employeeInfo.getPhoto())) {
+            throw new ApiException(500, "头像不能为空");
+        }
         if (!IdcardUtil.isValidCard(employeeInfo.getEmployeeIdcard())) {
             throw new ApiException(500, "身份证号不合法");
         }
@@ -179,7 +182,7 @@ public class EmployeeInfoServiceImpl extends ServiceImpl<EmployeeInfoDao, Employ
     }
 
     /**
-     * 验证参数是否唯一
+     * 验证参数是否唯一s
      *
      * @param employeeInfo
      * @param flag         添加/修改

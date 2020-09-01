@@ -1,10 +1,52 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.imooc.dao.ChapterDao">
+<<<<<<< HEAD
 
     <select id="findChapterIdByResource" resultType="java.lang.String">
         SELECT
             chapter_id
         FROM chapter
         WHERE chapter_resource = #{resource}
+=======
+    <resultMap id="chapterMap" type="com.imooc.entity.Chapter">
+        <id column="chapter_id" property="chapterId"></id>
+        <result column="chapter_name" property="chapterName"></result>
+        <result column="chapter_about" property="chapterAbout"></result>
+        <result column="chapter_type" property="chapterType"></result>
+        <result column="chapter_resource" property="chapterResource"></result>
+        <result column="create_time" property="createTime"></result>
+        <collection property="articleList" column="chapter_id" ofType="com.imooc.entity.Article" select="findArts">
+            <id column="article_id" property="articleId"></id>
+            <result column="article_name" property="articleName"></result>
+            <result column="article_url" property="articleUrl"></result>
+            <result column="try_reading" property="tryReading"></result>
+            <result column="chapter_id" property="chapterId"></result>
+            <result column="create_time" property="createTime"></result>
+        </collection>
+    </resultMap>
+
+
+    <select id="findACByMid" resultMap="chapterMap">
+        select
+            chapter_id,
+            chapter_name,
+            chapter_about,
+            chapter_type,
+            chapter_resource,
+            create_time
+        from chapter
+        where chapter_resource=#{monographId}
+    </select>
+
+    <select id="findArts" resultType="com.imooc.entity.Article">
+        select
+            article_id,
+            article_name,
+            article_url,
+            try_reading,
+            chapter_id,
+            create_time
+          from Article where chapter_id=#{chapter_id}
+>>>>>>> 2093de07d3f41eb91adf84c3f44e6aec352457d4
     </select>
 </mapper>
