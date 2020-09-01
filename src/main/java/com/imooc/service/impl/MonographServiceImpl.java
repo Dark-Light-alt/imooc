@@ -14,6 +14,7 @@ import com.imooc.utils.common.CommonUtils;
 import com.imooc.utils.common.Pages;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 @Service
@@ -177,6 +178,10 @@ public class MonographServiceImpl extends ServiceImpl<MonographDao, Monograph> i
                 for(Article article:articles){
                     articleServiceImpl.deleteById(article.getArticleId());
                 }
+
+
+
+
 
                 //删除章节
                 chapterServiceImpl.deleteById(chapter.getChapterId());
