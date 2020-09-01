@@ -30,7 +30,4 @@ public class Carousel implements Serializable {
     // 排序
     @TableField
     private Integer sort;
-
-    @TableField(exist = false)
-    private Course course;
 }

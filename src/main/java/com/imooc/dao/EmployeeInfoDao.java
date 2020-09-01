@@ -15,5 +15,4 @@ public interface EmployeeInfoDao extends BaseMapper<EmployeeInfo> {
      */
     EmployeeInfo findByUsername(String userName);
 
-
 }

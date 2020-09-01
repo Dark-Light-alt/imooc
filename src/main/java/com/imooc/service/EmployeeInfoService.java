@@ -36,7 +36,6 @@ public interface EmployeeInfoService extends IService<EmployeeInfo> {
 
     /**
      * 分配账号
-     *
      * @param employeeId      员工 id
      * @param accountNumberId 账号 id
      * @return
@@ -59,6 +58,7 @@ public interface EmployeeInfoService extends IService<EmployeeInfo> {
      */
     Page<EmployeeInfo> findAll(Pages pages);
 
+
     /**
      * 根据 账号 id 查询员工信息
      *
@@ -69,16 +69,15 @@ public interface EmployeeInfoService extends IService<EmployeeInfo> {
 
         LambdaQueryWrapper<EmployeeInfo> wrapper = new LambdaQueryWrapper<>();
         wrapper.eq(EmployeeInfo::getAccountNumberId, accountNumberId);
+
         return getOne(wrapper);
     }
 
-<<<<<<< HEAD
-=======
 
     /**
      * 不分页的查询所有员工   做下拉框
      * @return
      */
     List<EmployeeInfo> findAllEmployeeInfo();
->>>>>>> 8863759132b5954f24d17d0824ae9498791a7367
+
 }

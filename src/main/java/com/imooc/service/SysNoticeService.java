@@ -11,14 +11,6 @@ import java.util.List;
 public interface SysNoticeService extends IService<SysNotice> {
 
     /**
-     * 添加系统提示
-     *
-     * @param sysNotice
-     * @return
-     */
-    boolean append(SysNotice sysNotice);
-
-    /**
      * 根据用户 id 查询全部系统提示
      *
      * @param customerId 员工 id

@@ -6,23 +6,31 @@ import com.imooc.entity.AccountNumber;
 import com.imooc.entity.EmployeeInfo;
 import com.imooc.service.impl.AccountNumberServiceImpl;
 import com.imooc.service.impl.EmployeeInfoServiceImpl;
+import com.imooc.utils.aliyun.oss.FileStorageService;
+import com.imooc.utils.aliyun.oss.FileStorageServiceImpl;
 import com.imooc.utils.common.Pages;
 import com.imooc.utils.common.Result;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
-import java.util.List;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Map;
 
 @RestController
-    @RequestMapping("EmployeeInfoController")
-public class EmployeeInfoController {
+@RequestMapping("EmployeeInfoController")
+public class EmployeeInfoController{
+
+    @Resource
+    private FileStorageServiceImpl fileStorageServiceImpl;
 
     @Resource
     private EmployeeInfoServiceImpl employeeInfoServiceImpl;
 
     @Resource
     private AccountNumberServiceImpl accountNumberServiceImpl;
+
 
     @RequestMapping(value = "findAll", method = RequestMethod.POST)
     public Result findAll(@RequestBody Pages pages) {
@@ -36,7 +44,6 @@ public class EmployeeInfoController {
         System.out.println(pages);
         result.setPages(pages);
         result.putData("employeeInfoList", data.getRecords());
-
 
         result.success(200, "SUCCESS");
 
@@ -71,11 +78,10 @@ public class EmployeeInfoController {
     public Result update(@RequestBody EmployeeInfo employeeInfo) {
 
         Result result = new Result();
-
         employeeInfoServiceImpl.update(employeeInfo);
 
         result.success(200, "员工修改成功");
-
+        result.success(300,"个人信息修改成功");
         return result;
     }
 
@@ -116,10 +122,26 @@ public class EmployeeInfoController {
      */
     @RequestMapping(value = "findAllEmployeeInfo", method = RequestMethod.POST)
     public Result findAllEmployeeInfo() {
-
         Result result = new Result();
 
         result.putData("employeeInfoList", employeeInfoServiceImpl.findAllEmployeeInfo());
+
+        result.success(200, "SUCCESS");
+
+        return result;
+    }
+
+    @RequestMapping(value = "upload",method = RequestMethod.POST)
+    public Result upload(@RequestParam("file") MultipartFile file)throws IOException {
+        Result result = new Result();
+
+        InputStream in = file.getInputStream();
+
+        String fileName = file.getOriginalFilename();
+
+        String url = fileStorageServiceImpl.upload(in, fileName, FileStorageService.IMG);
+
+        result.putData("url", url);
 
         result.success(200, "SUCCESS");
 

@@ -167,7 +167,6 @@ public class EmployeeInfoServiceImpl extends ServiceImpl<EmployeeInfoDao, Employ
         if (!CommonUtils.isNotEmpty(employeeInfo.getEmployeeAddress())) {
             throw new ApiException(500, "居住地址不能为空");
         }
-
         if (!IdcardUtil.isValidCard(employeeInfo.getEmployeeIdcard())) {
             throw new ApiException(500, "身份证号不合法");
         }
