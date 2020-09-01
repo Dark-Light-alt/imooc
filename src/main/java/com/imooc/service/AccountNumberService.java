@@ -3,6 +3,7 @@ package com.imooc.service;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.imooc.entity.AccountNumber;
+import com.imooc.entity.EmployeeInfo;
 import com.imooc.utils.common.Pages;
 
 public interface AccountNumberService extends IService<AccountNumber> {
@@ -63,4 +64,11 @@ public interface AccountNumberService extends IService<AccountNumber> {
      * @return
      */
     Page<AccountNumber> pagingFindAll(Pages pages);
+
+    /**
+     * 根据用户 id 查询出账号信息
+     * @param employeeId
+     * @return
+     */
+    AccountNumber findByEmployeeId(String employeeId);
 }

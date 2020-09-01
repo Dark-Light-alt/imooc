@@ -18,6 +18,18 @@ import java.util.List;
 @Service
 public class SysNoticeServiceImpl extends ServiceImpl<SysNoticeDao, SysNotice> implements SysNoticeService {
 
+
+    /**
+     * 添加系统提示
+     *
+     * @param sysNotice
+     * @return
+     */
+    @Override
+    public boolean append(SysNotice sysNotice) {
+        return baseMapper.insert(sysNotice) != 0;
+    }
+
     /**
      * 根据用户 id 查询所属的系统提示
      *

@@ -49,4 +49,6 @@ public interface SysNoticeService extends IService<SysNotice> {
      * @return
      */
     int removeByTime();
+
+    boolean append(SysNotice sysNotice);
 }

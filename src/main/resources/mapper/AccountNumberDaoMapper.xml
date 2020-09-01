@@ -1,0 +1,12 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.imooc.dao.AccountNumberDao">
+
+    <select id="findByEmployeeId" resultType="com.imooc.entity.AccountNumber">
+        SELECT
+            *
+        FROM account_number WHERE account_number_id = (SELECT account_number_id FROM employee_info WHERE employee_id = #{employeeId})
+    </select>
+
+</mapper>
