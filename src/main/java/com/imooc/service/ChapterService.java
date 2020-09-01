@@ -1,11 +1,13 @@
 package com.imooc.service;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.imooc.entity.Chapter;
 import com.imooc.utils.common.Pages;
 
 import java.util.List;
+
 
 public interface ChapterService extends IService<Chapter> {
 
@@ -55,4 +57,18 @@ public interface ChapterService extends IService<Chapter> {
      * @return
      */
     boolean deleteChatsAndArts(String chapterId);
+
+    /**
+     * 根据条件查找章节
+     * @param wrapper
+     * @return
+     */
+    List<Chapter> selectByWrapper(LambdaQueryWrapper<Chapter> wrapper);
+
+    /**
+     * 根据主键删除章节
+     * @param chapterId
+     * @return
+     */
+    int deleteById(String chapterId);
 }

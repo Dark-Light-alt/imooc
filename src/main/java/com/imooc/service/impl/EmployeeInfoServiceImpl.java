@@ -13,12 +13,15 @@ import com.imooc.utils.common.CommonUtils;
 import com.imooc.utils.common.Pages;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.Date;
 import java.util.List;
 
 @Service
 public class EmployeeInfoServiceImpl extends ServiceImpl<EmployeeInfoDao, EmployeeInfo> implements EmployeeInfoService {
 
+    @Resource
+    private EmployeeInfoDao employeeInfoDao;
     /**
      * 添加员工信息
      *
@@ -91,12 +94,6 @@ public class EmployeeInfoServiceImpl extends ServiceImpl<EmployeeInfoDao, Employ
         return baseMapper.updateById(employeeInfo) != 0;
     }
 
-    /**
-     * 根据 employeeId 查询员工信息
-     *
-     * @param employeeInfoId
-     * @return
-     */
     @Override
     public EmployeeInfo findById(String employeeInfoId) {
         return baseMapper.selectById(employeeInfoId);

@@ -72,4 +72,7 @@ public class EmployeeInfo {
 
     @TableField(exist = false)
     private Position position;
+
+    @TableField(exist = false)
+    private AccountNumber accountNumber;
 }

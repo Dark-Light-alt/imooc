@@ -2,7 +2,7 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.imooc.dao.MonographDao">
-    <resultMap id="monographMap" type="com.imooc.entity.Monograph">
+    <resultMap id="monographAuthor" type="com.imooc.entity.Monograph">
         <id column="monograph_id" property="monographId"></id>
         <result column="cover" property="cover"></result>
         <result column="monograph_name" property="monographName"></result>
@@ -15,37 +15,122 @@
         <result column="number_of_purchasers" property="numberOfPurchasers"></result>
         <result column="off_shelf" property="offShelf"></result>
         <result column="create_time" property="createTime"></result>
-        <collection property="chapterList" column="monograph_id" ofType="com.imooc.entity.Chapter" select="chapters">
+        <association property="employeeInfo" javaType="com.imooc.entity.EmployeeInfo">
+            <id column="employee_id" property="employeeId"></id>
+            <result column="employee_name" property="employeeName"></result>
+            <result column="employee_sex" property="employeeSex"></result>
+            <result column="employee_phone" property="employeePhone"></result>
+            <result column="employee_email" property="employeeEmail"></result>
+            <result column="employee_idcard" property="employeeIdcard"></result>
+            <result column="employee_address" property="employeeAddress"></result>
+            <result column="photo" property="photo"></result>
+            <result column="hiredate" property="hiredate"></result>
+            <result column="isleave" property="isleave"></result>
+            <result column="leave_date" property="leaveDate"></result>
+        </association>
+    </resultMap>
+
+    <resultMap id="previewMonographMap" type="com.imooc.entity.Monograph">
+        <id column="monograph_id" property="monographId"></id>
+        <result column="cover" property="cover"></result>
+        <result column="monograph_name" property="monographName"></result>
+        <result column="highlights" property="highlights"></result>
+        <result column="monograph_about" property="monographAbout"></result>
+        <result column="author" property="author"></result>
+        <result column="price" property="price"></result>
+        <result column="discounts" property="discounts"></result>
+        <result column="offer_end_time" property="offerEndTime"></result>
+        <result column="number_of_purchasers" property="numberOfPurchasers"></result>
+        <result column="off_shelf" property="offShelf"></result>
+        <result column="mcreateTime" property="createTime"></result>
+        <association property="employeeInfo" javaType="com.imooc.entity.EmployeeInfo">
+            <id column="employee_id" property="employeeId"></id>
+            <result column="employee_name" property="employeeName"></result>
+            <result column="employee_sex" property="employeeSex"></result>
+            <result column="employee_phone" property="employeePhone"></result>
+            <result column="employee_email" property="employeeEmail"></result>
+            <result column="employee_idcard" property="employeeIdcard"></result>
+            <result column="employee_address" property="employeeAddress"></result>
+            <result column="photo" property="photo"></result>
+            <result column="hiredate" property="hiredate"></result>
+            <result column="isleave" property="isleave"></result>
+            <result column="leave_date" property="leaveDate"></result>
+            <association property="position" javaType="com.imooc.entity.Position">
+                <id column="position_id" property="positionId"></id>
+                <result column="position_name" property="positionName"></result>
+            </association>
+        </association>
+        <collection property="chapterList" ofType="com.imooc.entity.Chapter">
             <id column="chapter_id" property="chapterId"></id>
             <result column="chapter_name" property="chapterName"></result>
             <result column="chapter_about" property="chapterAbout"></result>
             <result column="chapter_type" property="chapterType"></result>
             <result column="chapter_resource" property="chapterResource"></result>
-            <result column="create_time" property="createTime"></result>
+            <result column="ccreateTime" property="createTime"></result>
+            <collection property="articleList" ofType="com.imooc.entity.Article">
+                <id column="article_id" property="articleId"></id>
+                <result column="article_name" property="articleName"></result>
+                <result column="article_url" property="articleUrl"></result>
+                <result column="try_reading" property="tryReading"></result>
+                <result column="chapter_id" property="chapterId"></result>
+                <result column="acreateTime" property="createTime"></result>
+            </collection>
         </collection>
     </resultMap>
 
-    <select id="pageFindMonograph" resultMap="monographMap">
+
+    <select id="pageFindMonographAuthor" resultMap="monographAuthor">
         select
-            monograph_id,
-            cover,
-            monograph_name,
-            highlights,
-            monograph_about,
-            author,
-            off_shelf
-        from monograph
+              m.monograph_id,
+              m.cover,
+              m.monograph_name,
+              m.highlights,
+              m.monograph_about,
+              m.price,
+              m.discounts,
+              m.offer_end_time,
+              m.number_of_purchasers,
+              m.off_shelf,
+              m.create_time,
+              e.employee_id,
+              e.employee_name,
+              e.account_number_id
+         from monograph  m left join employee_info e on m.author=e.employee_id
         ${ew.customSqlSegment}
     </select>
 
-    <select id="chapters" resultType="com.imooc.entity.Chapter">
-        select
-             chapter_id,
-             chapter_name,
-             chapter_about,
-             create_Time
-        from chapter
-        where chapter_resource = #{monograph_id}
-        order by create_Time asc
+    <select id="previewMonograph" resultMap="previewMonographMap">
+       select
+          m.monograph_id,
+          m.monograph_name,
+          m.cover,
+          m.monograph_about,
+          m.author,
+          m.create_time as mcreateTime,
+          e.employee_id,
+          e.employee_name,
+          p.position_id,
+          p.position_name,
+          c.chapter_id,
+          c.chapter_name,
+          c.chapter_about,
+          c.chapter_type,
+          c.chapter_resource,
+          c.create_time as ccreateTime,
+          a.article_id,
+          a.article_name,
+          a.article_url,
+          a.try_reading,
+          a.chapter_id,
+          a.create_time as acreateTime
+        from monograph m
+        left join employee_info e on m.author=e.employee_id
+        left join position p on e.position_id = p.position_id
+        left join chapter c on c.chapter_resource = m.monograph_id
+        left join article a on c.chapter_id=a.chapter_id
+        where m.monograph_id=#{monograph_id}
+        ORDER BY c.create_time ASC,a.create_time ASC
     </select>
+
+
 </mapper>

@@ -9,6 +9,7 @@ import java.util.List;
 
 public interface MonographService extends IService<Monograph> {
 
+
     /**
      * 分页查询用户的所有专刊
      * @param pages
