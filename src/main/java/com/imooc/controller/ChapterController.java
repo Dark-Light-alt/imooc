@@ -9,6 +9,7 @@ import com.imooc.utils.common.Result;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -79,12 +80,6 @@ public class ChapterController {
         return result;
     }
 
-    /**
-     * 修改章节信息
-     *
-     * @param chapter
-     * @return
-     */
     @RequestMapping(value = "update", method = RequestMethod.PUT)
     public Result update(@RequestBody Chapter chapter) {
 
@@ -97,20 +92,24 @@ public class ChapterController {
         return result;
     }
 
+
     /**
-     * 根据章节 id 删除章节信息和对应的视频
+     * 删除章节和文章
      *
      * @param chapterId
      * @return
      */
-    @RequestMapping(value = "removeChapterAndVideo/{chapterId}", method = RequestMethod.DELETE)
-    public Result removeChapterAndVideo(@PathVariable String chapterId) {
+    @RequestMapping(value = "deleteChatsAndArts/{chapterId}", method = RequestMethod.GET)
+    public Result deleteChatsAndArts(@PathVariable("chapterId") String chapterId) {
 
         Result result = new Result();
 
-        chapterServiceImpl.removeChapterAndVideo(chapterId);
+        boolean b = chapterServiceImpl.deleteChatsAndArts(chapterId);
 
-        result.success(200, "章节信息删除成功");
+        if(b){
+            result.success(200, "删除成功");
+        }
+
 
         return result;
     }

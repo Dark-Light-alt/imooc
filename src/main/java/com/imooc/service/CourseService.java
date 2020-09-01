@@ -5,6 +5,9 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.imooc.entity.Course;
 import com.imooc.utils.common.Pages;
 
+import java.util.List;
+import java.util.Map;
+
 /**
  * 课程服务
  */
@@ -94,4 +97,30 @@ public interface CourseService extends IService<Course> {
      * @return
      */
     Page<Course> freeForCourseManage(Pages pages);
+
+    /**
+     * 根据课程方向查询已上架的课程
+     *
+     * @param directionId 课程方向 id
+     * @param num         前 ？ 条
+     * @return
+     */
+    List<Course> findCourseByDirection(String directionId, Integer num);
+
+    /**
+     * 根据学习人数查看上架的热门课程
+     *
+     * @param isfree 0 免费 1 实战课程
+     * @param num    前 ？ 条
+     * @return
+     */
+    List<Map<String, Object>> findHotCourse(Integer isfree, Integer num);
+
+    /**
+     * 根据学习人数和最新时间查询新上好课
+     *
+     * @param num 前 ？ 条
+     * @return
+     */
+    List<Map<String, Object>> findNewCourse(Integer num);
 }
