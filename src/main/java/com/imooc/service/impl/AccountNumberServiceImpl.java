@@ -101,8 +101,7 @@ public class AccountNumberServiceImpl extends ServiceImpl<AccountNumberDao, Acco
 
     @Override
     public AccountNumber findByEmployeeId(String employeeId) {
-
-        return baseMapper.selectById(employeeId);
+        return baseMapper.findByEmployeeId(employeeId);
     }
 
     /**
