@@ -116,6 +116,21 @@ public class EmployeeInfoController{
         return result;
     }
 
+    /**
+     * 不分页查询所有员工  做下拉框列表
+     *
+     */
+    @RequestMapping(value = "findAllEmployeeInfo", method = RequestMethod.POST)
+    public Result findAllEmployeeInfo() {
+        Result result = new Result();
+
+        result.putData("employeeInfoList", employeeInfoServiceImpl.findAllEmployeeInfo());
+
+        result.success(200, "SUCCESS");
+
+        return result;
+    }
+
     @RequestMapping(value = "upload",method = RequestMethod.POST)
     public Result upload(@RequestParam("file") MultipartFile file)throws IOException {
         Result result = new Result();
