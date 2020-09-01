@@ -185,7 +185,7 @@ public class EmployeeInfoServiceImpl extends ServiceImpl<EmployeeInfoDao, Employ
     }
 
     /**
-     * 验证参数是否唯一
+     * 验证参数是否唯一s
      *
      * @param employeeInfo
      * @param flag         添加/修改
