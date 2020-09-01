@@ -22,4 +22,5 @@ public interface ChapterDao extends BaseMapper<Chapter> {
      */
     List<String> findChapterIdByResource(String resource);
 
+
 }

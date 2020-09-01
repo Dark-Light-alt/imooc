@@ -21,6 +21,8 @@ public interface MonographDao extends BaseMapper<Monograph> {
      */
     List<Monograph> pageFindMonographAuthor(Page<Monograph> page,@Param(Constants.WRAPPER) QueryWrapper<Monograph> wrapper);
 
+
+
     /**
      * 预览专刊
      * @param monograph_id
