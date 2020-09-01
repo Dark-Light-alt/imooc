@@ -6,4 +6,6 @@ import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
 public interface AccountNumberDao extends BaseMapper<AccountNumber> {
+
+    AccountNumber findByEmployeeId(String employeeId);
 }

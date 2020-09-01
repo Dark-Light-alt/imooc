@@ -1,0 +1,364 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.imooc.dao.CourseDao">
+
+    <resultMap id="previewCourseList" type="com.imooc.entity.Course">
+        <id column="course_id" property="courseId"></id>
+        <result column="cover" property="cover"></result>
+        <result column="course_name" property="courseName"></result>
+        <result column="course_about" property="courseAbout"></result>
+        <result column="author" property="author"></result>
+        <result column="number_of_students" property="numberOfStudents"></result>
+        <result column="type_id" property="typeId"></result>
+        <result column="course_level" property="courseLevel"></result>
+        <result column="isfree" property="isfree"></result>
+        <result column="courseCreateTime" property="createTime"></result>
+        <result column="course_status" property="courseStatus"></result>
+        <association property="employeeInfo" javaType="com.imooc.entity.EmployeeInfo">
+            <id column="employee_id" property="employeeId"></id>
+            <result column="employee_name" property="employeeName"></result>
+            <result column="photo" property="photo"></result>
+            <association property="position" javaType="com.imooc.entity.Position">
+                <id column="position_id" property="positionId"></id>
+                <result column="position_name" property="positionName"></result>
+            </association>
+        </association>
+        <association property="customer" javaType="com.imooc.entity.Customer">
+            <id column="customer_id" property="customerId"></id>
+            <result column="customer_photo" property="customerPhoto"></result>
+            <result column="customerPositionId1" property="positionId"></result>
+            <association property="customerPosition" javaType="com.imooc.entity.CustomerPosition">
+                <id column="customerPositionId2" property="positionId"></id>
+                <result column="customerPositionName" property="positionName"></result>
+            </association>
+            <association property="customerReal" javaType="com.imooc.entity.CustomerReal">
+                <id column="customer_real_id" property="customerRealId"></id>
+                <result column="actual_name" property="actualName"></result>
+            </association>
+        </association>
+        <association property="direction" javaType="com.imooc.entity.Direction">
+            <id column="direction_id" property="directionId"></id>
+            <result column="direction_name" property="directionName"></result>
+            <result column="direction_isenable" property="directionIsenable"></result>
+        </association>
+        <association property="type" javaType="com.imooc.entity.Type">
+            <id column="type_id" property="typeId"></id>
+            <result column="type_name" property="typeName"></result>
+            <result column="type_isenable" property="typeIsenable"></result>
+        </association>
+        <collection property="datasList" ofType="com.imooc.entity.Datas">
+            <id column="data_id" property="dataId"></id>
+            <result column="data_name" property="dataName"></result>
+            <result column="data_url" property="dataUrl"></result>
+            <result column="dataCretime" property="createTime"></result>
+        </collection>
+        <collection property="chapterList" ofType="com.imooc.entity.Chapter">
+            <id column="chapter_id" property="chapterId"></id>
+            <result column="chapter_name" property="chapterName"></result>
+            <result column="chapter_about" property="chapterAbout"></result>
+            <result column="chapter_type" property="chapterType"></result>
+            <result column="chapterCreateTime" property="createTime"></result>
+            <collection property="videoList" ofType="com.imooc.entity.Video">
+                <id column="video_id" property="videoId"></id>
+                <result column="video_name" property="videoName"></result>
+                <result column="video_url" property="videoUrl"></result>
+                <result column="try_and_see" property="tryAndSee"></result>
+                <result column="duration" property="duration"></result>
+                <result column="videoCreateTime" property="createTime"></result>
+                <result column="video_isenable" property="videoIsenable"></result>
+            </collection>
+        </collection>
+    </resultMap>
+
+    <select id="previewCourse" resultMap="previewCourseList">
+        SELECT
+            course.course_id,
+            course.cover,
+            course.course_name,
+            course.course_about,
+            course.author,
+            course.number_of_students,
+            course.course_level,
+            course.isfree,
+            course.create_time AS courseCreateTime,
+            course.course_status,
+            employee_info.employee_id,
+            employee_info.employee_name,
+            employee_info.photo,
+            position.position_id,
+            position.position_name,
+            customer.customer_id,
+            customer.customer_photo,
+            customer.position_id AS customerPositionId1,
+            customer_real.customer_real_id,
+            customer_real.actual_name,
+            customer_position.position_id AS customerPositionId2,
+            customer_position.position_name AS customerPositionName,
+            data.data_id,
+            data.data_name,
+            data.data_url,
+            data.create_time AS dataCreateTime,
+            chapter.chapter_id,
+            chapter.chapter_name,
+            chapter.chapter_about,
+            chapter.chapter_type,
+            chapter.chapter_resource,
+            chapter.create_time AS chapterCreateTime,
+            video.video_id,
+            video.video_name,
+            video.video_url,
+            video.try_and_see,
+            video.duration,
+            video.chapter_id,
+            video.create_time AS videoCreateTime,
+            video.video_isenable,
+            direction.direction_id,
+            direction.direction_name,
+            direction.direction_isenable,
+            type.type_id,
+            type.type_name,
+            type.type_isenable
+        FROM course
+        LEFT JOIN employee_info
+        ON employee_info.employee_id = course.author
+        LEFT JOIN customer
+        ON customer.customer_id = course.author
+        LEFT JOIN customer_real
+        ON customer_real.customer_id = customer.customer_id
+        LEFT JOIN customer_position
+        ON customer.position_id = customer_position.position_id
+        LEFT JOIN position
+        ON employee_info.position_id = position.position_id
+        LEFT JOIN type
+        ON type.type_id = course.type_id
+        LEFT JOIN direction
+        ON direction.direction_id = type.direction_id
+        LEFT JOIN data
+        ON data.course_id = course.course_id
+        LEFT JOIN chapter
+        ON chapter.chapter_resource = course.course_id
+        LEFT JOIN video
+        ON video.chapter_id = chapter.chapter_id
+        WHERE course.course_id = #{courseId}
+        ORDER BY chapter.create_time ASC,video.create_time ASC,data.create_time ASC
+    </select>
+
+    <resultMap id="payForCourseList" type="com.imooc.entity.Course">
+        <id column="course_id" property="courseId"></id>
+        <result column="cover" property="cover"></result>
+        <result column="course_name" property="courseName"></result>
+        <result column="course_about" property="courseAbout"></result>
+        <result column="author" property="author"></result>
+        <result column="number_of_students" property="numberOfStudents"></result>
+        <result column="type_id" property="typeId"></result>
+        <result column="course_level" property="courseLevel"></result>
+        <result column="isfree" property="isfree"></result>
+        <result column="price" property="price"></result>
+        <result column="create_time" property="createTime"></result>
+        <result column="course_status" property="courseStatus"></result>
+        <association property="employeeInfo" javaType="com.imooc.entity.EmployeeInfo">
+            <id column="employee_id" property="employeeId"></id>
+            <result column="employee_name" property="employeeName"></result>
+            <result column="photo" property="photo"></result>
+        </association>
+        <association property="direction" javaType="com.imooc.entity.Direction">
+            <id column="direction_id" property="directionId"></id>
+            <result column="direction_name" property="directionName"></result>
+            <result column="direction_isenable" property="directionIsenable"></result>
+        </association>
+        <association property="type" javaType="com.imooc.entity.Type">
+            <id column="type_id" property="typeId"></id>
+            <result column="type_name" property="typeName"></result>
+            <result column="type_isenable" property="typeIsenable"></result>
+        </association>
+    </resultMap>
+
+    <select id="payForCourseManage" resultMap="payForCourseList">
+        SELECT
+            course.course_id,
+            course.cover,
+            course.course_name,
+            course.course_about,
+            course.author,
+            course.number_of_students,
+            course.course_level,
+            course.isfree,
+            course.price,
+            course.create_time,
+            course.course_status,
+            employee_info.employee_id,
+            employee_info.employee_name,
+            employee_info.photo,
+            direction.direction_id,
+            direction.direction_name,
+            direction.direction_isenable,
+            type.type_id,
+            type.type_name,
+            type.type_isenable
+        FROM course
+        LEFT JOIN employee_info
+        ON employee_info.employee_id = course.author
+        LEFT JOIN type
+        ON type.type_id = course.type_id
+        LEFT JOIN direction
+        ON direction.direction_id = type.direction_id
+        ${ew.customSqlsegment}
+    </select>
+
+    <resultMap id="freeForCourseManageList" type="com.imooc.entity.Course">
+        <id column="course_id" property="courseId"></id>
+        <result column="cover" property="cover"></result>
+        <result column="course_name" property="courseName"></result>
+        <result column="course_about" property="courseAbout"></result>
+        <result column="author" property="author"></result>
+        <result column="number_of_students" property="numberOfStudents"></result>
+        <result column="type_id" property="typeId"></result>
+        <result column="course_level" property="courseLevel"></result>
+        <result column="isfree" property="isfree"></result>
+        <result column="create_time" property="createTime"></result>
+        <result column="course_status" property="courseStatus"></result>
+        <association property="customer" javaType="com.imooc.entity.Customer">
+            <id column="customer_id" property="customerId"></id>
+            <association property="customerReal" javaType="com.imooc.entity.CustomerReal">
+                <id column="customer_real_id" property="customerRealId"></id>
+                <result column="actual_name" property="actualName"></result>
+            </association>
+            <association property="customerPosition" javaType="com.imooc.entity.CustomerPosition">
+                <id column="position_id" property="positionId"></id>
+                <result column="position_name" property="positionName"></result>
+            </association>
+        </association>
+        <association property="direction" javaType="com.imooc.entity.Direction">
+            <id column="direction_id" property="directionId"></id>
+            <result column="direction_name" property="directionName"></result>
+            <result column="direction_isenable" property="directionIsenable"></result>
+        </association>
+        <association property="type" javaType="com.imooc.entity.Type">
+            <id column="type_id" property="typeId"></id>
+            <result column="type_name" property="typeName"></result>
+            <result column="type_isenable" property="typeIsenable"></result>
+        </association>
+    </resultMap>
+
+    <select id="freeForCourseManage" resultMap="freeForCourseManageList">
+        SELECT
+            course.course_id,
+            course.cover,
+            course.course_name,
+            course.course_about,
+            course.author,
+            course.number_of_students,
+            course.course_level,
+            course.isfree,
+            course.price,
+            course.create_time,
+            course.course_status,
+            customer.customer_id,
+            customer.customer_photo,
+            customer_real.customer_real_id,
+            customer_real.actual_name,
+            customer_position.position_id,
+            customer_position.position_name,
+            direction.direction_id,
+            direction.direction_name,
+            direction.direction_isenable,
+            type.type_id,
+            type.type_name,
+            type.type_isenable
+        FROM course
+        LEFT JOIN customer
+        ON customer.customer_id = course.author
+        LEFT JOIN customer_real
+        ON customer_real.customer_id = customer.customer_id
+        LEFT JOIN customer_position
+        ON customer_position.position_id = customer.position_id
+        LEFT JOIN type
+        ON type.type_id = course.type_id
+        LEFT JOIN direction
+        ON direction.direction_id = type.direction_id
+        ${ew.customSqlsegment}
+    </select>
+
+    <!-- 根据课程方向查询已上架的课程的结果集映射 -->
+    <resultMap id="courseByDirectionList" type="com.imooc.entity.Course">
+        <id column="course_id" property="courseId"></id>
+        <result column="cover" property="cover"></result>
+        <result column="course_name" property="courseName"></result>
+        <result column="course_about" property="courseAbout"></result>
+        <result column="author" property="author"></result>
+        <result column="number_of_students" property="numberOfStudents"></result>
+        <result column="type_id" property="typeId"></result>
+        <result column="course_level" property="courseLevel"></result>
+        <result column="price" property="price"></result>
+        <result column="isfree" property="isfree"></result>
+        <result column="create_time" property="createTime"></result>
+        <result column="course_status" property="courseStatus"></result>
+    </resultMap>
+
+    <!-- 根据课程方向查询上架的课程 -->
+    <select id="findCourseByDirection" resultMap="courseByDirectionList">
+        SELECT
+            course.*
+        FROM course
+        WHERE course.type_id IN (SELECT type_id FROM type WHERE direction_id = (SELECT direction_id FROM direction WHERE direction_id = #{param1}))
+        AND course.course_status = 2
+        AND ROWNUM &lt; #{param2}
+        ORDER BY course.create_time DESC
+    </select>
+
+    <!-- 根据学习人数查看上架的热门课程的结果集映射 -->
+    <resultMap id="hotCourseList" type="java.util.Map">
+        <id column="course_id" property="courseId" javaType="java.lang.String"></id>
+        <result column="cover" property="cover" javaType="java.lang.String"></result>
+        <result column="course_name" property="courseName" javaType="java.lang.String"></result>
+        <result column="course_about" property="courseAbout" javaType="java.lang.String"></result>
+        <result column="author" property="author" javaType="java.lang.String"></result>
+        <result column="number_of_students" property="numberOfStudents" javaType="java.lang.Integer"></result>
+        <result column="type_id" property="typeId" javaType="java.lang.String"></result>
+        <result column="course_level" property="courseLevel" javaType="java.lang.Integer"></result>
+        <result column="price" property="price" javaType="java.math.BigDecimal"></result>
+        <result column="isfree" property="isfree" javaType="java.lang.Integer"></result>
+        <result column="create_time" property="createTime" javaType="java.sql.Date"></result>
+        <result column="course_status" property="courseStatus" javaType="java.lang.Integer"></result>
+        <result column="peoples" property="peoples" javaType="java.lang.Integer"></result>
+    </resultMap>
+
+    <!-- 根据学习人数查看上架的热门课程 -->
+    <select id="findHotCourse" resultMap="hotCourseList">
+        SELECT
+            course.*,
+            (SELECT COUNT(1) FROM evaluate WHERE evaluate_be_resource = course.course_id) AS peoples
+        FROM course
+        WHERE course.isfree = #{param1}
+        AND ROWNUM &lt; #{param2}
+        ORDER BY course.number_of_students DESC
+    </select>
+
+    <!-- 查询最新和学习人数最多的实战课程的结果集映射 -->
+    <resultMap id="newCourseList" type="java.util.Map">
+        <id column="course_id" property="courseId" javaType="java.lang.String"></id>
+        <result column="cover" property="cover" javaType="java.lang.String"></result>
+        <result column="course_name" property="courseName" javaType="java.lang.String"></result>
+        <result column="course_about" property="courseAbout" javaType="java.lang.String"></result>
+        <result column="author" property="author" javaType="java.lang.String"></result>
+        <result column="number_of_students" property="numberOfStudents" javaType="java.lang.Integer"></result>
+        <result column="type_id" property="typeId" javaType="java.lang.String"></result>
+        <result column="course_level" property="courseLevel" javaType="java.lang.Integer"></result>
+        <result column="price" property="price" javaType="java.math.BigDecimal"></result>
+        <result column="isfree" property="isfree" javaType="java.lang.Integer"></result>
+        <result column="create_time" property="createTime" javaType="java.sql.Date"></result>
+        <result column="course_status" property="courseStatus" javaType="java.lang.Integer"></result>
+        <result column="peoples" property="peoples" javaType="java.lang.Integer"></result>
+    </resultMap>
+
+    <!-- 查询最新和学习人数最多的实战课程 -->
+    <select id="findNewCourse" resultMap="newCourseList">
+        SELECT
+            course.*,
+            (SELECT COUNT(1) FROM evaluate WHERE evaluate_be_resource = course.course_id) AS peoples
+        FROM course
+        WHERE course.isfree = 1
+        AND ROWNUM &lt; #{param1}
+        ORDER BY course.create_time DESC,course.number_of_students DESC
+    </select>
+</mapper>

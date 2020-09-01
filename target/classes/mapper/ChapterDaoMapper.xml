@@ -1,5 +1,13 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.imooc.dao.ChapterDao">
+<<<<<<< HEAD
+
+    <select id="findChapterIdByResource" resultType="java.lang.String">
+        SELECT
+            chapter_id
+        FROM chapter
+        WHERE chapter_resource = #{resource}
+=======
     <resultMap id="chapterMap" type="com.imooc.entity.Chapter">
         <id column="chapter_id" property="chapterId"></id>
         <result column="chapter_name" property="chapterName"></result>
@@ -39,5 +47,6 @@
             chapter_id,
             create_time
           from Article where chapter_id=#{chapter_id}
+>>>>>>> 8863759132b5954f24d17d0824ae9498791a7367
     </select>
 </mapper>

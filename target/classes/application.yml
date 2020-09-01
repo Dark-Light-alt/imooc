@@ -35,19 +35,6 @@ alipay:
   # 支付宝网关
   gatewayUrl: https://openapi.alipaydev.com/gateway.do
 
-# 阿里云服务配置
-aliyun:
-  regionId: cn-shanghai
-  accessKeyId: LTAI4GCx7gPz7p6Ex3XAH1nK
-  secret: W6WloKxtfoPS5yKtCuYXGFddVl7t0g
-  ossEndPoint: http://oss-cn-shanghai.aliyuncs.com
-
-# sms 配置
-sms:
-  url: http://api.smsbao.com/sms
-  username: 1163743662
-  password: 1163743662
-
 # jwt 配置信息
 jwt:
   # 私钥
