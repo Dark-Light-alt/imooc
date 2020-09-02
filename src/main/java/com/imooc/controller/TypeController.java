@@ -83,14 +83,32 @@ public class TypeController {
         return result;
     }
 
-    @RequestMapping(value = "findAll",method = RequestMethod.GET)
-    public Result findAll(){
+    @RequestMapping(value = "findAll", method = RequestMethod.GET)
+    public Result findAll() {
 
         Result result = new Result();
 
-        result.putData("typeList",typeServiceImpl.findAll());
+        result.putData("typeList", typeServiceImpl.findAll());
 
-        result.success(200,"SUCCESS");
+        result.success(200, "SUCCESS");
+
+        return result;
+    }
+
+    /**
+     * 根据方向 id 查询出类别
+     *
+     * @param directionId 方向 id
+     * @return
+     */
+    @RequestMapping(value = "findByDirectionId/{directionId}", method = RequestMethod.GET)
+    public Result findByDirectionId(@PathVariable String directionId) {
+
+        Result result = new Result();
+
+        result.putData("typeList", typeServiceImpl.findByDirectionId(directionId));
+
+        result.success(200, "SUCCESS");
 
         return result;
     }

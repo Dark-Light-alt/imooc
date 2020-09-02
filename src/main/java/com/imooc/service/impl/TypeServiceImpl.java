@@ -78,6 +78,22 @@ public class TypeServiceImpl extends ServiceImpl<TypeDao, Type> implements TypeS
     }
 
     /**
+     * 根据方向 id 查询出类别
+     *
+     * @param directionId 方向 id
+     * @return
+     */
+    @Override
+    public List<Type> findByDirectionId(String directionId) {
+
+        LambdaQueryWrapper<Type> wrapper = new LambdaQueryWrapper<>();
+
+        wrapper.eq(Type::getDirectionId, directionId);
+
+        return baseMapper.selectList(wrapper);
+    }
+
+    /**
      * 条件构造器
      *
      * @param pages
