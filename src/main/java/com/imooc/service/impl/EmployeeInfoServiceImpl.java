@@ -13,12 +13,15 @@ import com.imooc.utils.common.CommonUtils;
 import com.imooc.utils.common.Pages;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.Date;
 import java.util.List;
 
 @Service
 public class EmployeeInfoServiceImpl extends ServiceImpl<EmployeeInfoDao, EmployeeInfo> implements EmployeeInfoService {
 
+    @Resource
+    private EmployeeInfoDao employeeInfoDao;
     /**
      * 添加员工信息
      *
@@ -91,12 +94,6 @@ public class EmployeeInfoServiceImpl extends ServiceImpl<EmployeeInfoDao, Employ
         return baseMapper.updateById(employeeInfo) != 0;
     }
 
-    /**
-     * 根据 employeeId 查询员工信息
-     *
-     * @param employeeInfoId
-     * @return
-     */
     @Override
     public EmployeeInfo findById(String employeeInfoId) {
         return baseMapper.selectById(employeeInfoId);
@@ -170,7 +167,9 @@ public class EmployeeInfoServiceImpl extends ServiceImpl<EmployeeInfoDao, Employ
         if (!CommonUtils.isNotEmpty(employeeInfo.getEmployeeAddress())) {
             throw new ApiException(500, "居住地址不能为空");
         }
-
+        if (!CommonUtils.isNotEmpty(employeeInfo.getPhoto())) {
+            throw new ApiException(500, "头像不能为空");
+        }
         if (!IdcardUtil.isValidCard(employeeInfo.getEmployeeIdcard())) {
             throw new ApiException(500, "身份证号不合法");
         }
@@ -183,7 +182,7 @@ public class EmployeeInfoServiceImpl extends ServiceImpl<EmployeeInfoDao, Employ
     }
 
     /**
-     * 验证参数是否唯一
+     * 验证参数是否唯一s
      *
      * @param employeeInfo
      * @param flag         添加/修改

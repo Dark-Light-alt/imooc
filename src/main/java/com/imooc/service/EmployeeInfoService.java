@@ -36,7 +36,6 @@ public interface EmployeeInfoService extends IService<EmployeeInfo> {
 
     /**
      * 分配账号
-     *
      * @param employeeId      员工 id
      * @param accountNumberId 账号 id
      * @return
@@ -80,4 +79,5 @@ public interface EmployeeInfoService extends IService<EmployeeInfo> {
      * @return
      */
     List<EmployeeInfo> findAllEmployeeInfo();
+
 }

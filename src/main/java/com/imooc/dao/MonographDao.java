@@ -19,7 +19,7 @@ public interface MonographDao extends BaseMapper<Monograph> {
      * @param wrapper
      * @return
      */
-    List<Monograph> pageFindMonographAuthor(Page<Monograph> page,@Param(Constants.WRAPPER) QueryWrapper<Monograph> wrapper);
+    List<Monograph> pageFindMonographAuthor(Page<Monograph> page, @Param(Constants.WRAPPER) QueryWrapper<Monograph> wrapper);
 
     /**
      * 预览专刊

@@ -11,6 +11,8 @@ import com.imooc.utils.common.CommonUtils;
 import com.imooc.utils.common.Pages;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class ArticleServiceImpl extends ServiceImpl<ArticleDao, Article> implements ArticleService {
 
@@ -86,6 +88,31 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleDao, Article> impleme
     @Override
     public Article findById(String articleId) {
         return baseMapper.selectById(articleId);
+    }
+
+    /**
+     * 根据自定义条件删除文章
+     * @param wrapper
+     * @return
+     */
+    @Override
+    public int deleteByWrapper(LambdaQueryWrapper<Article> wrapper) {
+        return baseMapper.delete(wrapper);
+    }
+
+    /**
+     * 根据主键articleId删除文章
+     * @param articleId
+     * @return
+     */
+    @Override
+    public int deleteById(String articleId) {
+        return baseMapper.deleteById(articleId);
+    }
+
+    @Override
+    public List<Article> selectByWrapper(LambdaQueryWrapper<Article> wrapper) {
+        return baseMapper.selectList(wrapper);
     }
 
     /**

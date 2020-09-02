@@ -37,7 +37,10 @@ public class AccountNumberServiceImpl extends ServiceImpl<AccountNumberDao, Acco
 
     @Override
     public boolean update(AccountNumber accountNumber) {
-        return false;
+
+        valid(accountNumber);
+
+        return baseMapper.updateById(accountNumber) != 0;
     }
 
     @Override
@@ -77,6 +80,7 @@ public class AccountNumberServiceImpl extends ServiceImpl<AccountNumberDao, Acco
         return baseMapper.selectById(accountNumberId);
     }
 
+
     @Override
     public Page<AccountNumber> pagingFindAll(Pages pages) {
 
@@ -93,6 +97,13 @@ public class AccountNumberServiceImpl extends ServiceImpl<AccountNumberDao, Acco
         p.setRecords(records);
 
         return p;
+    }
+
+    @Override
+    public AccountNumber findByEmployeeId(String employeeId) {
+
+        return baseMapper.findByEmployeeId(employeeId);
+
     }
 
     /**
