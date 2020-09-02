@@ -1,5 +1,7 @@
 package com.imooc.utils.ReadAndWriteFile;
 
+import com.imooc.exception.ApiException;
+
 import java.io.*;
 
 public class ReadAndWriteFile{
@@ -11,6 +13,13 @@ public class ReadAndWriteFile{
      * @throws Exception
      */
     public static String readFile(String filePath){
+       /* //如果文件不存在
+        File file = new File("filePath");
+        System.out.println("filepath:"+filePath);
+        if(!file.exists()){
+            throw new ApiException(500,"文件损坏或者不存在");
+        }*/
+
         String str = "";
 
         BufferedInputStream in = null;
@@ -48,6 +57,7 @@ public class ReadAndWriteFile{
         }
 
         System.out.println("str:"+str);
+
 
        return str;
     }
