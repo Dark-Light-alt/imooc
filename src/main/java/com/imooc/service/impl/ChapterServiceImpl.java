@@ -3,7 +3,6 @@ package com.imooc.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.imooc.dao.ArticleDao;
 import com.imooc.dao.ChapterDao;
 import com.imooc.entity.Article;
 import com.imooc.entity.Chapter;
@@ -21,6 +20,7 @@ import java.util.List;
 public class ChapterServiceImpl extends ServiceImpl<ChapterDao, Chapter> implements ChapterService {
 
     @Resource
+
     ArticleServiceImpl articleServiceImpl;
 
     @Resource

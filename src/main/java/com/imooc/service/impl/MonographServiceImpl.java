@@ -4,8 +4,6 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.imooc.dao.ArticleDao;
-import com.imooc.dao.ChapterDao;
 import com.imooc.dao.MonographDao;
 import com.imooc.entity.Article;
 import com.imooc.entity.Chapter;
@@ -46,9 +44,9 @@ public class MonographServiceImpl extends ServiceImpl<MonographDao, Monograph> i
         //根据关键字查询
         if(CommonUtils.isNotEmpty(pages.getSearchs().get("keyword"))){
             wrapper.and(
-                w -> w.like("monograph_name",pages.getSearchs().get("keyword"))
-                        .or()
-                        .like("author",pages.getSearchs().get("keyword"))
+                    w -> w.like("monograph_name",pages.getSearchs().get("keyword"))
+                            .or()
+                            .like("author",pages.getSearchs().get("keyword"))
             );
         }
 
@@ -131,11 +129,11 @@ public class MonographServiceImpl extends ServiceImpl<MonographDao, Monograph> i
         //根据关键字查询
         if(CommonUtils.isNotEmpty(pages.getSearchs().get("keyword"))){
             wrapper.and(
-                w->
-                    w.like("monograph_name",pages.getSearchs().get("keyword"))
-                            .or()
-                            .like("author",pages.getSearchs().get("keyword"))
-                );
+                    w->
+                            w.like("monograph_name",pages.getSearchs().get("keyword"))
+                                    .or()
+                                    .like("author",pages.getSearchs().get("keyword"))
+            );
         }
 
         wrapper.orderByAsc("create_Time");
@@ -207,6 +205,15 @@ public class MonographServiceImpl extends ServiceImpl<MonographDao, Monograph> i
             throw new ApiException(500, "价格不能为空");
         }
         return baseMapper.updateById(monograph) != 0;
+    }
+
+    /**
+     * 前台查询所有专刊
+     * @return
+     */
+    @Override
+    public List<Monograph> listAllMonograph(Integer offShelf) {
+        return baseMapper.listAllMonograph(offShelf);
     }
 
     /**
