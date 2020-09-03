@@ -77,4 +77,28 @@ public class DatasController {
 
         return result;
     }
+
+    @RequestMapping(value = "remove/{dataId}", method = RequestMethod.DELETE)
+    public Result remove(@PathVariable String dataId) {
+
+        Result result = new Result();
+
+        datasServiceImpl.remove(dataId);
+
+        result.success(200, "资料删除成功");
+
+        return result;
+    }
+
+    @RequestMapping(value = "update", method = RequestMethod.PUT)
+    public Result update(@RequestBody Datas datas) {
+
+        Result result = new Result();
+
+        datasServiceImpl.update(datas);
+
+        result.success(200, "资料信息修改成功");
+
+        return result;
+    }
 }

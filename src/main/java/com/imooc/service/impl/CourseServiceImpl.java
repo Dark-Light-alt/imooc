@@ -29,6 +29,9 @@ public class CourseServiceImpl extends ServiceImpl<CourseDao, Course> implements
     @Resource
     private VideoServiceImpl videoServiceImpl;
 
+    @Resource
+    private DatasServiceImpl datasServiceImpl;
+
     /**
      * 添加课程信息
      *
@@ -53,6 +56,9 @@ public class CourseServiceImpl extends ServiceImpl<CourseDao, Course> implements
      */
     @Override
     public boolean remove(String courseId) {
+
+        // 删除课程对应的资料
+        datasServiceImpl.removeByCourseId(courseId);
 
         // 查询到课程对应的所有章节
         List<String> chapterIds = chapterServiceImpl.findChapterIdByResource(courseId);
