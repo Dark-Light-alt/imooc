@@ -27,4 +27,10 @@ public interface MonographDao extends BaseMapper<Monograph> {
      * @return
      */
     Monograph previewMonograph(String monograph_id);
+
+    /**
+     * 根据状态前台查询所有上架的专刊
+     * @return
+     */
+    List<Monograph> listAllMonograph(Integer offShelf);
 }

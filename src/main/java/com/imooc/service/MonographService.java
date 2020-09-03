@@ -75,4 +75,10 @@ public interface MonographService extends IService<Monograph> {
      * @return
      */
     boolean putAway(Monograph monograph);
+
+    /**
+     * 前台查询所有专刊
+     * @return
+     */
+    List<Monograph> listAllMonograph(Integer offShelf);
 }

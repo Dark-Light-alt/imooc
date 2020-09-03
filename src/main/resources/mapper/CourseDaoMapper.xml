@@ -361,4 +361,39 @@
         AND ROWNUM &lt; #{param1}
         ORDER BY course.create_time DESC,course.number_of_students DESC
     </select>
+
+    <!-- 查询指定的免费课程根据 方向、类别、难度 结果集映射 -->
+    <resultMap id="assignFreeCourseList" type="java.util.Map">
+        <id column="course_id" property="courseId" javaType="java.lang.String"></id>
+        <result column="cover" property="cover" javaType="java.lang.String"></result>
+        <result column="course_name" property="courseName" javaType="java.lang.String"></result>
+        <result column="course_about" property="courseAbout" javaType="java.lang.String"></result>
+        <result column="author" property="author" javaType="java.lang.String"></result>
+        <result column="number_of_students" property="numberOfStudents" javaType="java.lang.Integer"></result>
+        <result column="type_id" property="typeId" javaType="java.lang.String"></result>
+        <result column="course_level" property="courseLevel" javaType="java.lang.Integer"></result>
+        <result column="price" property="price" javaType="java.math.BigDecimal"></result>
+        <result column="isfree" property="isfree" javaType="java.lang.Integer"></result>
+        <result column="create_time" property="createTime" javaType="java.sql.Date"></result>
+        <result column="course_status" property="courseStatus" javaType="java.lang.Integer"></result>
+        <result column="peoples" property="peoples" javaType="java.lang.Integer"></result>
+    </resultMap>
+
+    <!-- 查询指定的免费课程根据 方向、类别、难度 -->
+    <select id="findAssignFreeCourse" resultMap="assignFreeCourseList">
+        SELECT
+        course.*,
+        (SELECT COUNT(1) FROM my_course WHERE my_course.course_id = course.course_id) AS peoples
+        FROM course
+        WHERE isfree = 0
+        <if test="directionId != '-1'">
+            AND course.type_id IN (SELECT type.type_id FROM type WHERE type.direction_id = #{directionId})
+        </if>
+        <if test="typeId != '-1'">
+            AND course.type_id = #{typeId}
+        </if>
+        <if test="level != '-1'">
+            AND course.course_level = #{level}
+        </if>
+    </select>
 </mapper>

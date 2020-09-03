@@ -109,7 +109,7 @@ public class AccountNumberController {
 
         accountNumberServiceImpl.update(accountNumber);
 
-        result.success(200, "密码修改成功");
+        result.success(200,"密码修改成功");
 
         return result;
     }

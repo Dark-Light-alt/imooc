@@ -123,4 +123,14 @@ public interface CourseService extends IService<Course> {
      * @return
      */
     List<Map<String, Object>> findNewCourse(Integer num);
+
+    /**
+     * 查询指定的免费课程根据 方向、类别、难度
+     *
+     * @param directionId 方向 id，null 全部
+     * @param typeId      类别 id，null 全部
+     * @param level       难度 0 入门 1初级 2 中级 3 高级，null 全部
+     * @return
+     */
+    List<Map<String, Object>> findAssignFreeCourse(String directionId, String typeId, Integer level);
 }

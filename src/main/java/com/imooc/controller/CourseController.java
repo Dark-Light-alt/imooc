@@ -14,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.annotation.Resource;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -287,6 +288,41 @@ public class CourseController {
         Result result = new Result();
 
         result.putData("newCourseList", courseServiceImpl.findNewCourse(num));
+
+        result.success(200, "SUCCESS");
+
+        return result;
+    }
+
+    /**
+     * 查询指定的免费课程根据 方向、类别、难度
+     * <p>
+     * directionId 方向 id，null 全部
+     * typeId      类别 id，null 全部
+     * level       难度 0 入门 1初级 2 中级 3 高级，null 全部
+     *
+     * @return
+     */
+    @RequestMapping(value = "findAssignFreeCourse", method = RequestMethod.POST)
+    public Result findAssignFreeCourse(@RequestBody Map<String, String> params) {
+
+        System.out.println(params);
+
+        Result result = new Result();
+
+        String directionId = params.get("directionId");
+
+        String typeId = params.get("typeId");
+
+        Integer level = null;
+
+        if (null != params.get("level")) {
+            level = Integer.parseInt(params.get("level"));
+        }
+
+        List<Map<String, Object>> courseList = courseServiceImpl.findAssignFreeCourse(directionId, typeId, level);
+
+        result.putData("courseList", courseList);
 
         result.success(200, "SUCCESS");
 
