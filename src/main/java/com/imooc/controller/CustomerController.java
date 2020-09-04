@@ -1,6 +1,12 @@
 package com.imooc.controller;
 
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.JWTVerifier;
+import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.interfaces.Claim;
+import com.auth0.jwt.interfaces.DecodedJWT;
 import com.imooc.entity.Customer;
+import com.imooc.entity.EmployeeInfo;
 import com.imooc.entity.SysNotice;
 import com.imooc.exception.ApiException;
 import com.imooc.service.impl.CustomerServiceImpl;
@@ -9,11 +15,10 @@ import com.imooc.utils.ImageVerificationCode;
 import com.imooc.utils.SymmetryCryptoUtil;
 import com.imooc.utils.common.CommonUtils;
 import com.imooc.utils.common.Result;
+import com.imooc.utils.jwt.JwtUtils;
 import com.imooc.utils.sms.SMSServiceImpl;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.Cookie;
@@ -39,6 +44,8 @@ public class CustomerController {
 
     @Resource
     private SysNoticeServiceImpl sysNoticeServiceImpl;
+
+    private String secretKey;
 
 
     /**
@@ -314,4 +321,122 @@ public class CustomerController {
             throw new ApiException(500, "密码不能为空");
         }
     }
+
+    /**
+     * 加密
+     *
+     * @return
+     */
+    @RequestMapping(value = "encryption", method = RequestMethod.GET)
+    public Result encryption() {
+
+        Result result = new Result();
+
+        result.putData("passwordEncryption", symmetryCryptoUtil);
+
+        result.success(200, "SUCCESS");
+
+        return result;
+    }
+
+    /**
+     * 修改密码
+     * @param params
+     * @return
+     */
+    @RequestMapping(value = "changePassword", method = RequestMethod.POST)
+    public Result changePassword(@RequestBody Map<String, String> params) {
+
+        Result result = new Result();
+        /*String token = request.getHeader("token");
+
+        JWTVerifier verifier = JWT.require(Algorithm.HMAC256(secretKey)).build();
+
+        DecodedJWT decodedJWT = verifier.verify(token);*/
+
+        // 获取用户 id
+        String customerId = params.get("customerId");
+
+
+        // 原密码
+        String customerPassword = params.get("customerPassword");
+
+        // 新密码
+        String newPassword = params.get("newPassword"  );
+
+       /* SymmetryCryptoUtil symmetryCryptoUtil = new SymmetryCryptoUtil();
+
+        //解密
+        String decode = symmetryCryptoUtil.decode(newPassword,customerPassword);
+
+        //加密
+        String newPassword2 = symmetryCryptoUtil.encode(newPassword);*/
+
+        // 确定密码
+        String checkPassword = params.get("checkPassword");
+
+        if (!CommonUtils.isNotEmpty(customerPassword)) {
+            throw new ApiException(500, "原密码不能为空");
+        }
+
+        if (!CommonUtils.isNotEmpty(newPassword)) {
+            throw new ApiException(500, "新密码不能为空");
+        }
+
+        if (!CommonUtils.isNotEmpty(checkPassword)) {
+            throw new ApiException(500, "确认密码不能为空");
+        }
+
+        if (!newPassword.equals(checkPassword)) {
+            throw new ApiException(500, "两次密码不一致");
+        }
+
+        //从数据库查询用户信息
+        Customer customer = customerServiceImpl.findByCustomerId(customerId);
+
+        if (!customer.getCustomerPassword().equals(customerPassword)) {
+            throw new ApiException(500, "原密码错误");
+        }
+
+        customer.setCustomerPassword(newPassword);
+
+        customerServiceImpl.update(customer);
+
+        result.success(200, "密码修改成功");
+
+        return result;
+    }
+
+    /**
+     * 根据id查询用户信息
+     * @param customerId
+     * @return
+     */
+    @RequestMapping(value = "findById/{customerId}", method = RequestMethod.GET)
+    public Result findById(@PathVariable String customerId) {
+
+        Result result = new Result();
+
+        result.putData("customer", customerServiceImpl.findById(customerId));
+
+        result.success(200, "SUCCESS");
+
+        return result;
+    }
+
+    /**
+     * 修改个人信息
+     * @param customer
+     * @return
+     */
+    @RequestMapping(value = "update", method = RequestMethod.PUT)
+    public Result update(@RequestBody Customer customer) {
+
+        Result result = new Result();
+        customerServiceImpl.update(customer);
+
+        result.success(200, "修改成功");
+        return result;
+    }
+
 }

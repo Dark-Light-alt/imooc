@@ -77,7 +77,6 @@
             course.course_name,
             course.course_about,
             course.author,
-            course.number_of_students,
             course.course_level,
             course.isfree,
             course.create_time AS courseCreateTime,

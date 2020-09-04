@@ -35,4 +35,19 @@ public interface CustomerSerivce extends IService<Customer> {
      * @return
      */
     Customer login(String username, String password);
+
+    /**
+     * 根据id查询用户信息
+     * @param customerId
+     * @return
+     */
+    Customer findByCustomerId(String customerId);
+
+    /**
+     * 修改
+     * @param customer
+     * @return
+     */
+    boolean update(Customer customer);
+
 }
