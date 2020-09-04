@@ -220,4 +220,23 @@ public class MonographController {
         return result;
     }
 
+    /**
+     * 前台查询所有专刊
+     * @return
+     */
+    @RequestMapping(value = "listAllMonograph",method = RequestMethod.GET)
+    public Result listAllMonograph(){
+        Result result = new Result();
+
+        List<Monograph> monographList = monographServiceImpl.listAllMonograph(2);
+
+        System.out.println("monographList:"+monographList);
+
+        result.putData("monographList",monographList);
+
+        result.success(200,"SUCCESS");
+
+        return result;
+    }
+
 }

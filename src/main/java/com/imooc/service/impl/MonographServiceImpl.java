@@ -208,6 +208,15 @@ public class MonographServiceImpl extends ServiceImpl<MonographDao, Monograph> i
     }
 
     /**
+     * 前台查询所有专刊
+     * @return
+     */
+    @Override
+    public List<Monograph> listAllMonograph(Integer offShelf) {
+        return baseMapper.listAllMonograph(offShelf);
+    }
+
+    /**
      * 验证参数不能为空
      *
      * @param monograph
