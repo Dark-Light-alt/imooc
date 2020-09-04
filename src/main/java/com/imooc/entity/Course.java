@@ -32,9 +32,6 @@ public class Course {
     @TableField("author")
     private String author;
 
-    @TableField("number_of_students")
-    private Integer numberOfStudents;
-
     @TableField("type_id")
     private String typeId;
 

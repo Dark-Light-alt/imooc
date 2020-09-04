@@ -1,7 +1,9 @@
 package com.imooc.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.imooc.entity.Article;
 import com.imooc.entity.Monograph;
 import com.imooc.service.impl.MonographServiceImpl;
 import com.imooc.utils.aliyun.oss.FileStorageService;
@@ -221,16 +223,15 @@ public class MonographController {
     }
 
     /**
-     * 前台查询所有专刊
+     * 根据条件查询所有上架专刊章节和试读文章
      * @return
      */
     @RequestMapping(value = "listAllMonograph",method = RequestMethod.GET)
     public Result listAllMonograph(){
         Result result = new Result();
 
-        List<Monograph> monographList = monographServiceImpl.listAllMonograph(2);
-
-        System.out.println("monographList:"+monographList);
+        //查询所有试读的文章
+        List<Monograph> monographList = monographServiceImpl.listAllMonograph(null,2,1);
 
         result.putData("monographList",monographList);
 
@@ -238,5 +239,30 @@ public class MonographController {
 
         return result;
     }
+
+
+    /**
+     * 查询专刊下的章节文章
+     * @return
+     */
+    @RequestMapping(value = "listAllArticle/{articleId}",method = RequestMethod.GET)
+    public Result listAllArticle(@PathVariable("articleId") String articleId){
+        Result result = new Result();
+
+        //根据文章编号查询专刊
+        Monograph monograph = monographServiceImpl.findMonographByArticleId(articleId);
+        String monographId = monograph.getMonographId();
+
+        //查询专刊下的所有章节和文章
+        List<Monograph> monographList = monographServiceImpl.listAllMonograph(monographId,2,null);
+
+        result.putData("monographList",monographList);
+
+        result.success(200,"SUCCESS");
+
+        return result;
+    }
+
+
 
 }

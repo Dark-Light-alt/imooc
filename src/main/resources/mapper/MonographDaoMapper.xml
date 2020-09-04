@@ -152,6 +152,7 @@
           p.position_id,
           p.position_name,
           c.chapter_id,
+          c.chapter_name,
           c.chapter_resource,
           a.article_id,
           a.article_name,
@@ -163,7 +164,30 @@
         left join position p on e.position_id = p.position_id
         left join chapter c on c.chapter_resource = m.monograph_id
         left join article a on c.chapter_id=a.chapter_id
-        where m.off_shelf=#{offShelf} and a.try_reading=1
+        <where>
+            <if test="monographId!=null">
+                and m.monograph_id=#{monographId}
+            </if>
+            <if test="offShelf!=null">
+                and m.off_shelf=#{offShelf}
+            </if>
+            <if test="tryReading!=null">
+                and a.try_reading=#{tryReading}
+            </if>
+        </where>
+    </select>
+
+
+    <select id="findMonographByArticleId" resultMap="previewMonographMap">
+        select
+          m.monograph_id,
+          c.chapter_id,
+          c.chapter_resource,
+          a.article_id
+        from monograph m
+        left join chapter c on c.chapter_resource = m.monograph_id
+        left join article a on c.chapter_id=a.chapter_id
+        where a.article_id=#{articleId}
     </select>
 
 </mapper>

@@ -1,9 +1,11 @@
 package com.imooc.service;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.imooc.entity.Monograph;
 import com.imooc.utils.common.Pages;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -77,8 +79,18 @@ public interface MonographService extends IService<Monograph> {
     boolean putAway(Monograph monograph);
 
     /**
-     * 前台查询所有专刊
+     * 根据文章查询专刊
+     * @param articleId
      * @return
      */
-    List<Monograph> listAllMonograph(Integer offShelf);
+    Monograph findMonographByArticleId(String articleId);
+
+    /**
+     * 根据条件查询所有专刊和章节文章
+     * @param monographId
+     * @param offShlef
+     * @param tryReading
+     * @return
+     */
+    List<Monograph> listAllMonograph(String monographId,Integer offShlef,Integer tryReading);
 }
