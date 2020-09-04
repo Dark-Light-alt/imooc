@@ -97,8 +97,9 @@ public class TypeController {
 
     /**
      * 根据方向 id 查询出类别
+     * <p>
+     * directionId 方向 id
      *
-     * @param directionId 方向 id
      * @return
      */
     @RequestMapping(value = "findByDirectionId/{directionId}", method = RequestMethod.GET)

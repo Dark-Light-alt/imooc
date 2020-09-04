@@ -154,21 +154,21 @@ public class CourseServiceImpl extends ServiceImpl<CourseDao, Course> implements
 
 
     /**
-     * 实战课程管理
+     * 课程管理
      * 用于课程的上下架
      *
      * @return
      */
     @Override
-    public Page<Course> payForCourseManage(Pages pages) {
+    public Page<Course> courseManage(Pages pages, Integer isfree) {
 
         Page<Course> page = new Page<>(pages.getCurrentPage(), pages.getPageSize());
 
         LambdaQueryWrapper<Course> wrapper = new LambdaQueryWrapper<>();
-        wrapper.eq(Course::getIsfree, 1);
+        wrapper.eq(Course::getIsfree, isfree);
         wrapper.ne(Course::getCourseStatus, 0);
 
-        String courseName = pages.getSearchs().get("payForCourseName");
+        String courseName = pages.getSearchs().get("courseName");
 
         if (CommonUtils.isNotEmpty(courseName)) {
             wrapper.like(Course::getCourseName, courseName);
@@ -176,81 +176,86 @@ public class CourseServiceImpl extends ServiceImpl<CourseDao, Course> implements
 
         wrapper.orderByDesc(Course::getCreateTime);
 
-        return page.setRecords(baseMapper.payForCourseManage(page, wrapper));
+        return page.setRecords(baseMapper.courseManage(page, wrapper));
     }
 
     /**
-     * 免费课程管理
+     * 多条件查询上架课程
+     * <p>
+     * isfree           是否付费
+     * directionId      是否按照课程方向查找
+     * num              查询条数
+     * news             是否按照最新上架
+     * numberOfStudents 是否查询学习人数最多
      *
-     * @param pages
      * @return
      */
     @Override
-    public Page<Course> freeForCourseManage(Pages pages) {
+    public List<Map<String, Object>> findCourseByCondition(Map<String, Object> params) {
 
-        Page<Course> page = new Page<>(pages.getCurrentPage(), pages.getPageSize());
+        Integer isfree = null;
 
-        LambdaQueryWrapper<Course> wrapper = new LambdaQueryWrapper<>();
-        wrapper.eq(Course::getIsfree, 0);
-        wrapper.ne(Course::getCourseStatus, 0);
-
-        String courseName = pages.getSearchs().get("freeForCourseName");
-
-        if (CommonUtils.isNotEmpty(courseName)) {
-            wrapper.like(Course::getCourseName, courseName);
+        if (null != params.get("isfree")) {
+            isfree = Integer.valueOf(params.get("isfree").toString());
         }
 
-        wrapper.orderByDesc(Course::getCreateTime);
+        String directionId = null;
 
-        return page.setRecords(baseMapper.freeForCourseManage(page, wrapper));
+        if (null != params.get("directionId")) {
+            directionId = params.get("directionId").toString();
+        }
+
+        Integer num = null;
+
+        if (null != params.get("num")) {
+            num = Integer.valueOf(params.get("num").toString());
+        }
+
+        Boolean news = Boolean.valueOf(params.get("news").toString());
+
+        Boolean numberOfStudents = Boolean.valueOf(params.get("numberOfStudents").toString());
+
+        return baseMapper.findCourseByCondition(isfree, directionId, num, news, numberOfStudents);
     }
 
     /**
-     * 根据课程方向查询已上架的课程
+     * 查询指定的课程根据 是否付费、方向、类别、难度
+     * <p>
+     * isfree      是否付费 0 免费 1 付费
+     * directionId 方向 id，null 全部
+     * typeId      类别 id，null 全部
+     * level       难度 0 入门 1初级 2 中级 3 高级，null 全部
      *
-     * @param directionId 课程方向 id
-     * @param num         前 ？ 条
      * @return
      */
     @Override
-    public List<Course> findCourseByDirection(String directionId, Integer num) {
-        return baseMapper.findCourseByDirection(directionId, num);
-    }
+    public List<Map<String, Object>> findAssignCourse(Map<String, Object> params) {
 
-    /**
-     * 根据学习人数查看上架的热门课程
-     *
-     * @param isfree 0 免费 1 实战课程
-     * @param num    前 ？ 条
-     * @return
-     */
-    @Override
-    public List<Map<String, Object>> findHotCourse(Integer isfree, Integer num) {
-        return baseMapper.findHotCourse(isfree, num);
-    }
+        Integer isfree = null;
 
-    /**
-     * 根据学习人数和最新时间查询新上好课
-     *
-     * @param num 前 ？ 条
-     * @return
-     */
-    @Override
-    public List<Map<String, Object>> findNewCourse(Integer num) {
-        return baseMapper.findNewCourse(num);
-    }
+        if (null != params.get("isfree")) {
+            isfree = Integer.valueOf(params.get("isfree").toString());
+        }
 
-    /**
-     * 查询指定的免费课程根据 方向、类别、难度
-     *
-     * @param directionId 方向 id，null 全部
-     * @param typeId      类别 id，null 全部
-     * @param level       难度 0 入门 1初级 2 中级 3 高级，null 全部
-     * @return
-     */
-    @Override
-    public List<Map<String, Object>> findAssignFreeCourse(String directionId, String typeId, Integer level) {
-        return baseMapper.findAssignFreeCourse(directionId, typeId, level);
+        String directionId = null;
+
+        if (null != params.get("directionId") && !"null".equals(params.get("directionId"))) {
+            directionId = params.get("directionId").toString();
+        }
+
+        String typeId = null;
+
+        if (null != params.get("typeId")) {
+            typeId = params.get("typeId").toString();
+        }
+
+        Integer level = null;
+
+        if (null != params.get("level")) {
+            level = Integer.valueOf(params.get("level").toString());
+        }
+
+        return baseMapper.findAssignCourse(isfree, directionId, typeId, level);
     }
 
     /**

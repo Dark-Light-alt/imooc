@@ -1,5 +1,6 @@
 package com.imooc.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.imooc.entity.Course;
@@ -128,34 +129,21 @@ public class CourseController {
     }
 
     /**
-     * 实战课程管理
+     * 课程管理
      * 用于实战课程的上下架
      *
      * @return
      */
-    @RequestMapping(value = "payForCourseManage", method = RequestMethod.POST)
-    public Result payForCourseManage(@RequestBody Pages pages) {
+    @RequestMapping(value = "courseManage", method = RequestMethod.POST)
+    public Result payForCourseManage(@RequestBody Map<String, String> params) {
 
         Result result = new Result();
 
-        Page<Course> data = courseServiceImpl.payForCourseManage(pages);
+        Pages pages = JSON.parseObject(params.get("pages"), Pages.class);
 
-        pages.setLastPage(data.getPages());
-        pages.setTotal(data.getTotal());
+        Integer isfree = Integer.valueOf(params.get("isfree").toString());
 
-        result.putData("courseList", data.getRecords());
-        result.setPages(pages);
-
-        result.success(200, "SUCCESS");
-
-        return result;
-    }
-
-    @RequestMapping(value = "freeForCourseManage", method = RequestMethod.POST)
-    public Result freeForCourseManage(@RequestBody Pages pages) {
-        Result result = new Result();
-
-        Page<Course> data = courseServiceImpl.freeForCourseManage(pages);
+        Page<Course> data = courseServiceImpl.courseManage(pages, isfree);
 
         pages.setLastPage(data.getPages());
         pages.setTotal(data.getTotal());
@@ -240,87 +228,46 @@ public class CourseController {
     }
 
     /**
-     * 根据课程方向查询已上架的课程
-     *
-     * @param directionId 课程方向 id
-     * @param num         前 ？ 条
-     * @return
-     */
-    @RequestMapping(value = "findCourseByDirection/{directionId}/{num}", method = RequestMethod.GET)
-    public Result findCourseByDirection(@PathVariable String directionId, @PathVariable Integer num) {
-
-        Result result = new Result();
-
-        result.putData("courseByDirectionList", courseServiceImpl.findCourseByDirection(directionId, num));
-
-        result.success(200, "SUCCESS");
-
-        return result;
-    }
-
-    /**
-     * 根据学习人数查看上架的热门课程
-     *
-     * @param isfree 0 免费 1 实战课程
-     * @param num    前 ？ 条
-     * @return
-     */
-    @RequestMapping(value = "findHotCourse/{isfree}/{num}", method = RequestMethod.GET)
-    public Result findHotCourse(@PathVariable Integer isfree, @PathVariable Integer num) {
-        Result result = new Result();
-
-        result.putData("hotCourseList", courseServiceImpl.findHotCourse(isfree, num));
-
-        result.success(200, "SUCCESS");
-
-        return result;
-    }
-
-    /**
-     * 根据学习人数和最新时间查询新上好课
-     *
-     * @param num 前 ？ 条
-     * @return
-     */
-    @RequestMapping(value = "findNewCourse/{num}", method = RequestMethod.GET)
-    public Result findNewCourse(@PathVariable Integer num) {
-
-        Result result = new Result();
-
-        result.putData("newCourseList", courseServiceImpl.findNewCourse(num));
-
-        result.success(200, "SUCCESS");
-
-        return result;
-    }
-
-    /**
-     * 查询指定的免费课程根据 方向、类别、难度
+     * 多条件查询上架课程
      * <p>
+     * isfree           是否付费
+     * directionId      是否按照课程方向查找
+     * num              查询条数
+     * news             是否按照最新上架
+     * numberOfStudents 是否查询学习人数最多
+     */
+    @RequestMapping("findCourseByCondition")
+    public Result findCourseByCondition(@RequestBody Map<String, Object> params) {
+
+        Result result = new Result();
+
+        List<Map<String, Object>> courseList = courseServiceImpl.findCourseByCondition(params);
+
+        result.putData("courseList", courseList);
+
+        result.success(200, "SUCCESS");
+
+        return result;
+    }
+
+    /**
+     * 查询指定的课程根据 是否付费、方向、类别、难度
+     * <p>
+     * isfree      是否付费 0 免费 1 付费
      * directionId 方向 id，null 全部
      * typeId      类别 id，null 全部
      * level       难度 0 入门 1初级 2 中级 3 高级，null 全部
      *
      * @return
      */
-    @RequestMapping(value = "findAssignFreeCourse", method = RequestMethod.POST)
-    public Result findAssignFreeCourse(@RequestBody Map<String, String> params) {
-
-        System.out.println(params);
+    @RequestMapping(value = "findAssignCourse", method = RequestMethod.POST)
+    public Result findAssignCourse(@RequestBody Map<String, Object> params) {
 
         Result result = new Result();
 
-        String directionId = params.get("directionId");
+        System.out.println(params);
 
-        String typeId = params.get("typeId");
-
-        Integer level = null;
-
-        if (null != params.get("level")) {
-            level = Integer.parseInt(params.get("level"));
-        }
-
-        List<Map<String, Object>> courseList = courseServiceImpl.findAssignFreeCourse(directionId, typeId, level);
+        List<Map<String, Object>> courseList = courseServiceImpl.findAssignCourse(params);
 
         result.putData("courseList", courseList);
 

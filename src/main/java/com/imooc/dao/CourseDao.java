@@ -24,58 +24,35 @@ public interface CourseDao extends BaseMapper<Course> {
     Course previewCourse(String courseId);
 
     /**
-     * 实战课程管理
+     * 课程管理
      * 用于课程的上下架
      *
      * @param page
      * @param wrapper
      * @return
      */
-    List<Course> payForCourseManage(Page<Course> page, @Param(Constants.WRAPPER) LambdaQueryWrapper<Course> wrapper);
+    List<Course> courseManage(Page<Course> page, @Param(Constants.WRAPPER) LambdaQueryWrapper<Course> wrapper);
 
     /**
-     * 免费课程管理
-     * 用于课程的上下架
+     * 多条件查询上架课程
      *
-     * @param page
-     * @param wrapper
+     * @param isfree           是否付费
+     * @param directionId      是否按照课程方向查找
+     * @param num              查询条数
+     * @param news             是否按照最新上架
+     * @param numberOfStudents 是否查询学习人数最多
      * @return
      */
-    List<Course> freeForCourseManage(Page<Course> page, @Param(Constants.WRAPPER) LambdaQueryWrapper<Course> wrapper);
+    List<Map<String, Object>> findCourseByCondition(@Param("isfree") Integer isfree, @Param("directionId") String directionId, @Param("num") Integer num, @Param("news") Boolean news, @Param("numberOfStudents") Boolean numberOfStudents);
 
     /**
-     * 根据课程方向查询已上架的课程
+     * 查询指定的课程根据 是否付费、方向、类别、难度
      *
-     * @param directionId 课程方向 id
-     * @param num         前 ？ 条
-     * @return
-     */
-    List<Course> findCourseByDirection(String directionId, Integer num);
-
-    /**
-     * 根据学习人数查看上架的热门课程
-     *
-     * @param isfree 0 免费 1 实战课程
-     * @param num    前 ？ 条
-     * @return
-     */
-    List<Map<String, Object>> findHotCourse(Integer isfree, Integer num);
-
-    /**
-     * 根据学习人数和最新时间查询新上好课
-     *
-     * @param num 前 ？ 条
-     * @return
-     */
-    List<Map<String, Object>> findNewCourse(Integer num);
-
-    /**
-     * 查询指定的免费课程根据 方向、类别、难度
-     *
+     * @param isfree      是否付费 0 免费 1 付费
      * @param directionId 方向 id，null 全部
      * @param typeId      类别 id，null 全部
      * @param level       难度 0 入门 1初级 2 中级 3 高级，null 全部
      * @return
      */
-    List<Map<String, Object>> findAssignFreeCourse(@Param("directionId") String directionId, @Param("typeId") String typeId, @Param("level") Integer level);
+    List<Map<String, Object>> findAssignCourse(@Param("isfree") Integer isfree, @Param("directionId") String directionId, @Param("typeId") String typeId, @Param("level") Integer level);
 }

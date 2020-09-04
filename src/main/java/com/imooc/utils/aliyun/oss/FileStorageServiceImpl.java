@@ -1,6 +1,7 @@
 package com.imooc.utils.aliyun.oss;
 
 import com.aliyun.oss.OSS;
+import com.aliyun.oss.model.OSSObject;
 import com.aliyun.oss.model.ObjectMetadata;
 import com.aliyun.oss.model.PutObjectRequest;
 import com.imooc.utils.aliyun.BaseConfig;
@@ -64,5 +65,16 @@ public class FileStorageServiceImpl implements FileStorageService {
         }
 
         return url;
+    }
+
+    @Override
+    public InputStream getInputStream(String url) {
+
+        // 构建 oss 客户端
+        OSS ossClient = baseConfig.ossClient();
+
+        OSSObject object = ossClient.getObject(BUCKET, url);
+
+        return object.getObjectContent();
     }
 }
