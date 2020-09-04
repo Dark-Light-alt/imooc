@@ -80,7 +80,7 @@ public class TypeServiceImpl extends ServiceImpl<TypeDao, Type> implements TypeS
     /**
      * 根据方向 id 查询出类别
      *
-     * @param directionId 方向 id
+     * @param directionId 方向 id，null 时查询全部
      * @return
      */
     @Override
@@ -88,7 +88,12 @@ public class TypeServiceImpl extends ServiceImpl<TypeDao, Type> implements TypeS
 
         LambdaQueryWrapper<Type> wrapper = new LambdaQueryWrapper<>();
 
-        wrapper.eq(Type::getDirectionId, directionId);
+        if (null != directionId && !"null".equals(directionId)) {
+            System.out.println(directionId);
+            wrapper.eq(Type::getDirectionId, directionId);
+        }
+
+        wrapper.eq(Type::getTypeIsenable, 0);
 
         return baseMapper.selectList(wrapper);
     }

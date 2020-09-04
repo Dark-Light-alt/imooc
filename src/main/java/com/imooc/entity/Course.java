@@ -51,10 +51,10 @@ public class Course {
     private Integer courseStatus;
 
     @TableField(exist = false)
-    private EmployeeInfo employeeInfo;
+    private Integer numberOfStudents;
 
     @TableField(exist = false)
-    private Customer customer;
+    private EmployeeInfo employeeInfo;
 
     @TableField(exist = false)
     private Direction direction;
