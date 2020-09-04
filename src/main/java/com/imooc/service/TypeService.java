@@ -59,4 +59,12 @@ public interface TypeService extends IService<Type> {
      * @return
      */
     List<Type> findAll();
+
+    /**
+     * 根据方向 id 查询出类别
+     *
+     * @param directionId 方向 id
+     * @return
+     */
+    List<Type> findByDirectionId(String directionId);
 }

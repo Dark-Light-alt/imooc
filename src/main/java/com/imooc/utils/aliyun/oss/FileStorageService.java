@@ -42,6 +42,15 @@ public interface FileStorageService {
      */
     String upload(InputStream in, String fileName, String type);
 
+
+    /**
+     * 获取输入流对象，用于文件下载
+     *
+     * @param url oss 文件存储路径
+     * @return
+     */
+    InputStream getInputStream(String url);
+
     /**
      * 根据文件后缀获取 contentType
      *

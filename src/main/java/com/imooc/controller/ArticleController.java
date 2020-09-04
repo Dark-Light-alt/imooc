@@ -100,6 +100,11 @@ public class ArticleController {
     }
 
 
+    /**
+     * 读取文章
+     * @param articleId
+     * @return
+     */
     @RequestMapping(value = "readFile/{articleId}",method = RequestMethod.GET)
     public Result readFile(@PathVariable("articleId") String articleId){
 

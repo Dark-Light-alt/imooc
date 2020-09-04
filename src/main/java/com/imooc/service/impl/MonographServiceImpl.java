@@ -208,6 +208,28 @@ public class MonographServiceImpl extends ServiceImpl<MonographDao, Monograph> i
     }
 
     /**
+     * 根据文章查询专刊
+     * @param articleId
+     * @return
+     */
+    @Override
+    public Monograph findMonographByArticleId(String articleId) {
+        return baseMapper.findMonographByArticleId(articleId);
+    }
+
+    /**
+     * 根据条件查询专刊和章节文章
+     * @param monographId
+     * @param offShlef
+     * @param tryReading
+     * @return
+     */
+    @Override
+    public List<Monograph> listAllMonograph(String monographId,Integer offShlef,Integer tryReading) {
+        return baseMapper.listAllMonograph(monographId,offShlef,tryReading);
+    }
+
+    /**
      * 验证参数不能为空
      *
      * @param monograph

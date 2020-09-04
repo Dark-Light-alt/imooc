@@ -19,6 +19,10 @@ public class MyCourse implements Serializable {
     @TableId("my_course_id")
     private String myCourseId;
 
+    // 用户 id
+    @TableField("customer_id")
+    private String customerId;
+
     // 课程 id
     @TableField("course_id")
     private String courseId;

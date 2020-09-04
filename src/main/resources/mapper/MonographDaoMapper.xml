@@ -27,6 +27,10 @@
             <result column="hiredate" property="hiredate"></result>
             <result column="isleave" property="isleave"></result>
             <result column="leave_date" property="leaveDate"></result>
+            <association property="position" javaType="com.imooc.entity.Position">
+                <id column="position_id" property="positionId"></id>
+                <result column="position_name" property="positionName"></result>
+            </association>
         </association>
     </resultMap>
 
@@ -132,5 +136,58 @@
         ORDER BY c.create_time ASC,a.create_time ASC
     </select>
 
+    <select id="listAllMonograph" resultMap="previewMonographMap">
+        select
+          m.monograph_id,
+          m.monograph_name,
+          m.cover,
+          m.highlights,
+          m.monograph_about,
+          m.author,
+          m.price,
+          m.off_shelf,
+          e.employee_id,
+          e.employee_name,
+          e.photo,
+          p.position_id,
+          p.position_name,
+          c.chapter_id,
+          c.chapter_name,
+          c.chapter_resource,
+          a.article_id,
+          a.article_name,
+          a.article_url,
+          a.try_reading,
+          a.chapter_id
+        from monograph m
+        left join employee_info e on m.author=e.employee_id
+        left join position p on e.position_id = p.position_id
+        left join chapter c on c.chapter_resource = m.monograph_id
+        left join article a on c.chapter_id=a.chapter_id
+        <where>
+            <if test="monographId!=null">
+                and m.monograph_id=#{monographId}
+            </if>
+            <if test="offShelf!=null">
+                and m.off_shelf=#{offShelf}
+            </if>
+            <if test="tryReading!=null">
+                and a.try_reading=#{tryReading}
+            </if>
+        </where>
+    </select>
+
+
+    <select id="findMonographByArticleId" resultMap="previewMonographMap">
+        select
+          m.monograph_id,
+          c.chapter_id,
+          c.chapter_resource,
+          a.article_id
+        from monograph m
+        left join chapter c on c.chapter_resource = m.monograph_id
+        left join article a on c.chapter_id=a.chapter_id
+        where a.article_id=#{articleId}
+    </select>
 
 </mapper>
