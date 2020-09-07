@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.imooc.dao.MyCourseDao">
+
+    <resultMap id="courseList" type="java.util.Map">
+        <id column="my_course_id" property="myCourseId"></id>
+        <result column="course_id" property="courseId"></result>
+        <result column="course_name" property="courseName"></result>
+        <result column="course_about" property="courseAbout"></result>
+        <result column="cover" property="cover"></result>
+        <result column="isfree" property="isfree"></result>
+        <association property="video" column="course_id" select="findVideo" javaType="java.util.Map">
+            <id column="VIDEO_ID" property="videoId"></id>
+        </association>
+    </resultMap>
+
+    <select id="findByCustomer" resultMap="courseList">
+        SELECT
+        my_course.my_course_id,
+        course.course_id,
+        course.course_name,
+        course.course_about,
+        course.cover,
+        course.isfree
+        FROM my_course
+        LEFT JOIN course
+        ON my_course.course_id = course.course_id
+        WHERE my_course.customer_id = #{customerId}
+        <if test="null != isfree">
+            AND course.isfree = #{isfree}
+        </if>
+        ORDER BY my_course.create_time
+    </select>
+
+    <select id="findVideo" resultMap="courseList">
+        SELECT video_id.* FROM (SELECT video_id FROM video where chapter_id = (SELECT chapter_id.* FROM ( SELECT chapter_id  FROM chapter WHERE chapter_resource = #{course_id} ORDER BY chapter.create_time) chapter_id WHERE ROWNUM = 1) AND video.video_isenable = 0 ORDER BY video.create_time) video_id WHERE ROWNUM = 1
+    </select>
+</mapper>

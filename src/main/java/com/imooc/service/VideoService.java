@@ -37,6 +37,14 @@ public interface VideoService extends IService<Video> {
     boolean removeById(String videoId);
 
     /**
+     * 禁用/启用
+     * @param videoId 视频 id
+     * @param isenable 0 启用 1 禁用
+     * @return
+     */
+    int changeIsenable(String videoId, Integer isenable);
+
+    /**
      * 修改视频信息
      *
      * @param video

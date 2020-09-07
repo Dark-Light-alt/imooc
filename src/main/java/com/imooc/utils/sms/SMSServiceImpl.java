@@ -22,10 +22,14 @@ public class SMSServiceImpl implements SMSService {
     @Override
     public String register(String... phone) {
 
-        String registerTemplate = baseSMSConfig.registerTemplate(generationVerificationCode(6), 15);
+        String code = generationVerificationCode(6);
+
+        String registerTemplate = baseSMSConfig.registerTemplate(code, 15);
 
         String request = init(baseSMSConfig.getUrl(), baseSMSConfig.getUsername(), baseSMSConfig.getPassword(), registerTemplate, phone);
 
-        return send(request);
+        send(request);
+
+        return code;
     }
 }

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.imooc.dao.AnswerDao">
+
+    <resultMap id="answerList" type="java.util.Map">
+        <id column="answer_id" property="answerId"></id>
+        <result column="content" property="content"></result>
+        <result column="publisher" property="publisher"></result>
+        <result column="question_id" property="questionId"></result>
+        <result column="create_time" property="createTime"></result>
+        <result column="likes" property="likes"></result>
+        <association property="customer" javaType="java.util.Map">
+            <id column="customer_id" property="customerId"></id>
+            <result column="customer_nickname" property="customerNickname"></result>
+            <result column="customer_photo" property="customerPhoto"></result>
+        </association>
+    </resultMap>
+
+    <select id="findByQuestion" resultMap="answerList">
+        SELECT
+            answer.*,
+            customer.customer_id,
+            customer.customer_nickname,
+            customer.customer_photo
+        FROM answer
+        LEFT JOIN customer
+        ON answer.publisher = customer.customer_id
+        WHERE answer.question_id = #{questionId}
+        AND answer.answer_isenable = 0
+        ORDER BY answer.likes DESC,answer.create_time ASC
+    </select>
+
+    <update id="like">
+        UPDATE answer SET likes = likes + 1 WHERE answer.answer_id = #{answerId}
+    </update>
+</mapper>

@@ -149,4 +149,16 @@ public class DatasController {
             }
         }
     }
+
+    @RequestMapping(value = "findAllByCourseId/{courseId}", method = RequestMethod.GET)
+    public Result findAllByCourseId(@PathVariable String courseId) {
+
+        Result result = new Result();
+
+        result.putData("dataList", datasServiceImpl.findAllByCourseId(courseId));
+
+        result.success(200, "SUCCESS");
+
+        return result;
+    }
 }

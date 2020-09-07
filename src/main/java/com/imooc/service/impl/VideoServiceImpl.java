@@ -1,6 +1,7 @@
 package com.imooc.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.imooc.dao.VideoDao;
@@ -58,6 +59,24 @@ public class VideoServiceImpl extends ServiceImpl<VideoDao, Video> implements Vi
     @Override
     public boolean removeById(String videoId) {
         return baseMapper.deleteById(videoId) != 0;
+    }
+
+    /**
+     * 禁用/启用
+     *
+     * @param videoId  视频 id
+     * @param isenable 0 启用 1 禁用
+     * @return
+     */
+    @Override
+    public int changeIsenable(String videoId, Integer isenable) {
+
+        LambdaUpdateWrapper<Video> wrapper = new LambdaUpdateWrapper<>();
+        wrapper.set(Video::getVideoIsenable, isenable);
+
+        wrapper.eq(Video::getVideoId, videoId);
+
+        return baseMapper.update(null, wrapper);
     }
 
     @Override

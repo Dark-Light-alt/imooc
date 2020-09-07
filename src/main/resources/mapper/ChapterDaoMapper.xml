@@ -6,4 +6,37 @@
         FROM chapter
         WHERE chapter_resource = #{resource}
     </select>
+
+    <resultMap id="chapterList" type="com.imooc.entity.Chapter">
+        <id column="chapter_id" property="chapterId"></id>
+        <result column="chapter_name" property="chapterName"></result>
+        <result column="chapter_about" property="chapterAbout"></result>
+        <result column="chapter_type" property="chapterType"></result>
+        <result column="chapter_resource" property="chapterResource"></result>
+        <result column="create_time" property="createTime"></result>
+        <collection property="videoList" ofType="com.imooc.entity.Video">
+            <id column="video_id" property="videoId"></id>
+            <result column="video_name" property="videoName"></result>
+            <result column="video_url" property="videoUrl"></result>
+            <result column="try_and_see" property="tryAndSee"></result>
+            <result column="duration" property="duration"></result>
+        </collection>
+    </resultMap>
+
+    <!-- 根据课程 id 进行查询对应的所有章节和对应的所有视频 -->
+    <select id="courseLearn" resultMap="chapterList">
+        SELECT
+            chapter.*,
+            video.video_id,
+            video.video_name,
+            video.video_url,
+            video.try_and_see,
+            video.duration
+        FROM chapter
+        LEFT JOIN video
+        ON chapter.chapter_id = video.chapter_id
+        WHERE chapter.chapter_resource = #{courseId}
+        AND video.video_isenable = 0
+        ORDER BY chapter.create_time ASC,video.create_time ASC
+    </select>
 </mapper>

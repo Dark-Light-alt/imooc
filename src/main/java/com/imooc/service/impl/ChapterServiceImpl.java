@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class ChapterServiceImpl extends ServiceImpl<ChapterDao, Chapter> implements ChapterService {
@@ -94,6 +95,17 @@ public class ChapterServiceImpl extends ServiceImpl<ChapterDao, Chapter> impleme
     }
 
     /**
+     * 课程学习：根据课程 id 查询对应的所有章节和所有正常状态的视频
+     *
+     * @param courseId 课程 id
+     * @return
+     */
+    @Override
+    public List<Chapter> courseLearn(String courseId) {
+        return baseMapper.courseLearn(courseId);
+    }
+
+    /**
      * 根据 id 查询章节信息
      *
      * @param chapterId 章节 id
@@ -133,6 +145,7 @@ public class ChapterServiceImpl extends ServiceImpl<ChapterDao, Chapter> impleme
 
     /**
      * 删除章节和文章
+     *
      * @param chapterId
      * @return
      */
@@ -140,7 +153,7 @@ public class ChapterServiceImpl extends ServiceImpl<ChapterDao, Chapter> impleme
     public boolean deleteChatsAndArts(String chapterId) {
         LambdaQueryWrapper<Article> wrapper = new LambdaQueryWrapper<>();
 
-        wrapper.eq(Article::getChapterId,chapterId);
+        wrapper.eq(Article::getChapterId, chapterId);
 
         //先删除章节下的文章
         articleServiceImpl.deleteByWrapper(wrapper);
@@ -152,6 +165,7 @@ public class ChapterServiceImpl extends ServiceImpl<ChapterDao, Chapter> impleme
 
     /**
      * 根据条件查找章节
+     *
      * @param wrapper
      * @return
      */
@@ -162,6 +176,7 @@ public class ChapterServiceImpl extends ServiceImpl<ChapterDao, Chapter> impleme
 
     /**
      * 根据主键删除章节
+     *
      * @param chapterId
      * @return
      */

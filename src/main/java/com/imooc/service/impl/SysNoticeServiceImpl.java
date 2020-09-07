@@ -27,7 +27,7 @@ public class SysNoticeServiceImpl extends ServiceImpl<SysNoticeDao, SysNotice> i
      */
     @Override
     public boolean append(SysNotice sysNotice) {
-        return baseMapper.insert(sysNotice) != 0;
+        return baseMapper.append(sysNotice.getTitle(), sysNotice.getContent(), sysNotice.getCustomerId()) != 0;
     }
 
     /**

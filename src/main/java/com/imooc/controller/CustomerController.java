@@ -78,8 +78,6 @@ public class CustomerController {
         // 验证成功发送手机验证码
         String phoneCode = smsServiceImpl.register(phone);
 
-        System.out.println(phoneCode);
-
         result.putData("phoneCode", symmetryCryptoUtil.encode(phoneCode));
 
         result.success(200, "SUCCESS");
@@ -292,7 +290,7 @@ public class CustomerController {
         }
 
         String decode = symmetryCryptoUtil.decode(code);
-        System.out.println(decode);
+
         if (!phoneCode.equals(decode)) {
             throw new ApiException(500, "手机验证码错误");
         }
