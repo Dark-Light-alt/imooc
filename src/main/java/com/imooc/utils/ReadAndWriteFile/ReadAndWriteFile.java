@@ -13,12 +13,12 @@ public class ReadAndWriteFile{
      * @throws Exception
      */
     public static String readFile(String filePath){
-       /* //如果文件不存在
-        File file = new File("filePath");
+        //如果文件不存在
+        File file = new File(filePath);
         System.out.println("filepath:"+filePath);
         if(!file.exists()){
             throw new ApiException(500,"文件损坏或者不存在");
-        }*/
+        }
 
         String str = "";
 
@@ -70,6 +70,9 @@ public class ReadAndWriteFile{
     public static int writeFile(String url,String str) {
         //创建文件
         File file = new File(url);
+        if(!file.getParentFile().exists()){
+            file.getParentFile().mkdirs();
+        }
 
         BufferedOutputStream out = null;
         try {
