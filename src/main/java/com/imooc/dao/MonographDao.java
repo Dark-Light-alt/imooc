@@ -40,11 +40,9 @@ public interface MonographDao extends BaseMapper<Monograph> {
      * 根据条件查询专刊和章节文章
      * @param monographId
      * @param offShlef
-     * @param tryReading
      * @return
      */
-    List<Monograph> listAllMonograph(@Param("monographId") String monographId,
-                                     @Param("offShelf") Integer offShlef,@Param("tryReading") Integer tryReading);
+    List<Monograph> listAllMonograph(@Param("monographId") String monographId, @Param("offShelf") Integer offShlef);
 
     
 }
