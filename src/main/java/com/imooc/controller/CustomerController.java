@@ -30,7 +30,6 @@ import java.util.Map;
 @RestController
 @RequestMapping("CustomerController")
 public class CustomerController {
-
     @Resource
     private CustomerServiceImpl customerServiceImpl;
 
@@ -45,9 +44,6 @@ public class CustomerController {
 
     @Resource
     private SysNoticeServiceImpl sysNoticeServiceImpl;
-
-    private String secretKey;
-
 
     /**
      * 生成图片验证码

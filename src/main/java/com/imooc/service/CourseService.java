@@ -12,7 +12,6 @@ import java.util.Map;
  * 课程服务
  */
 public interface CourseService extends IService<Course> {
-
     /**
      * 添加课程
      *

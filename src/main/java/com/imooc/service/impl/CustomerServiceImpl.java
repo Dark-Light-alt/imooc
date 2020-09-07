@@ -15,7 +15,6 @@ import javax.annotation.Resource;
  */
 @Service
 public class CustomerServiceImpl extends ServiceImpl<CustomerDao, Customer> implements CustomerSerivce {
-
     @Resource
     private SymmetryCryptoUtil symmetryCryptoUtil;
 
