@@ -171,9 +171,6 @@
             <if test="offShelf!=null">
                 and m.off_shelf=#{offShelf}
             </if>
-            <if test="tryReading!=null">
-                and a.try_reading=#{tryReading}
-            </if>
         </where>
     </select>
 

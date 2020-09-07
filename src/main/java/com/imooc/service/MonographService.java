@@ -89,8 +89,7 @@ public interface MonographService extends IService<Monograph> {
      * 根据条件查询所有专刊和章节文章
      * @param monographId
      * @param offShlef
-     * @param tryReading
      * @return
      */
-    List<Monograph> listAllMonograph(String monographId,Integer offShlef,Integer tryReading);
+    List<Monograph> listAllMonograph(String monographId,Integer offShlef);
 }

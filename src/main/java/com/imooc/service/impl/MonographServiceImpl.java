@@ -221,12 +221,11 @@ public class MonographServiceImpl extends ServiceImpl<MonographDao, Monograph> i
      * 根据条件查询专刊和章节文章
      * @param monographId
      * @param offShlef
-     * @param tryReading
      * @return
      */
     @Override
-    public List<Monograph> listAllMonograph(String monographId,Integer offShlef,Integer tryReading) {
-        return baseMapper.listAllMonograph(monographId,offShlef,tryReading);
+    public List<Monograph> listAllMonograph(String monographId,Integer offShlef) {
+        return baseMapper.listAllMonograph(monographId,offShlef);
     }
 
     /**

@@ -225,7 +225,7 @@ public class MonographController {
     }
 
     /**
-     * 根据条件查询所有上架专刊章节和试读文章
+     * 根据条件查询所有上架专刊
      * @return
      */
     @RequestMapping(value = "listAllMonograph",method = RequestMethod.GET)
@@ -233,7 +233,7 @@ public class MonographController {
         Result result = new Result();
 
         //查询所有试读的文章
-        List<Monograph> monographList = monographServiceImpl.listAllMonograph(null,2,1);
+        List<Monograph> monographList = monographServiceImpl.listAllMonograph(null,2);
 
         result.putData("monographList",monographList);
 
@@ -256,7 +256,7 @@ public class MonographController {
         String monographId = monograph.getMonographId();
 
         //查询专刊下的所有章节和文章
-        List<Monograph> monographList = monographServiceImpl.listAllMonograph(monographId,2,null);
+        List<Monograph> monographList = monographServiceImpl.listAllMonograph(monographId,2);
 
         result.putData("monographList",monographList);
 
