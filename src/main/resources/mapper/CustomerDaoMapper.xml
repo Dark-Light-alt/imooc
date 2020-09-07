@@ -2,10 +2,30 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.imooc.dao.CustomerDao">
+    <resultMap id="customerMap" type="com.imooc.entity.Customer">
+        <id property="customerId" column="customer_id"></id>
+        <result property="customerNickname" column="customer_nickname"></result>
+        <result property="customerPhoto" column="customer_photo"></result>
+        <result property="customerEmail" column="customer_email"></result>
+        <result property="customerPhone" column="customer_phone"></result>
+        <result property="customerPassword" column="customer_password"></result>
+        <result property="positionId" column="position_id"></result>
+        <result property="customerAddress" column="customer_address"></result>
+        <result property="customerSex" column="custome_sex"></result>
+        <result property="personalAbout" column="personal_about"></result>
+        <result property="createTime" column="create_time"></result>
+        <association property="customerPosition" javaType="com.imooc.entity.CustomerPosition">
+            <id column="position_id" property="positionId"></id>
+            <result column="positionName" property="positionName"></result>
+        </association>
+    </resultMap>
+
     <select id="findByCustomerId" resultType="com.imooc.entity.Customer">
         select * from customer where customer_id = #{customerId}
     </select>
-    <select id="findPosition" resultType="com.imooc.entity.Customer">
-        select c.*,p.position_name as positionName from customer c left join customer_position p on c.position_id = p.position_id where customer_id = #{customerId}
+    <select id="findPosition" resultMap="customerMap">
+        select c.*,p.position_name as positionName from customer c
+        left join customer_position p on c.position_id = p.position_id
+        where customer_id = #{customerId}
     </select>
 </mapper>
