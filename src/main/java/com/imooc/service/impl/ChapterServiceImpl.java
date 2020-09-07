@@ -15,14 +15,12 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class ChapterServiceImpl extends ServiceImpl<ChapterDao, Chapter> implements ChapterService {
 
     @Resource
-
-    ArticleServiceImpl articleServiceImpl;
+    private ArticleServiceImpl articleServiceImpl;
 
     @Resource
     private VideoServiceImpl videoServiceImpl;
@@ -151,6 +149,7 @@ public class ChapterServiceImpl extends ServiceImpl<ChapterDao, Chapter> impleme
      */
     @Override
     public boolean deleteChatsAndArts(String chapterId) {
+
         LambdaQueryWrapper<Article> wrapper = new LambdaQueryWrapper<>();
 
         wrapper.eq(Article::getChapterId, chapterId);
@@ -158,9 +157,8 @@ public class ChapterServiceImpl extends ServiceImpl<ChapterDao, Chapter> impleme
         //先删除章节下的文章
         articleServiceImpl.deleteByWrapper(wrapper);
 
-        //在删除章节
-        int i = baseMapper.deleteById(chapterId);
-        return i != 0;
+        //删除章节
+        return baseMapper.deleteById(chapterId) != 0;
     }
 
     /**
