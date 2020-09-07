@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.imooc.dao.CommentsDao">
+
+    <resultMap id="commentList" type="java.util.Map">
+        <id column="comment_id" property="commentId"></id>
+        <result column="content" property="content"></result>
+        <result column="likes" property="likes"></result>
+        <result column="author" property="author"></result>
+        <result column="comment_be_resource" property="commentBeResource"></result>
+        <result column="create_time" property="createTime"></result>
+        <result column="comment_status" property="commentStatus"></result>
+        <association property="customer" javaType="java.util.Map">
+            <id column="customer_id" property="customerId"></id>
+            <result column="customer_photo" property="customerPhoto"></result>
+            <result column="customer_nickname" property="customerNickname"></result>
+        </association>
+    </resultMap>
+
+    <select id="findAll" resultMap="commentList">
+        SELECT
+            comments.*,
+            customer.customer_id,
+            customer.customer_photo,
+            customer.customer_nickname
+        FROM comments
+        LEFT JOIN customer
+        ON comments.author = customer.customer_id
+        WHERE comments.comment_be_resource = #{resourceId}
+        AND comments.comment_status = 0
+        ORDER BY comments.create_time DESC
+    </select>
+
+    <!-- 点赞 -->
+    <update id="like">
+        UPDATE comments SET likes = likes + 1 WHERE comments.comment_id = #{commentId}
+    </update>
+</mapper>

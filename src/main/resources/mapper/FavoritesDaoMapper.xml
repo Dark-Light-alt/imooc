@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.imooc.dao.FavoritesDao">
+
+    <resultMap id="favoriteList" type="java.util.Map">
+        <id column="favorites_id" property="favoritesId"></id>
+        <result column="course_id" property="courseId"></result>
+        <result column="course_name" property="courseName"></result>
+        <result column="course_about" property="courseAbout"></result>
+        <result column="price" property="price"></result>
+        <result column="cover" property="cover"></result>
+        <result column="isfree" property="isfree"></result>
+    </resultMap>
+
+    <select id="findByCustomer" resultMap="favoriteList">
+        SELECT
+        favorites.favorites_id,
+        course.course_id,
+        course.course_name,
+        course.course_about,
+        course.cover,
+        course.isfree,
+        course.price
+        FROM favorites
+        LEFT JOIN course
+        ON favorites.course_id = course.course_id
+        WHERE favorites.customer_id = #{customerId}
+        <if test="null != isfree">
+            AND course.isfree = #{isfree}
+        </if>
+        ORDER BY favorites.create_time DESC
+    </select>
+</mapper>

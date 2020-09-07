@@ -10,6 +10,7 @@ import com.imooc.utils.common.Result;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
@@ -72,7 +73,7 @@ public class ArticleController {
      * @return
      */
     @RequestMapping(value = "insertArticle",method = RequestMethod.POST)
-    public Result insertArticle(@RequestBody Map map){
+    public Result insertArticle(@RequestBody Map map) throws IOException {
 
         Result result = new Result();
 
@@ -132,7 +133,7 @@ public class ArticleController {
      * @return
      */
     @RequestMapping(value = "updateArticle",method = RequestMethod.POST)
-    public Result updateArticle(@RequestBody Map map){
+    public Result updateArticle(@RequestBody Map map) throws IOException {
 
         Result result = new Result();
 

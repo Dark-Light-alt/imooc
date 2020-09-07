@@ -9,7 +9,6 @@ import com.imooc.utils.common.Result;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -106,10 +105,28 @@ public class ChapterController {
 
         boolean b = chapterServiceImpl.deleteChatsAndArts(chapterId);
 
-        if(b){
+        if (b) {
             result.success(200, "删除成功");
         }
 
+
+        return result;
+    }
+
+    /**
+     * 课程学习：根据 课程 id 查询出对应的所有章节和正常状态的视频
+     *
+     * @param courseId 课程 id
+     * @return
+     */
+    @RequestMapping(value = "courseLearn/{courseId}", method = RequestMethod.GET)
+    public Result courseLearn(@PathVariable String courseId) {
+
+        Result result = new Result();
+
+        result.putData("chapterList", chapterServiceImpl.courseLearn(courseId));
+
+        result.success(200, "SUCCESS");
 
         return result;
     }

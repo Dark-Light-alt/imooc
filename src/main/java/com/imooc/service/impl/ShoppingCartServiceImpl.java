@@ -35,6 +35,23 @@ public class ShoppingCartServiceImpl extends ServiceImpl<ShoppingCartDao, Shoppi
     }
 
     /**
+     * 根据用户 id 和 商品 id 进行删除
+     *
+     * @param customerId
+     * @param courseId
+     * @return
+     */
+    public boolean removeByCustomerAndCourse(String customerId, String courseId) {
+
+        LambdaQueryWrapper<ShoppingCart> wrapper = new LambdaQueryWrapper<>();
+
+        wrapper.eq(ShoppingCart::getCustomerId, customerId);
+        wrapper.eq(ShoppingCart::getCourseId, courseId);
+
+        return baseMapper.delete(wrapper) != 0;
+    }
+
+    /**
      * 根据用户查询
      *
      * @param customerId
@@ -44,7 +61,6 @@ public class ShoppingCartServiceImpl extends ServiceImpl<ShoppingCartDao, Shoppi
 
         LambdaQueryWrapper<ShoppingCart> wrapper = new LambdaQueryWrapper<>();
         wrapper.eq(ShoppingCart::getCustomerId, customerId);
-        wrapper.orderByDesc(ShoppingCart::getCreateTime);
 
         return baseMapper.findAllByCustomer(wrapper);
     }

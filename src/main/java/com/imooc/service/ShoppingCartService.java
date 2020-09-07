@@ -18,4 +18,13 @@ public interface ShoppingCartService extends IService<ShoppingCart> {
      * @return
      */
     List<Map<String, Object>> findAllByCustomer(String customerId);
+
+    /**
+     * 根据 用户 id 和 课程 id 进行删除
+     *
+     * @param customerId
+     * @param courseId
+     * @return
+     */
+    boolean removeByCustomerAndCourse(String customerId, String courseId);
 }

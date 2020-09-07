@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * 学习进度
@@ -33,4 +34,8 @@ public class LearnSchedule implements Serializable {
     // 进度点（秒）
     @TableField("schedule_point")
     private Integer schedulePoint;
+
+    // 最后的学习时间
+    @TableField
+    private Date create_time;
 }

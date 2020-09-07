@@ -24,5 +24,7 @@
         FROM shopping_cart
         LEFT JOIN course
         ON shopping_cart.course_id = course.course_id
+        ${ew.customSqlSegment}
+        ORDER BY shopping_cart.create_time DESC
     </select>
 </mapper>

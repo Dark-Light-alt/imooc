@@ -11,6 +11,8 @@ import com.imooc.utils.common.CommonUtils;
 import com.imooc.utils.common.Pages;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * 资料服务实现
  */
@@ -97,6 +99,22 @@ public class DatasServiceImpl extends ServiceImpl<DatasDao, Datas> implements Da
         wrapper.orderByAsc(Datas::getCreateTime);
 
         return baseMapper.selectPage(page, wrapper);
+    }
+
+    /**
+     * 查询某个课程下的所有资料
+     *
+     * @param courseId
+     * @return
+     */
+    @Override
+    public List<Datas> findAllByCourseId(String courseId) {
+
+        LambdaQueryWrapper<Datas> wrapper = new LambdaQueryWrapper<>();
+
+        wrapper.eq(Datas::getCourseId, courseId);
+
+        return baseMapper.selectList(wrapper);
     }
 
     /**

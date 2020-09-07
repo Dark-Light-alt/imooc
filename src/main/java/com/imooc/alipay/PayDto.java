@@ -23,7 +23,7 @@ public class PayDto {
     // 最晚付款时间
     // 参数限制：1m～15d
     // 描述：m-分钟，h-小时，d-天，1c-当天（1c-当天的情况下，无论交易何时创建，都在0点关闭）。该参数数值不接受小数点， 如 1.5h，可转换为 90m
-    private String timeout_express = "10m";
+    private String timeout_express = "30m";
 
     // 销售产品码，与支付宝签约的产品码名称
     private String product_code = "FAST_INSTANT_TRADE_PAY";
