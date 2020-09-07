@@ -18,6 +18,7 @@ import com.imooc.utils.common.Result;
 import com.imooc.utils.jwt.JwtUtils;
 import com.imooc.utils.sms.SMSServiceImpl;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -350,27 +351,41 @@ public class CustomerController {
         Result result = new Result();
         /*String token = request.getHeader("token");
 
-        JWTVerifier verifier = JWT.require(Algorithm.HMAC256(secretKey)).build();
+        JwtUtils jwtUtils = new JwtUtils();
 
-        DecodedJWT decodedJWT = verifier.verify(token);*/
+        boolean b = jwtUtils.validateToken(token);
 
+        //验证token
+        Authentication authentication = jwtUtils.getAuthentication(token);
+*/
         // 获取用户 id
+
         String customerId = params.get("customerId");
 
+        /*JWTVerifier verifier = JWT.require(Algorithm.HMAC256(secretKey)).build();
+
+        DecodedJWT decodedJWT = verifier.verify(token);
+
+        Claim authenticationClaim = decodedJWT.getClaim(customerId);
+
+        SymmetryCryptoUtil symmetryCryptoUtil = new SymmetryCryptoUtil();*/
+
+        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
 
         // 原密码
         String customerPassword = params.get("customerPassword");
 
-        // 新密码
-        String newPassword = params.get("newPassword"  );
+        String encode = bCryptPasswordEncoder.encode(customerPassword);
+        System.out.println("获取加密"+encode);
 
-       /* SymmetryCryptoUtil symmetryCryptoUtil = new SymmetryCryptoUtil();
+        // 新密码
+        String newPassword = params.get("newPassword");
 
         //解密
-        String decode = symmetryCryptoUtil.decode(newPassword,customerPassword);
+        boolean matches = bCryptPasswordEncoder.matches(customerPassword, newPassword);
 
-        //加密
-        String newPassword2 = symmetryCryptoUtil.encode(newPassword);*/
+       /* //对原密码解密
+        symmetryCryptoUtil.decode(customerPassword);*/
 
         // 确定密码
         String checkPassword = params.get("checkPassword");
@@ -397,8 +412,12 @@ public class CustomerController {
         if (!customer.getCustomerPassword().equals(customerPassword)) {
             throw new ApiException(500, "原密码错误");
         }
+        /*//获取id
+        String s = decodedJWT.getClaim(customerId).asString();
+        //对新密码加密
+        String encode = symmetryCryptoUtil.encode(s);*/
 
-        customer.setCustomerPassword(newPassword);
+        customer.setCustomerPassword(encode);
 
         customerServiceImpl.update(customer);
 
@@ -439,4 +458,15 @@ public class CustomerController {
         return result;
     }
 
+    @RequestMapping(value = "findPosition/{customerId}", method = RequestMethod.GET)
+    public Result findPosition(@PathVariable String customerId) {
+
+        Result result = new Result();
+
+        result.putData("customer", customerServiceImpl.findPosition(customerId));
+
+        result.success(200, "SUCCESS");
+
+        return result;
+    }
 }

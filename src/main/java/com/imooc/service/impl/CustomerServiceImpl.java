@@ -88,4 +88,9 @@ public class CustomerServiceImpl extends ServiceImpl<CustomerDao, Customer> impl
         return baseMapper.updateById(customer) != 0;
     }
 
+    public Customer findPosition(String customerId){
+        return customerDao.findPosition(customerId);
+    }
+
+
 }

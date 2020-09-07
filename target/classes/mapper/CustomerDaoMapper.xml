@@ -7,6 +7,6 @@
     </select>
 
     <select id="findPosition" resultType="com.imooc.entity.Customer">
-        select c.*,p.position_name as positionName from customer c left join customer_position p on c.position_id = p.position_id
+        select c.*,p.position_name as positionName from customer c left join customer_position p on c.position_id = p.position_id where customer_id = #{customerId}
     </select>
 </mapper>

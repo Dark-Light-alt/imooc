@@ -1,5 +1,6 @@
 package com.imooc.controller;
 
+import com.auth0.jwt.interfaces.DecodedJWT;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.imooc.entity.AccountNumber;
 import com.imooc.exception.ApiException;
@@ -8,9 +9,11 @@ import com.imooc.utils.SymmetryCryptoUtil;
 import com.imooc.utils.common.CommonUtils;
 import com.imooc.utils.common.Pages;
 import com.imooc.utils.common.Result;
+import com.imooc.utils.jwt.JwtUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
 @RestController
@@ -22,6 +25,14 @@ public class AccountNumberController {
 
     @Resource
     private SymmetryCryptoUtil symmetryCryptoUtil;
+
+    private static final String AUTHORITIES_KEY = "auth";
+
+    @Resource
+    JwtUtils jwtUtils;
+
+    // 签名秘钥
+    private String secretKey;
 
     @RequestMapping(value = "pagingFindAll", method = RequestMethod.POST)
     public Result pagingFindAll(@RequestBody Pages pages) {
@@ -100,6 +111,7 @@ public class AccountNumberController {
 
         // 从数据库中查询到 账号信息
         AccountNumber accountNumber = accountNumberServiceImpl.findByEmployeeId(employeeId);
+
 
         if (!accountNumber.getPassword().equals(password)) {
             throw new ApiException(500, "原密码错误");

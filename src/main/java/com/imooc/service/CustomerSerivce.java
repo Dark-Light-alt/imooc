@@ -50,4 +50,7 @@ public interface CustomerSerivce extends IService<Customer> {
      */
     boolean update(Customer customer);
 
+    Customer findPosition(String customerId);
+
+
 }
