@@ -83,7 +83,7 @@ public class ArticleController {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
         String fileName = sdf.format(new Date());
         //文件路径
-        String url = "F:\\Project\\project3\\downloadFiles\\"+fileName+".txt";
+        String url = "E:\\Article\\"+fileName+".txt";
 
         //写文件
         ReadAndWriteFile.writeFile(url,str);
