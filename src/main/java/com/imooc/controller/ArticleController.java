@@ -83,7 +83,7 @@ public class ArticleController {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
         String fileName = sdf.format(new Date());
         //文件路径
-        String url = "F:\\Project\\project3\\downloadFiles\\"+fileName+".txt";
+        String url = "E:\\Article\\"+fileName+".txt";
 
         //写文件
         ReadAndWriteFile.writeFile(url,str);
@@ -100,6 +100,11 @@ public class ArticleController {
     }
 
 
+    /**
+     * 读取文章
+     * @param articleId
+     * @return
+     */
     @RequestMapping(value = "readFile/{articleId}",method = RequestMethod.GET)
     public Result readFile(@PathVariable("articleId") String articleId){
 
@@ -147,6 +152,25 @@ public class ArticleController {
         if(b){
             result.success(200,"操作成功,跳转页面");
         }
+
+        return result;
+    }
+
+    /**
+     * 根据主键查询文章
+     * @param articleId
+     * @return
+     */
+    @RequestMapping(value = "findById/{articleId}",method = RequestMethod.GET)
+    public Result findById(@PathVariable("articleId") String articleId){
+
+        Result result = new Result();
+
+        Article article = articleServiceImpl.findById(articleId);
+
+        result.putData("articleInfo",article);
+
+        result.success(200,"SUCCESS");
 
         return result;
     }

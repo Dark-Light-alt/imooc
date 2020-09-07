@@ -7,6 +7,7 @@ import lombok.Data;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 我的专刊
@@ -30,4 +31,8 @@ public class MyMonograph implements Serializable {
     // 创建时间
     @TableField("create_time")
     private Date createTime;
+
+    //专刊
+    @TableField(exist = false)
+    Monograph monograph;
 }

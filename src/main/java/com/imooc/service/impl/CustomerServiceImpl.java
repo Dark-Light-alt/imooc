@@ -15,9 +15,11 @@ import javax.annotation.Resource;
  */
 @Service
 public class CustomerServiceImpl extends ServiceImpl<CustomerDao, Customer> implements CustomerSerivce {
-
     @Resource
     private SymmetryCryptoUtil symmetryCryptoUtil;
+
+    @Resource
+    private CustomerDao customerDao;
 
     @Override
     public boolean append(Customer customer) {
@@ -66,4 +68,28 @@ public class CustomerServiceImpl extends ServiceImpl<CustomerDao, Customer> impl
 
         return baseMapper.selectOne(wrapper);
     }
+
+    /**
+     * 根据id 查询用户信息
+     * @param customerId
+     * @return
+     */
+    public Customer findByCustomerId(String customerId){
+        return customerDao.findByCustomerId(customerId);
+    }
+
+    /**
+     * 修改
+     * @param customer
+     * @return
+     */
+    public boolean update(Customer customer) {
+        return baseMapper.updateById(customer) != 0;
+    }
+
+    public Customer findPosition(String customerId){
+        return customerDao.findPosition(customerId);
+    }
+
+
 }

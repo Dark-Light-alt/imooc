@@ -1,5 +1,6 @@
 package com.imooc.dao;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.toolkit.Constants;
@@ -29,8 +30,21 @@ public interface MonographDao extends BaseMapper<Monograph> {
     Monograph previewMonograph(String monograph_id);
 
     /**
-     * 根据状态前台查询所有上架的专刊
+     * 根据文章id查询专刊
+     * @param articleId
      * @return
      */
-    List<Monograph> listAllMonograph(Integer offShelf);
+    Monograph findMonographByArticleId(String articleId);
+
+    /**
+     * 根据条件查询专刊和章节文章
+     * @param monographId
+     * @param offShlef
+     * @param tryReading
+     * @return
+     */
+    List<Monograph> listAllMonograph(@Param("monographId") String monographId,
+                                     @Param("offShelf") Integer offShlef,@Param("tryReading") Integer tryReading);
+
+    
 }
