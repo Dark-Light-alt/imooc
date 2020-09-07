@@ -1,0 +1,34 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.imooc.dao.MyMonographDao">
+    <resultMap id="myMonographMap" type="com.imooc.entity.MyMonograph">
+        <id column="my_monograph_id" property="myMonographId"></id>
+        <result column="customer_id" property="customerId"></result>
+        <result column="monograph_id" property="monographId"></result>
+        <result column="create_time" property="createTime"></result>
+        <association property="monograph" javaType="com.imooc.entity.Monograph"
+                    resultMap="com.imooc.dao.MonographDao.monographAuthor">
+        </association>
+    </resultMap>
+
+    <select id="findMonographByCustomerId" resultMap="myMonographMap">
+        select
+           m.monograph_id,
+           m.monograph_name,
+           m.cover,
+           m.highlights,
+           m.monograph_about,
+           m.author,
+           m.price,
+           e.employee_id,
+           e.employee_name,
+           p.position_id,
+           p.position_name
+         from monograph m
+         left join my_Monograph mm on m.monograph_id = mm.monograph_id
+         left join employee_info e on m.author=e.employee_id
+         left join position p on e.position_id=p.position_id
+        where mm.customer_id=#{customerId}
+    </select>
+</mapper>

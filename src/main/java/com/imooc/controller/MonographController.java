@@ -210,12 +210,14 @@ public class MonographController {
     public Result previewMonograph(@RequestBody Map map){
         Result result = new Result();
 
+
         String monographId = map.get("monographId").toString();
         System.out.println(monographId);
+        if(null != monographId){
+            Monograph monograph = monographServiceImpl.previewMonograph(monographId);
 
-        Monograph monograph = monographServiceImpl.previewMonograph(monographId);
-
-        result.putData("monograph",monograph);
+            result.putData("monograph",monograph);
+        }
 
         result.success(200,"SUCCESS");
 

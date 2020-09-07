@@ -45,4 +45,6 @@ public interface MonographDao extends BaseMapper<Monograph> {
      */
     List<Monograph> listAllMonograph(@Param("monographId") String monographId,
                                      @Param("offShelf") Integer offShlef,@Param("tryReading") Integer tryReading);
+
+    
 }

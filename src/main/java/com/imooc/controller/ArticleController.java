@@ -156,4 +156,23 @@ public class ArticleController {
         return result;
     }
 
+    /**
+     * 根据主键查询文章
+     * @param articleId
+     * @return
+     */
+    @RequestMapping(value = "findById/{articleId}",method = RequestMethod.GET)
+    public Result findById(@PathVariable("articleId") String articleId){
+
+        Result result = new Result();
+
+        Article article = articleServiceImpl.findById(articleId);
+
+        result.putData("articleInfo",article);
+
+        result.success(200,"SUCCESS");
+
+        return result;
+    }
+
 }
