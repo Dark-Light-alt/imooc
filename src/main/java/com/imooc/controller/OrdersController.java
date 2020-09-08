@@ -148,21 +148,20 @@ public class OrdersController {
     }
 
     /**
-     * 同步的成功回调函数，再次进行订单状态的修改
+     * 同步的成功回调函数，进行订单状态的修改
      *
-     * @param out_trade_no 订单编号
      * @return
      */
-    @RequestMapping(value = "returns", method = RequestMethod.GET)
-    public Result returns(String out_trade_no) {
-
-        String orderNumber = out_trade_no;
+    @RequestMapping(value = "returns", method = RequestMethod.POST)
+    public Result returns(@RequestBody Map<String, String> params) {
 
         Result result = new Result();
 
-        ordersServiceImpl.changeStatus(out_trade_no, 1);
+        String orderNumber = params.get("orderNumber");
 
-        Orders order = ordersServiceImpl.findByOrderNumber(out_trade_no);
+        ordersServiceImpl.changeStatus(orderNumber, 1);
+
+        Orders order = ordersServiceImpl.findByOrderNumber(orderNumber);
 
         if (order.getOrderType() == 0) {
 
@@ -172,7 +171,7 @@ public class OrdersController {
             myCourseServiceImpl.append(myCourse);
         }
 
-        result.success(200, "支付成功");
+        result.success(200, "SUCCESS");
 
         return result;
     }

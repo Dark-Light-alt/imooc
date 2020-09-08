@@ -34,4 +34,30 @@ public interface CustomerSerivce extends IService<Customer> {
      * @return
      */
     Customer login(String username, String password);
+
+    /**
+     * 查询邮箱数量
+     *
+     * @param email 邮箱
+     * @return
+     */
+    int findEmailCount(String email);
+
+    /**
+     * 绑定邮箱
+     *
+     * @param customer 用户 id
+     * @param email    邮箱地址
+     * @return
+     */
+    int bindEmail(String customer, String email);
+
+    /**
+     * 更换手机号
+     *
+     * @param customer 用户 id
+     * @param phone    手机号
+     * @return
+     */
+    int updatePhone(String customer, String phone);
 }

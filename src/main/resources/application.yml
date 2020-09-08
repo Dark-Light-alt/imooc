@@ -27,7 +27,7 @@ alipay:
   # 服务器异步通知地址
   notifyUrl:
   # 服务器同步通知地址
-  returnUrl: http://localhost:8081/OrdersController/returns
+  returnUrl: http://localhost:8083/#/successPay
   # 签名方式
   signType: RSA2
   # 字符集编码
