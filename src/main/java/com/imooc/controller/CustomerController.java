@@ -9,8 +9,13 @@ import com.imooc.utils.ImageVerificationCode;
 import com.imooc.utils.SymmetryCryptoUtil;
 import com.imooc.utils.common.CommonUtils;
 import com.imooc.utils.common.Result;
+import com.imooc.utils.email.BaseEmailConfig;
+import com.imooc.utils.email.EmailServiceImpl;
 import com.imooc.utils.sms.SMSServiceImpl;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import javax.servlet.http.Cookie;
@@ -35,6 +40,12 @@ public class CustomerController {
 
     @Resource
     private SysNoticeServiceImpl sysNoticeServiceImpl;
+
+    @Resource
+    private EmailServiceImpl emailServiceImpl;
+
+    @Resource
+    private BaseEmailConfig baseEmailConfig;
 
     /**
      * 生成图片验证码
@@ -229,6 +240,293 @@ public class CustomerController {
 
         result.success(200, null);
         return result;
+    }
+
+
+    /**
+     * 发送邮箱验证码，用于邮箱绑定
+     *
+     * @param params
+     * @return
+     */
+    @RequestMapping(value = "sendEmailCode", method = RequestMethod.POST)
+    public Result sendEmailCode(@RequestBody Map<String, String> params) {
+
+        Result result = new Result();
+
+        String email = params.get("email");
+
+        // 验证邮箱
+        verifyEmail(email);
+
+        String code = emailServiceImpl.generationVerificationCode(6);
+
+        // 发送邮箱验证码
+        emailServiceImpl.send(email, EmailServiceImpl.registerTile, baseEmailConfig.registerTemplate("喵喵喵", code, 15));
+
+        // 对验证码进行加密
+        result.putData("code", symmetryCryptoUtil.encode(code));
+
+        result.success(200, "SUCCESS");
+
+        return result;
+    }
+
+    /**
+     * 绑定邮箱
+     *
+     * @param params
+     * @return
+     */
+    @RequestMapping(value = "bindEmail", method = RequestMethod.POST)
+    public Result bindEmail(@RequestBody Map<String, String> params) {
+
+        System.out.println(params);
+
+        Result result = new Result();
+
+        // 获取到用户 id
+        String customerId = params.get("customerId");
+        // 获取到邮箱
+        String email = params.get("email");
+        // 获取到用户输入的邮箱验证码
+        String emailCode = params.get("emailCode");
+        // 获取到存储到浏览器的邮箱验证码，并进行解密
+        String code = symmetryCryptoUtil.decode(params.get("code"));
+
+        if (!CommonUtils.isNotEmpty(emailCode)) {
+            throw new ApiException(500, "邮箱验证码不能为空");
+        }
+
+        if (!code.equals(emailCode)) {
+            throw new ApiException(500, "邮箱验证码不正确");
+        }
+
+        customerServiceImpl.bindEmail(customerId, email);
+
+        result.success(200, "邮箱绑定成功");
+
+        return result;
+    }
+
+    /**
+     * 验证密码
+     *
+     * @param params
+     * @return
+     */
+    @RequestMapping(value = "verifyPassword", method = RequestMethod.POST)
+    public Result verifyPassword(@RequestBody Map<String, String> params) {
+
+        Result result = new Result();
+
+        // 获取到用户 id
+        String customerId = params.get("customerId");
+
+        // 获取用户输入的密码
+        String password = params.get("password");
+
+        if (!CommonUtils.isNotEmpty(password)) {
+            throw new ApiException(500, "密码不能为空");
+        }
+
+        // 根据用户 id 查询到用户信息
+        Customer customer = customerServiceImpl.getById(customerId);
+
+        // 对密码进行解密
+        String dePassword = symmetryCryptoUtil.decode(customer.getCustomerPassword());
+
+        if (!dePassword.equals(password)) {
+            throw new ApiException(500, "密码验证失败");
+        }
+
+        result.success(200, "SUCCESS");
+
+        return result;
+    }
+
+    /**
+     * 验证原始手机号
+     *
+     * @param params
+     * @return
+     */
+    @RequestMapping(value = "verifyPhone", method = RequestMethod.POST)
+    public Result verifyPhone(@RequestBody Map<String, String> params) {
+
+        Result result = new Result();
+
+        // 获取用户 id
+        String customerId = params.get("customerId");
+
+        // 获取原始手机号
+        String phone = params.get("phone");
+
+        if (!CommonUtils.isNotEmpty(phone)) {
+            throw new ApiException(500, "手机号不能为空");
+        }
+
+        if (!CommonUtils.isCorrectPhone(phone)) {
+            throw new ApiException(500, "手机号格式错误");
+        }
+
+        // 获取到用户信息
+        Customer customer = customerServiceImpl.getById(customerId);
+
+        // 验证手机号是否匹配
+        if (!customer.getCustomerPhone().equals(phone)) {
+            throw new ApiException(500, "手机号不匹配");
+        }
+
+        result.success(200, "SUCCESS");
+
+        return result;
+    }
+
+    /**
+     * 发送手机号验证码
+     *
+     * @param params
+     * @return
+     */
+    @RequestMapping(value = "sendPhoneCode", method = RequestMethod.POST)
+    public Result sendPhoneCode(@RequestBody Map<String, String> params) {
+
+        Result result = new Result();
+
+        String phone = params.get("phone");
+
+        if (!CommonUtils.isNotEmpty(phone)) {
+            throw new ApiException(500, "手机号不能为空");
+        }
+
+        if (!CommonUtils.isCorrectPhone(phone)) {
+            throw new ApiException(500, "手机号格式错误");
+        }
+
+        if (customerServiceImpl.findPhoneCount(phone) != 0) {
+            throw new ApiException(500, "手机号已被注册");
+        }
+
+        // 发送手机验证码
+        String code = smsServiceImpl.register(phone);
+
+        // 加密处理返回至页面
+        result.putData("code", symmetryCryptoUtil.encode(code));
+
+        result.success(200, "SUCCESS");
+
+        return result;
+    }
+
+    /**
+     * 更改手机号
+     *
+     * @return
+     */
+    @RequestMapping(value = "updatePhone", method = RequestMethod.POST)
+    public Result updatePhone(Map<String, String> params) {
+
+        Result result = new Result();
+
+        // 获取到用户 id
+        String customerId = params.get("customerId");
+        // 获取到用户新的手机号
+        String newPhone = params.get("newPhone");
+        // 获取用户填写的手机验证码
+        String phoneCode = params.get("phoneCode");
+        // 获取存储在用户浏览器的手机验证码
+        String code = params.get("code");
+
+        if (!CommonUtils.isNotEmpty(phoneCode)) {
+            throw new ApiException(500, "手机验证码不能为空");
+        }
+        // 对存储在用户浏览器加密的手机验证码进行解密
+        code = symmetryCryptoUtil.decode(code);
+
+        // 进行验证码匹配
+        if (!phoneCode.equals(code)) {
+            throw new ApiException(500, "手机验证码错误");
+        }
+
+        // 将用户的手机号进行修改
+        customerServiceImpl.updatePhone(customerId, newPhone);
+
+        result.success(200, "手机号更换成功");
+
+        return result;
+    }
+
+    /**
+     * 修改密码
+     *
+     * @param params
+     * @return
+     */
+    @RequestMapping(value = "updatePassword", method = RequestMethod.POST)
+    public Result updatePassword(@RequestBody Map<String, String> params) {
+
+        Result result = new Result();
+
+        // 获取到用户 id
+        String customerId = params.get("customerId");
+        // 当前密码
+        String nowPassword = params.get("nowPassword");
+        // 新密码
+        String newPassword = params.get("newPassword");
+        // 确认密码
+        String checkPassword = params.get("checkPassword");
+
+        if (!CommonUtils.isNotEmpty(nowPassword)) {
+            throw new ApiException(500, "当前密码不能为空");
+        }
+        if (!CommonUtils.isNotEmpty(newPassword)) {
+            throw new ApiException(500, "新密码不能为空");
+        }
+        if (!CommonUtils.isNotEmpty(checkPassword)) {
+            throw new ApiException(500, "确认密码不能为空");
+        }
+        if (!newPassword.equals(checkPassword)) {
+            throw new ApiException(500, "确认密码不一致");
+        }
+
+        // 根据 id 查询到用户信息
+        Customer customer = customerServiceImpl.getById(customerId);
+
+        // 匹配密码
+        if (!nowPassword.equals(symmetryCryptoUtil.decode(customer.getCustomerPassword()))) {
+            throw new ApiException(500, "当前密码错误");
+        }
+
+        // 对新密码进行加密
+        customer.setCustomerPassword(symmetryCryptoUtil.encode(newPassword));
+
+        // 修改
+        customerServiceImpl.updateById(customer);
+
+        result.success(200, "密码修改成功");
+
+        return result;
+    }
+
+    /**
+     * 验证邮箱
+     *
+     * @param email
+     */
+    private void verifyEmail(String email) {
+
+        if (!CommonUtils.isNotEmpty(email)) {
+            throw new ApiException(500, "邮箱不能为空");
+        }
+
+        if (!CommonUtils.isCorrectEmail(email)) {
+            throw new ApiException(500, "请填写正确的邮箱地址");
+        }
+
+        if (customerServiceImpl.findEmailCount(email) != 0) {
+            throw new ApiException(500, "邮箱已被注册");
+        }
     }
 
     /**
