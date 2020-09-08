@@ -16,6 +16,23 @@
         </association>
     </resultMap>
 
+    <resultMap id="answerMap" type="java.util.Map">
+        <id column="answer_id" property="answerId"></id>
+        <result column="content" property="content"></result>
+        <result column="publisher" property="publisher"></result>
+        <result column="question_id" property="questionId"></result>
+        <result column="create_time" property="createTime"></result>
+        <result column="likes" property="likes"></result>
+        <association property="question" javaType="java.util.Map">
+            <id column="question_id" property="questionId"></id>
+            <result column="title" property="title"></result>
+        </association>
+        <association property="video" javaType="java.util.Map">
+            <id column="video_id" property="videoId"></id>
+            <result column="video_name" property="videoName"></result>
+        </association>
+    </resultMap>
+
     <select id="findByQuestion" resultMap="answerList">
         SELECT
             answer.*,
@@ -33,4 +50,23 @@
     <update id="like">
         UPDATE answer SET likes = likes + 1 WHERE answer.answer_id = #{answerId}
     </update>
+
+    <select id="findByCustomer" resultMap="answerMap">
+        select
+          answer.*,
+          customer.customer_id,
+          video.video_id,
+          video.video_name,
+          question.question_id,
+          question.title
+        from answer
+        left join customer
+        on answer.publisher = customer.customer_id
+        left join question
+        on answer.question_id = question.question_id
+        left join video
+        on question.video_id=video.video_id
+        where customer.customer_id=#{customerId}
+        order by answer.create_time asc
+    </select>
 </mapper>
