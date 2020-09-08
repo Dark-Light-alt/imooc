@@ -98,4 +98,14 @@ public class QuestionServiceImpl extends ServiceImpl<QuestionDao, Question> impl
     public Map<String, Object> findById(String questionId) {
         return baseMapper.findById(questionId);
     }
+
+    /**
+     * 查找用户提出的问题
+     * @param customerId
+     * @return
+     */
+    @Override
+    public List<Map<String, Object>> findByCustomer(String customerId) {
+        return baseMapper.findByCustomer(customerId);
+    }
 }

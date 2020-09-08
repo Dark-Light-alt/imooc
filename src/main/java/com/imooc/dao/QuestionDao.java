@@ -41,4 +41,13 @@ public interface QuestionDao extends BaseMapper<Question> {
      * @return
      */
     Map<String, Object> findById(String questionId);
+
+    /**
+     * 查找用户提出的问题
+     * @param customerId
+     * @return
+     */
+    List<Map<String,Object>> findByCustomer(String customerId);
+
+
 }

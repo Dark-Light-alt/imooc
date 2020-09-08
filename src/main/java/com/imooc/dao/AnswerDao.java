@@ -25,4 +25,11 @@ public interface AnswerDao extends BaseMapper<Answer> {
      * @return
      */
     List<Map<String, Object>> findByQuestion(String questionId);
+
+    /**
+     * 查看用户的回答
+     * @param customerId
+     * @return
+     */
+    List<Map<String,Object>> findByCustomer(String customerId);
 }
