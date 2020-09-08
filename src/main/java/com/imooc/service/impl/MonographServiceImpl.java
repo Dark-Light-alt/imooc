@@ -195,19 +195,6 @@ public class MonographServiceImpl extends ServiceImpl<MonographDao, Monograph> i
     }
 
     /**
-     * 上架
-     * @param monograph
-     * @return
-     */
-    @Override
-    public boolean putAway(Monograph monograph) {
-        if (null == monograph.getPrice()) {
-            throw new ApiException(500, "价格不能为空");
-        }
-        return baseMapper.updateById(monograph) != 0;
-    }
-
-    /**
      * 根据文章查询专刊
      * @param articleId
      * @return

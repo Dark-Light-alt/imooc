@@ -71,12 +71,6 @@ public interface MonographService extends IService<Monograph> {
      */
     Monograph previewMonograph(String monographId);
 
-    /**
-     * 上架
-     * @param monograph
-     * @return
-     */
-    boolean putAway(Monograph monograph);
 
     /**
      * 根据文章查询专刊

@@ -49,26 +49,6 @@ public class MonographController {
         return result;
     }
 
-    /**
-     * 修改
-     * @param monograph
-     * @return
-     */
-    @RequestMapping(value = "putAway",method = RequestMethod.PUT)
-    public Result putAway(@RequestBody Monograph monograph){
-        System.out.println("monograph:"+monograph);
-
-        Result result = new Result();
-
-        boolean update = monographServiceImpl.putAway(monograph);
-
-        if(update){
-            result.success(200,"上架成功");
-        }
-
-        return result;
-    }
-
 
     /**
      * 根据monographId查询

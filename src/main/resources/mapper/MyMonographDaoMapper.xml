@@ -21,6 +21,7 @@
            m.monograph_about,
            m.author,
            m.price,
+           m.off_shelf,
            e.employee_id,
            e.employee_name,
            p.position_id,
