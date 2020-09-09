@@ -40,11 +40,9 @@ public class MonographController {
 
         Result result = new Result();
 
-        boolean update = monographServiceImpl.update(monograph);
-
+        monographServiceImpl.update(monograph);
 
         result.success(200,"操作成功");
-
 
         return result;
     }
@@ -75,16 +73,16 @@ public class MonographController {
      */
     @RequestMapping(value = "updateOffShelf",method = RequestMethod.POST)
     public Result soldOut(@RequestBody Map map){
+        System.out.println(map);
+        Result result = new Result();
+
         String monographId = map.get("monographId").toString();
 
         int offShelf = Integer.parseInt(map.get("offShelf").toString());
-        Result result = new Result();
 
-        boolean update = monographServiceImpl.updateOffShelf(monographId,offShelf);
+        monographServiceImpl.updateOffShelf(monographId,offShelf);
 
-        if(update){
-            result.success(200,"操作成功");
-        }
+        result.success(200,"操作成功");
 
         return result;
     }
@@ -100,11 +98,9 @@ public class MonographController {
 
         Result result = new Result();
 
-        boolean append = monographServiceImpl.append(monograph);
+        monographServiceImpl.append(monograph);
 
-        if(append){
-            result.success(200,"操作成功");
-        }
+        result.success(200,"操作成功");
 
         return result;
     }
@@ -158,11 +154,10 @@ public class MonographController {
 
         Result result = new Result();
 
-        int i = monographServiceImpl.delete(monographId);
+        monographServiceImpl.delete(monographId);
 
-        if(i>0){
-            result.success(200,"操作成功");
-        }
+
+        result.success(200,"操作成功");
 
         return result;
     }
@@ -188,14 +183,13 @@ public class MonographController {
 
     @RequestMapping(value = "previewMonograph",method = RequestMethod.POST)
     public Result previewMonograph(@RequestBody Map map){
+
         Result result = new Result();
 
-
         String monographId = map.get("monographId").toString();
-        System.out.println(monographId);
+
         if(null != monographId){
             Monograph monograph = monographServiceImpl.previewMonograph(monographId);
-
             result.putData("monograph",monograph);
         }
 

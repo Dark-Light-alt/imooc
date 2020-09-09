@@ -88,6 +88,7 @@ public class MonographServiceImpl extends ServiceImpl<MonographDao, Monograph> i
      */
     @Override
     public boolean updateOffShelf(String monographId,Integer status) {
+
         LambdaQueryWrapper<Monograph> wrapper = new LambdaQueryWrapper<>();
 
         wrapper.eq(Monograph::getMonographId, monographId);
