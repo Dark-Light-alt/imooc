@@ -1,7 +1,9 @@
 package com.imooc.service;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.imooc.entity.Customer;
+import com.imooc.utils.common.Pages;
 
 /**
  * 用户服务
@@ -60,4 +62,12 @@ public interface CustomerSerivce extends IService<Customer> {
      * @return
      */
     int updatePhone(String customer, String phone);
+
+    /**
+     * 分页查询所有用户信息
+     *
+     * @param pages
+     * @return
+     */
+    Page<Customer> findAll(Pages pages);
 }

@@ -1,7 +1,9 @@
 package com.imooc.controller;
 
 import com.imooc.entity.Evaluate;
+import com.imooc.exception.ApiException;
 import com.imooc.service.impl.EvaluateServiceImpl;
+import com.imooc.service.impl.MyCourseServiceImpl;
 import com.imooc.utils.common.Result;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,10 +16,18 @@ public class EvaluateController {
     @Resource
     private EvaluateServiceImpl evaluateServiceImpl;
 
+    @Resource
+    private MyCourseServiceImpl myCourseServiceImpl;
+
     @RequestMapping(value = "append", method = RequestMethod.PUT)
     public Result append(@RequestBody Evaluate evaluate) {
 
         Result result = new Result();
+
+        // 判断用户是否学习过此课程
+        if (myCourseServiceImpl.findCourseCountByCustomer(evaluate.getAuthor(), evaluate.getEvaluateBeResource()) == 0) {
+            throw new ApiException(500, "您未学习过此视频，无法进行评价");
+        }
 
         evaluateServiceImpl.append(evaluate);
 

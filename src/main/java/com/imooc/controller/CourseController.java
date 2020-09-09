@@ -2,6 +2,7 @@ package com.imooc.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.imooc.entity.Course;
 import com.imooc.service.impl.CourseServiceImpl;
@@ -270,6 +271,26 @@ public class CourseController {
         List<Map<String, Object>> courseList = courseServiceImpl.findAssignCourse(params);
 
         result.putData("courseList", courseList);
+
+        result.success(200, "SUCCESS");
+
+        return result;
+    }
+
+    /**
+     * 查询已经上架的课程数量
+     *
+     * @return
+     */
+    @RequestMapping(value = "findCourseCount", method = RequestMethod.GET)
+    public Result findCourseCount() {
+
+        Result result = new Result();
+
+        LambdaQueryWrapper<Course> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(Course::getCourseStatus, 2);
+
+        result.putData("count", courseServiceImpl.count(wrapper));
 
         result.success(200, "SUCCESS");
 

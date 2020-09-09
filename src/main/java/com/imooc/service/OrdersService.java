@@ -1,7 +1,9 @@
 package com.imooc.service;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.imooc.entity.Orders;
+import com.imooc.utils.common.Pages;
 
 import java.util.List;
 import java.util.Map;
@@ -35,6 +37,15 @@ public interface OrdersService extends IService<Orders> {
      * @return
      */
     List<Map<String, Object>> findAllOrder(String customerId, Integer orderStatus);
+
+    /**
+     * 分页查询所有订单
+     *
+     * @param pages
+     * @param status 订单状态：0 未支付 1 已完成 2 已失效 null 全部
+     * @return
+     */
+    Page<Orders> findAll(Pages pages, Integer status);
 
     /**
      * 根据订单号查询订单信息

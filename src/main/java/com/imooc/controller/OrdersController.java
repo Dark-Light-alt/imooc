@@ -1,12 +1,16 @@
 package com.imooc.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.alipay.api.AlipayApiException;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.imooc.alipay.Alipay;
 import com.imooc.alipay.PayDto;
 import com.imooc.entity.MyCourse;
 import com.imooc.entity.Orders;
 import com.imooc.service.impl.MyCourseServiceImpl;
 import com.imooc.service.impl.OrdersServiceImpl;
+import com.imooc.utils.common.Pages;
 import com.imooc.utils.common.Result;
 import org.springframework.web.bind.annotation.*;
 
@@ -170,6 +174,52 @@ public class OrdersController {
             myCourse.setCourseId(order.getCommodity());
             myCourseServiceImpl.append(myCourse);
         }
+
+        result.success(200, "SUCCESS");
+
+        return result;
+    }
+
+    @RequestMapping(value = "findAll", method = RequestMethod.POST)
+    public Result findAll(@RequestBody Map<String, String> params) {
+
+        Result result = new Result();
+
+        Integer status = null;
+
+        if (null != params.get("status") && !"null".equals(params.get("status"))) {
+            status = Integer.valueOf(params.get("status"));
+        }
+
+        Pages pages = JSONObject.parseObject(params.get("pages"), Pages.class);
+
+        Page<Orders> data = ordersServiceImpl.findAll(pages, status);
+
+        pages.setLastPage(data.getPages());
+        pages.setTotal(data.getTotal());
+
+        result.putData("orderList", data.getRecords());
+        result.setPages(pages);
+
+        result.success(200, "SUCCESS");
+
+        return result;
+    }
+
+    /**
+     * 查询已经支付的订单数量
+     *
+     * @return
+     */
+    @RequestMapping(value = "findOrderCount", method = RequestMethod.GET)
+    public Result findOrderCount() {
+
+        Result result = new Result();
+
+        LambdaQueryWrapper<Orders> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(Orders::getOrderStatus, 1);
+
+        result.putData("count", ordersServiceImpl.count(wrapper));
 
         result.success(200, "SUCCESS");
 

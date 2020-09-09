@@ -62,4 +62,7 @@ public class Orders implements Serializable {
     // 是否禁用：0启用 1禁用
     @TableField("order_isenable")
     private Integer orderIsenable;
+
+    @TableField(exist = false)
+    private Course course;
 }

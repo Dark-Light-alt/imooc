@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.imooc.dao.ReportReviewDao">
+
+    <resultMap id="list" type="com.imooc.entity.ReportReview">
+        <id column="report_review_id" property="reportReviewId"></id>
+        <result column="report_describe" property="reportDescribe"></result>
+        <result column="report_type" property="reportType"></result>
+        <result column="task_id" property="taskId"></result>
+        <result column="report_time" property="reportTime"></result>
+        <result column="review_status" property="reviewStatus"></result>
+        <result column="review_result" property="reviewResult"></result>
+        <result column="review_time" property="reviewTime"></result>
+        <association property="reportReason" javaType="com.imooc.entity.ReportReason">
+            <id column="report_reason_id" property="reportReasonId"></id>
+            <result column="report_reason_name" property="reportReasonName"></result>
+        </association>
+        <association property="video" javaType="com.imooc.entity.Video">
+            <id column="video_id" property="videoId"></id>
+            <result column="video_name" property="videoName"></result>
+            <result column="video_url" property="videoUrl"></result>
+        </association>
+        <association property="comments" javaType="com.imooc.entity.Comments">
+            <id column="comment_id" property="commentId"></id>
+            <result column="comments_content" property="content"></result>
+        </association>
+        <association property="question" javaType="com.imooc.entity.Question">
+            <id column="question_id" property="questionId"></id>
+            <result column="title" property="title"></result>
+            <result column="question_content" property="content"></result>
+        </association>
+        <association property="answer" javaType="com.imooc.entity.Answer">
+            <id column="answer_id" property="answerId"></id>
+            <result column="answer_content" property="content"></result>
+        </association>
+    </resultMap>
+
+    <select id="findAll" resultMap="list">
+        SELECT
+            report_review.report_review_id,
+            report_review.report_describe,
+            report_review.report_type,
+            report_review.task_id,
+            report_review.report_time,
+            report_review.review_status,
+            report_review.review_result,
+            report_review.review_time,
+            report_reason.report_reason_id,
+            report_reason.report_reason_name,
+            video.video_id,
+            video.video_name,
+            video.video_url,
+            comments.comment_id,
+            comments.content AS comments_content,
+            question.question_id,
+            question.title,
+            question.content AS question_content,
+            answer.answer_id,
+            answer.content AS answer_content
+        FROM report_review
+        LEFT JOIN report_reason
+        ON report_review.report_reason_id = report_reason.report_reason_id
+        LEFT JOIN video
+        ON report_review.resource_be_report = video.video_id
+        LEFT JOIN comments
+        ON report_review.resource_be_report = comments.comment_id
+        LEFT JOIN question
+        ON report_review.resource_be_report = question.question_id
+        LEFT JOIN answer
+        ON report_review.resource_be_report = answer.answer_id
+        ${ew.customSqlSegment}
+    </select>
+</mapper>

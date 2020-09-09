@@ -1,7 +1,9 @@
 package com.imooc.service;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.imooc.entity.ReportReview;
+import com.imooc.utils.common.Pages;
 
 import java.util.Date;
 import java.util.List;
@@ -10,6 +12,15 @@ import java.util.List;
  * 举报审核服务
  */
 public interface ReportReviewService extends IService<ReportReview> {
+
+    /**
+     * 分页查询所有举报信息
+     *
+     * @param pages
+     * @param reportType 举报类型：0 视频 1 评论 2 问题 3 回答
+     * @return
+     */
+    Page<ReportReview> findAll(Pages pages, Integer reportType);
 
     /**
      * 添加举报信息

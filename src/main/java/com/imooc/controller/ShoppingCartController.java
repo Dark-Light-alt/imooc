@@ -49,4 +49,20 @@ public class ShoppingCartController {
 
         return result;
     }
+
+    /**
+     * 查询购物车商品数量
+     *
+     * @return
+     */
+    @RequestMapping(value = "findShoppingCount", method = RequestMethod.GET)
+    public Result findShoppingCount() {
+        Result result = new Result();
+
+        result.putData("count", shoppingCartServiceImpl.count());
+
+        result.success(200, "SUCCESS");
+
+        return result;
+    }
 }

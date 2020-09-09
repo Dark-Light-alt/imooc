@@ -1,5 +1,6 @@
 package com.imooc.controller;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.imooc.entity.Customer;
 import com.imooc.entity.SysNotice;
 import com.imooc.exception.ApiException;
@@ -8,6 +9,7 @@ import com.imooc.service.impl.SysNoticeServiceImpl;
 import com.imooc.utils.ImageVerificationCode;
 import com.imooc.utils.SymmetryCryptoUtil;
 import com.imooc.utils.common.CommonUtils;
+import com.imooc.utils.common.Pages;
 import com.imooc.utils.common.Result;
 import com.imooc.utils.email.BaseEmailConfig;
 import com.imooc.utils.email.EmailServiceImpl;
@@ -505,6 +507,46 @@ public class CustomerController {
         customerServiceImpl.updateById(customer);
 
         result.success(200, "密码修改成功");
+
+        return result;
+    }
+
+    /**
+     * 分页查询所有用户信息
+     *
+     * @param pages
+     * @return
+     */
+    @RequestMapping(value = "findAll", method = RequestMethod.POST)
+    public Result findAll(@RequestBody Pages pages) {
+
+        Result result = new Result();
+
+        Page<Customer> data = customerServiceImpl.findAll(pages);
+
+        pages.setLastPage(data.getPages());
+        pages.setTotal(data.getTotal());
+        result.setPages(pages);
+
+        result.putData("customerList", data.getRecords());
+
+        result.success(200, "SUCCESS");
+
+        return result;
+    }
+
+    /**
+     * 查询用户数量
+     * @return
+     */
+    @RequestMapping(value = "findCustomerCount", method = RequestMethod.GET)
+    public Result findCustomerCount() {
+
+        Result result = new Result();
+
+        result.putData("count", customerServiceImpl.count());
+
+        result.success(200, "SUCCESS");
 
         return result;
     }

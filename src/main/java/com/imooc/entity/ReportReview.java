@@ -62,4 +62,19 @@ public class ReportReview implements Serializable {
     // 审核时间
     @TableField("review_time")
     private Date reviewTime;
+
+    @TableField(exist = false)
+    private ReportReason reportReason;
+
+    @TableField(exist = false)
+    private Video video;
+
+    @TableField(exist = false)
+    private Comments comments;
+
+    @TableField(exist = false)
+    private Question question;
+
+    @TableField(exist = false)
+    private Answer answer;
 }

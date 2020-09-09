@@ -130,4 +130,16 @@ public class ChapterController {
 
         return result;
     }
+
+    @RequestMapping(value = "removeChapterAndVideo/{chapterId}", method = RequestMethod.DELETE)
+    public Result removeChapterAndVideo(@PathVariable String chapterId) {
+
+        Result result = new Result();
+
+        chapterServiceImpl.removeChapterAndVideo(chapterId);
+
+        result.success(200, "章节删除成功");
+
+        return result;
+    }
 }
