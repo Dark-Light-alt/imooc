@@ -43,4 +43,11 @@ public interface AnswerService extends IService<Answer> {
      * @return
      */
     public int changeIsenable(String answerId, Integer iseabel);
+
+    /**
+     * 查询用户的回答
+     * @param customerId
+     * @return
+     */
+    List<Map<String,Object>> findByCustomer(String customerId);
 }

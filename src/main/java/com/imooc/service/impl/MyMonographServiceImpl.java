@@ -37,4 +37,33 @@ public class MyMonographServiceImpl extends ServiceImpl<MyMonographDao, MyMonogr
     public List<MyMonograph> findMonographByCustomerId(String customerId) {
         return baseMapper.findMonographByCustomerId(customerId);
     }
+
+    /**
+     * 添加我的专刊
+     * @param myMonograph
+     * @return
+     */
+    @Override
+    public int append(MyMonograph myMonograph) {
+        return baseMapper.insert(myMonograph);
+    }
+
+    /**
+     * 根据员工和专刊查询我的专刊
+     * @param customerId
+     * @param monographId
+     * @return
+     */
+    @Override
+    public MyMonograph findByCustomerIdAndMonographId(String customerId, String monographId) {
+
+        LambdaQueryWrapper<MyMonograph> wrapper = new LambdaQueryWrapper<>();
+
+        wrapper.eq(MyMonograph::getCustomerId,customerId);
+        wrapper.eq(MyMonograph::getMonographId,monographId);
+
+        return baseMapper.selectOne(wrapper);
+    }
+
+
 }

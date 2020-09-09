@@ -49,4 +49,21 @@ public class AnswerController {
 
         return result;
     }
+
+
+    /**
+     * 查询用户的回答
+     * @param customerId
+     * @return
+     */
+    @RequestMapping(value = "findByCustomer/{customerId}",method = RequestMethod.GET)
+    public Result findByCustomer(@PathVariable String customerId){
+        Result result = new Result();
+
+        result.putData("answerList",answerServiceImpl.findByCustomer(customerId));
+
+        result.success(200,"SUCCESS");
+
+        return result;
+    }
 }

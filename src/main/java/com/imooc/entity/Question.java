@@ -58,4 +58,16 @@ public class Question implements Serializable {
     // 是否解决：0未解决 1已解决
     @TableField
     private Integer issolve;
+
+    //发布人
+    @TableField(exist = false)
+    private EmployeeInfo employeeInfo;
+
+    //课程
+    @TableField(exist = false)
+    private Course course;
+
+    //视频
+    @TableField(exist = false)
+    private Video video;
 }

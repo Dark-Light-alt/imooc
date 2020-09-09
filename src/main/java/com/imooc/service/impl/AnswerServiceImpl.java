@@ -73,4 +73,14 @@ public class AnswerServiceImpl extends ServiceImpl<AnswerDao, Answer> implements
 
         return baseMapper.update(null, wrapper);
     }
+
+    /**
+     * 查询用户的回答
+     * @param customerId
+     * @return
+     */
+    @Override
+    public List<Map<String, Object>> findByCustomer(String customerId) {
+        return baseMapper.findByCustomer(customerId);
+    }
 }

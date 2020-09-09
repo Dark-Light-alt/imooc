@@ -88,6 +88,7 @@ public class MonographServiceImpl extends ServiceImpl<MonographDao, Monograph> i
      */
     @Override
     public boolean updateOffShelf(String monographId,Integer status) {
+
         LambdaQueryWrapper<Monograph> wrapper = new LambdaQueryWrapper<>();
 
         wrapper.eq(Monograph::getMonographId, monographId);
@@ -192,19 +193,6 @@ public class MonographServiceImpl extends ServiceImpl<MonographDao, Monograph> i
     @Override
     public Monograph previewMonograph(String monographId) {
         return baseMapper.previewMonograph(monographId);
-    }
-
-    /**
-     * 上架
-     * @param monograph
-     * @return
-     */
-    @Override
-    public boolean putAway(Monograph monograph) {
-        if (null == monograph.getPrice()) {
-            throw new ApiException(500, "价格不能为空");
-        }
-        return baseMapper.updateById(monograph) != 0;
     }
 
     /**

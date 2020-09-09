@@ -60,4 +60,27 @@ public class MyMonographController {
 
         return result;
     }
+
+    /**
+     * 添加我的专刊
+     * @param myMonograph
+     * @return
+     */
+    @RequestMapping(value = "append",method = RequestMethod.POST)
+    public Result append(@RequestBody MyMonograph myMonograph){
+        Result result = new Result();
+
+        //查询是否存在
+        MyMonograph obj = myMonographServiceImpl.findByCustomerIdAndMonographId(myMonograph.getCustomerId(), myMonograph.getMonographId());
+
+        //不存在
+        if(null==obj){
+            //添加
+            myMonographServiceImpl.append(myMonograph);
+        }
+
+        result.success(200,"SUCCESS");
+
+        return result;
+    }
 }
