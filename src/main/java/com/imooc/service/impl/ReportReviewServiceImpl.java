@@ -2,6 +2,7 @@ package com.imooc.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.imooc.dao.ReportReviewDao;
 import com.imooc.entity.*;
@@ -11,6 +12,7 @@ import com.imooc.utils.aliyun.green.text.TextDetectionServiceImpl;
 import com.imooc.utils.aliyun.green.video.VideoDetectionService;
 import com.imooc.utils.aliyun.green.video.VideoDetectionServiceImpl;
 import com.imooc.utils.common.CommonUtils;
+import com.imooc.utils.common.Pages;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -55,6 +57,29 @@ public class ReportReviewServiceImpl extends ServiceImpl<ReportReviewDao, Report
     // 课程视频服务
     @Resource
     private VideoServiceImpl videoServiceImpl;
+
+    /**
+     * 分页查询所有举报信息
+     *
+     * @param pages
+     * @param reportType 举报类型：0 视频 1 评论 2 问题 3 回答
+     * @return
+     */
+    @Override
+    public Page<ReportReview> findAll(Pages pages, Integer reportType) {
+
+        Page<ReportReview> page = new Page<>(pages.getCurrentPage(), pages.getPageSize());
+
+        LambdaQueryWrapper<ReportReview> wrapper = new LambdaQueryWrapper<>();
+
+        if (reportType != null) {
+            wrapper.eq(ReportReview::getReportType, reportType);
+        }
+
+        wrapper.orderByDesc(ReportReview::getReportTime, ReportReview::getReviewTime);
+
+        return page.setRecords(baseMapper.findAll(page, wrapper));
+    }
 
     /**
      * 添加举报信息

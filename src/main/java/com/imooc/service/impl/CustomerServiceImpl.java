@@ -2,11 +2,14 @@ package com.imooc.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.imooc.dao.CustomerDao;
 import com.imooc.entity.Customer;
 import com.imooc.service.CustomerSerivce;
 import com.imooc.utils.SymmetryCryptoUtil;
+import com.imooc.utils.common.CommonUtils;
+import com.imooc.utils.common.Pages;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -115,5 +118,32 @@ public class CustomerServiceImpl extends ServiceImpl<CustomerDao, Customer> impl
         wrapper.eq(Customer::getCustomerId, customer);
 
         return baseMapper.update(null, wrapper);
+    }
+
+    /**
+     * 分页查询所有用户信息
+     *
+     * @param pages
+     * @return
+     */
+    @Override
+    public Page<Customer> findAll(Pages pages) {
+
+        Page<Customer> page = new Page<>(pages.getCurrentPage(), pages.getPageSize());
+
+        String phone = pages.getSearchs().get("phone");
+        String email = pages.getSearchs().get("email");
+
+        LambdaQueryWrapper<Customer> wrapper = new LambdaQueryWrapper<>();
+
+        if (CommonUtils.isNotEmpty(phone)) {
+            wrapper.like(Customer::getCustomerPhone, phone);
+        }
+
+        if (CommonUtils.isNotEmpty(email)) {
+            wrapper.like(Customer::getCustomerEmail, email);
+        }
+
+        return baseMapper.selectPage(page, wrapper);
     }
 }

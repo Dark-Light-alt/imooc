@@ -2,12 +2,15 @@ package com.imooc.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.imooc.dao.OrdersDao;
 import com.imooc.entity.Orders;
 import com.imooc.exception.ApiException;
 import com.imooc.service.OrdersService;
 import com.imooc.utils.OrderNumberBuilder;
+import com.imooc.utils.common.CommonUtils;
+import com.imooc.utils.common.Pages;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -110,6 +113,35 @@ public class OrdersServiceImpl extends ServiceImpl<OrdersDao, Orders> implements
     }
 
     /**
+     * 分页查询所有订单
+     *
+     * @param pages
+     * @param status 订单状态：0 未支付 1 已完成 2 已失效 null 全部
+     * @return
+     */
+    @Override
+    public Page<Orders> findAll(Pages pages, Integer status) {
+
+        Page<Orders> page = new Page<>(pages.getCurrentPage(), pages.getPageSize());
+
+        LambdaQueryWrapper<Orders> wrapper = new LambdaQueryWrapper<>();
+
+        if (null != status) {
+            wrapper.eq(Orders::getOrderStatus, status);
+        }
+
+        String orderNumber = pages.getSearchs().get("orderNumber");
+
+        if (CommonUtils.isNotEmpty(orderNumber)) {
+            wrapper.like(Orders::getOrderNumber, orderNumber);
+        }
+
+        wrapper.orderByDesc(Orders::getOrderTime);
+
+        return page.setRecords(baseMapper.findAll(page, wrapper));
+    }
+
+    /**
      * 根据订单号查询订单信息
      *
      * @param orderNumber 订单号
@@ -137,6 +169,11 @@ public class OrdersServiceImpl extends ServiceImpl<OrdersDao, Orders> implements
 
         LambdaUpdateWrapper<Orders> wrapper = new LambdaUpdateWrapper<>();
         wrapper.set(Orders::getOrderStatus, orderStatus);
+
+        if (orderStatus == 1) {
+            wrapper.set(Orders::getPaymentTime, new Date());
+        }
+
         wrapper.eq(Orders::getOrderNumber, orderNumber);
 
         return baseMapper.update(null, wrapper) != 0;
