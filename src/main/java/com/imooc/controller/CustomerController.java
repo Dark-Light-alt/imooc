@@ -8,21 +8,23 @@ import com.imooc.service.impl.CustomerServiceImpl;
 import com.imooc.service.impl.SysNoticeServiceImpl;
 import com.imooc.utils.ImageVerificationCode;
 import com.imooc.utils.SymmetryCryptoUtil;
+import com.imooc.utils.aliyun.oss.FileStorageService;
+import com.imooc.utils.aliyun.oss.FileStorageServiceImpl;
 import com.imooc.utils.common.CommonUtils;
 import com.imooc.utils.common.Pages;
 import com.imooc.utils.common.Result;
 import com.imooc.utils.email.BaseEmailConfig;
 import com.imooc.utils.email.EmailServiceImpl;
 import com.imooc.utils.sms.SMSServiceImpl;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Map;
 
 @RestController
@@ -48,6 +50,9 @@ public class CustomerController {
 
     @Resource
     private BaseEmailConfig baseEmailConfig;
+
+    @Resource
+    FileStorageServiceImpl fileStorageServiceImpl;
 
     /**
      * 生成图片验证码
@@ -551,6 +556,9 @@ public class CustomerController {
         return result;
     }
 
+
+
+
     /**
      * 验证邮箱
      *
@@ -647,4 +655,51 @@ public class CustomerController {
             throw new ApiException(500, "密码不能为空");
         }
     }
+
+    @RequestMapping("upload")
+    public Result upload(@RequestParam("file") MultipartFile file) throws IOException {
+
+        Result result = new Result();
+
+        InputStream inputStream = file.getInputStream();
+
+        String fileName = file.getOriginalFilename();
+
+        String url = fileStorageServiceImpl.upload(inputStream, fileName, FileStorageService.IMG);
+
+        result.putData("url",url);
+
+        result.success(200,"SUCCESS");
+
+        return result;
+    }
+
+
+    @RequestMapping(value = "update",method = RequestMethod.PUT)
+    public Result update(@RequestBody Customer customer){
+
+        Result result = new Result();
+
+        System.out.println(customer);
+
+        customerServiceImpl.update(customer);
+
+        result.success(200,"修改成功");
+
+        return result;
+    }
+
+    @RequestMapping(value = "findById/{customerId}",method = RequestMethod.GET)
+    public Result findById(@PathVariable String customerId){
+
+        Result result = new Result();
+
+        result.putData("customer",customerServiceImpl.findById(customerId));
+
+        result.success(200,"SUCCESS");
+
+        return result;
+    }
+
+
 }

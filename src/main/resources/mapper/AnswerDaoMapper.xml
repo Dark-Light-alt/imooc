@@ -23,6 +23,7 @@
         <result column="question_id" property="questionId"></result>
         <result column="create_time" property="createTime"></result>
         <result column="likes" property="likes"></result>
+        <result column="answer_isenable" property="answerIsenable"></result>
         <association property="question" javaType="java.util.Map">
             <id column="question_id" property="questionId"></id>
             <result column="title" property="title"></result>
@@ -67,6 +68,7 @@
         left join video
         on question.video_id=video.video_id
         where customer.customer_id=#{customerId}
+        and answer.answer_isenable=0
         order by answer.create_time asc
     </select>
 </mapper>
